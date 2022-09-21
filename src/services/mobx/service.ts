@@ -1,7 +1,5 @@
-import { action, makeAutoObservable, observable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import React from "react";
-import {isConnected, setConnected} from "../utils/utils";
-import {connectWeb3MQSnaps} from "../utils/snaps";
 
 export default class AppStore {
   showLoading: boolean = false;

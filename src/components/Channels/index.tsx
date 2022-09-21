@@ -41,7 +41,7 @@ const Channels: React.FC = () => {
           />
         </IonAvatar>
         <IonLabel className={ss.messageBody}>
-          <p className={ss.upText}>{channel.chat_name}</p>
+          <p className={ss.upText}>{channel.chat_name ? channel.chat_name : channel.topic}</p>
           <p className={ss.downText}>{channel.topic}</p>
         </IonLabel>
         <IonLabel slot="end" className={ss.messageBody}>
@@ -57,18 +57,18 @@ const Channels: React.FC = () => {
         </IonLabel>
       </IonItem>
     );
-  }, [activeChannel, channelList]);
+  }, [activeChannel, getMessages, setActiveChannel, setShowLoading]);
 
   return (
     <IonCard className={ss.box}>
-        {/*<IonInput*/}
-        {/*    className={ss.messageInput}*/}
-        {/*    value={readySendMessage}*/}
-        {/*    placeholder="Enter a channel name"*/}
-        {/*    onIonChange={(e) => {*/}
-        {/*        setReadySendMessage(e.detail.value!);*/}
-        {/*    }}*/}
-        {/*/>*/}
+        <IonInput
+            className={ss.messageInput}
+            value={readySendMessage}
+            placeholder="Enter a channel name"
+            onIonChange={(e) => {
+                setReadySendMessage(e.detail.value!);
+            }}
+        />
       <IonButton
           onClick={async () => {
             setShowLoading(true)

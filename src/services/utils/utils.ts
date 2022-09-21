@@ -1,9 +1,3 @@
-import {
-  connectWeb3MQSnaps, createRoomsBySnaps,
-  getInstance,
-  initSnaps,
-  registerBySnaps,
-} from "./snaps";
 
 export function sleep(time: number) {
   return new Promise((resolve) => setTimeout(resolve, time));
