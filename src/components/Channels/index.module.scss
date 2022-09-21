@@ -1,0 +1,98 @@
+
+.chatListItem {
+  position: relative;
+  height: 68px;
+  padding-top: 18px;
+  --border-style: none;
+  --padding-start: 24px;
+  justify-content: space-between;
+  background: #fff;
+  border-left: 2px solid #fff;
+
+  .messageListAvatar {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    margin-right: 16px;
+  }
+
+  .groupRoomAvatar {
+    border-radius: 10px;
+  }
+
+  .messageBody {
+    margin: 0;
+    height: 48px;
+
+    p {
+      margin: 0;
+    }
+
+    .upText {
+      height: 24px;
+      font-style: normal;
+      font-weight: 590;
+      font-size: 14px;
+      line-height: 24px;
+      align-items: start;
+      color: #0F1828;
+      margin-bottom: 2px;
+    }
+
+    .downText {
+      height: 20px;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 20px;
+      align-items: end;
+      color: #424242;
+    }
+
+    .dateText {
+      height: 24px;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 10px;
+      line-height: 16px;
+      align-items: start;
+      color: #BDBDBD;
+      margin-bottom: 2px;
+    }
+
+    .unReadCount {
+      align-items: end;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-left: 12px;
+
+      font-style: normal;
+      font-weight: 600;
+      font-size: 10px;
+      line-height: 20px;
+      text-align: center;
+      color: #242424;
+    }
+
+    .unReadText {
+      font-weight: 590;
+      color: #242424;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+    border-color: #4b7ef7;
+
+  }
+}
+.messageInput {
+  border: 1px solid #ccc;
+  height: 50px;
+  border-radius: 4px;
+  padding-left: 16px;
+  --padding-start: 16px;
+  margin-right: 8px;
+  margin-bottom: 20px;
+}

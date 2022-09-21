@@ -1,7 +1,6 @@
 const newSnapId = `npm:web3-mq-snaps`;
 // const newSnapId = `local:http://localhost:8081/`;
 
-
 export const connectWeb3MQSnaps = async () => {
   //@ts-ignore
   const res = await ethereum.request({
@@ -10,7 +9,7 @@ export const connectWeb3MQSnaps = async () => {
       {
         wallet_snap: {
           [newSnapId]: {
-            version: "1.0.2",
+            version: "1.0.4",
           },
         },
       },
@@ -22,7 +21,7 @@ export const connectWeb3MQSnaps = async () => {
 export const getInstance = async (keys: any) => {
   try {
     //@ts-ignore
-    const response = await ethereum.request({
+    await ethereum.request({
       method: "wallet_invokeSnap",
       params: [
         newSnapId,
@@ -116,7 +115,7 @@ export const registerBySnaps = async (signContentURI: string) => {
   });
 };
 
-export const createRoomsBySnaps = async () => {
+export const createRoomsBySnaps = async (roomName: string = "") => {
   //@ts-ignore
   return await ethereum.request({
     method: "wallet_invokeSnap",
@@ -124,29 +123,21 @@ export const createRoomsBySnaps = async () => {
       newSnapId,
       {
         method: "creatRoom",
+        payload: { group_name: roomName },
       },
     ],
   });
 };
-
-export function sleep(time: number) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
-
-export const setConnected = (data: string) => {
-  localStorage.setItem("web3-mq-connected", data);
-};
-
-export const isConnected = () => {
-  return !!localStorage.getItem("web3-mq-connected");
-};
-
-export const getKeys = () => {
-  if (localStorage.getItem("web3_mq_keys")) {
-    return JSON.parse(localStorage.getItem("web3_mq_keys") || "");
-  }
-  return null;
-};
-export const setKeys = (data: string) => {
-  localStorage.setItem("web3_mq_keys", data);
+export const sendNotifyMessage = async (message: string) => {
+  //@ts-ignore
+  return await ethereum.request({
+    method: "wallet_invokeSnap",
+    params: [
+      newSnapId,
+      {
+        method: "sendNotifyMessage",
+        payload: { message },
+      },
+    ],
+  });
 };

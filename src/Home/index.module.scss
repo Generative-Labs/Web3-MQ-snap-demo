@@ -1,0 +1,50 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.content {
+  padding: 0 20px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  //justify-content: space-between;
+}
+
+h1 {
+  text-align: center;
+}
+
+h2 {
+  width: 100%;
+  height: 50px;
+  border-radius: 20px;
+  background: rgba(77, 198, 210, 0.2);
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+ion-card {
+  padding: 15px;
+
+}
+.ionCard {
+  width: 33%;
+  padding: 20px;
+
+  ion-button {
+    width: 100%;
+  }
+}
+
+.twoRow {
+  width: 46%;
+}
+.oneRow {
+  width: 100%;
+}
+
+ul li {
+  list-style: none;
+}
