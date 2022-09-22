@@ -218,17 +218,6 @@ const Home: React.FC = () => {
         {/*>*/}
         {/*  <Messages />*/}
         {/*</div>*/}
-          <div className={ss.ionCard}>
-              <IonCard>
-                  <IonButton onClick={() => {
-                      setShowLoading(true)
-                      setTimeout(() => {
-                          setShowLoading(false)
-                      }, 10000)
-                  }} >Test Loading</IonButton>
-              </IonCard>
-          </div>
-
       </div>
       <IonLoading
         isOpen={showLoading}
