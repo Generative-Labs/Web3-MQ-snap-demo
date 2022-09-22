@@ -23,7 +23,7 @@ const SendNotify: React.FC = () => {
   );
   return (
     <IonCard className={ss.box}>
-      <h1>Send Notify</h1>
+      <h1>Send Notification</h1>
       <IonInput
         className={ss.messageInput}
         value={readySendMessage}
@@ -33,7 +33,7 @@ const SendNotify: React.FC = () => {
         }}
       />
       <IonButton onClick={run} disabled={!readySendMessage}>
-        Send Notify In MetaMask
+        Send Notification In MetaMask
       </IonButton>
     </IonCard>
   );

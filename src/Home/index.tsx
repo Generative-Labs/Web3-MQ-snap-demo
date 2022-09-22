@@ -70,13 +70,10 @@ const Home: React.FC = () => {
   useEffect(() => {
     window.addEventListener("resize", () => {
       if (window.innerWidth <= 1500 && window.innerWidth > 800) {
-        console.log("2");
         setShowRows(2);
       } else if (window.innerWidth <= 800) {
-        console.log("1");
         setShowRows(1);
       } else {
-        console.log("3");
         setShowRows(3);
       }
     });
@@ -85,7 +82,10 @@ const Home: React.FC = () => {
   return (
     <div className={ss.container}>
       <h1> Web3 MQ test-dapp </h1>
-      <div className={ss.content}>
+      <div className={cx(ss.content,  {
+          [ss.twoContentRow]: showRows === 2,
+          [ss.oneContentRow]: showRows === 1,
+      })}>
         <div
           className={cx(ss.ionCard, {
             [ss.twoRow]: showRows === 2,
@@ -94,7 +94,7 @@ const Home: React.FC = () => {
         >
           <h2>Status </h2>
           <IonCard>
-            <h1>Click to install snaps</h1>
+            <h1>Connect to MetaMask Flask</h1>
             <IonButton
               onClick={async () => {
                 setShowLoading(true);
@@ -103,9 +103,9 @@ const Home: React.FC = () => {
               }}
               disabled={isConnected}
             >
-              {isConnected ? "Connected" : "Connect Web3 MQ snaps"}
+              {isConnected ? "Connected" : "Connect"}
             </IonButton>
-            <h1>Register and login to get your keys</h1>
+            <h1>Connect to Web3MQ network</h1>
             <IonButton
               onClick={async () => {
                 setShowLoading(true);
@@ -137,71 +137,71 @@ const Home: React.FC = () => {
           <h2>Demo</h2>
           <MobileDemo />
         </div>
-        <div
-          className={cx(ss.ionCard, {
-            [ss.twoRow]: showRows === 2,
-            [ss.oneRow]: showRows === 1,
-          })}
-        >
-          <h2>Actions</h2>
-          <IonCard>
-            <div>Step 1: Register and login to get your keys</div>
-            <IonButton
-              onClick={async () => {
-                setShowLoading(true);
-                await register(true);
-                setShowLoading(false);
-              }}
-            >
-              register and login
-            </IonButton>
-            <div>Step 2: Create a chat room</div>
-            <IonButton
-              onClick={async () => {
-                setShowLoading(true);
-                await creatRoom(true);
-                setShowLoading(false);
-              }}
-            >
-              creat room
-            </IonButton>
-            <div>Step 3: Get your channel list</div>
-            <IonButton
-              onClick={async () => {
-                setShowLoading(true);
-                await getChannelList(true);
-                setShowLoading(false);
-              }}
-            >
-              get channel list
-            </IonButton>
-            <div>Step 4: Now! Send your first message</div>
-            <IonButton
-              onClick={async () => {
-                setReadySendMessage("Hello Web3 MQ");
-                if (!isConnected) {
-                  setShowLoading(true);
-                  await register();
-                  setShowLoading(false);
-                }
-                run();
-              }}
-            >
-              Send Message
-            </IonButton>
-            <div>Step 5: View Message History</div>
-            <IonButton
-              onClick={async () => {
-                setShowLoading(true);
-                await getMessages(true);
-                setShowLoading(false);
-              }}
-            >
-              Get messages
-            </IonButton>
-            <br />
-          </IonCard>
-        </div>
+        {/*<div*/}
+        {/*  className={cx(ss.ionCard, {*/}
+        {/*    [ss.twoRow]: showRows === 2,*/}
+        {/*    [ss.oneRow]: showRows === 1,*/}
+        {/*  })}*/}
+        {/*>*/}
+        {/*  <h2>Actions</h2>*/}
+        {/*  <IonCard>*/}
+        {/*    <div>Step 1: Register and login to get your keys</div>*/}
+        {/*    <IonButton*/}
+        {/*      onClick={async () => {*/}
+        {/*        setShowLoading(true);*/}
+        {/*        await register(true);*/}
+        {/*        setShowLoading(false);*/}
+        {/*      }}*/}
+        {/*    >*/}
+        {/*      register and login*/}
+        {/*    </IonButton>*/}
+        {/*    <div>Step 2: Create a chat room</div>*/}
+        {/*    <IonButton*/}
+        {/*      onClick={async () => {*/}
+        {/*        setShowLoading(true);*/}
+        {/*        await creatRoom(true);*/}
+        {/*        setShowLoading(false);*/}
+        {/*      }}*/}
+        {/*    >*/}
+        {/*      creat room*/}
+        {/*    </IonButton>*/}
+        {/*    <div>Step 3: Get your channel list</div>*/}
+        {/*    <IonButton*/}
+        {/*      onClick={async () => {*/}
+        {/*        setShowLoading(true);*/}
+        {/*        await getChannelList(true);*/}
+        {/*        setShowLoading(false);*/}
+        {/*      }}*/}
+        {/*    >*/}
+        {/*      get channel list*/}
+        {/*    </IonButton>*/}
+        {/*    <div>Step 4: Now! Send your first message</div>*/}
+        {/*    <IonButton*/}
+        {/*      onClick={async () => {*/}
+        {/*        setReadySendMessage("Hello Web3 MQ");*/}
+        {/*        if (!isConnected) {*/}
+        {/*          setShowLoading(true);*/}
+        {/*          await register();*/}
+        {/*          setShowLoading(false);*/}
+        {/*        }*/}
+        {/*        run();*/}
+        {/*      }}*/}
+        {/*    >*/}
+        {/*      Send Message*/}
+        {/*    </IonButton>*/}
+        {/*    <div>Step 5: View Message History</div>*/}
+        {/*    <IonButton*/}
+        {/*      onClick={async () => {*/}
+        {/*        setShowLoading(true);*/}
+        {/*        await getMessages(true);*/}
+        {/*        setShowLoading(false);*/}
+        {/*      }}*/}
+        {/*    >*/}
+        {/*      Get messages*/}
+        {/*    </IonButton>*/}
+        {/*    <br />*/}
+        {/*  </IonCard>*/}
+        {/*</div>*/}
         <div
           className={cx(ss.ionCard, {
             [ss.twoRow]: showRows === 2,
@@ -210,14 +210,14 @@ const Home: React.FC = () => {
         >
           <SendNotify />
         </div>
-        <div
-          className={cx(ss.ionCard, {
-            [ss.twoRow]: showRows === 2,
-            [ss.oneRow]: showRows === 1,
-          })}
-        >
-          <Messages />
-        </div>
+        {/*<div*/}
+        {/*  className={cx(ss.ionCard, {*/}
+        {/*    [ss.twoRow]: showRows === 2,*/}
+        {/*    [ss.oneRow]: showRows === 1,*/}
+        {/*  })}*/}
+        {/*>*/}
+        {/*  <Messages />*/}
+        {/*</div>*/}
       </div>
       <IonLoading
         isOpen={showLoading}

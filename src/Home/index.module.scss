@@ -7,11 +7,20 @@
 .content {
   padding: 0 20px;
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
+  //display: flex;
+  //flex-wrap: wrap;
   //justify-content: space-between;
+  columns: 3;
+  column-gap: 8px;
 }
 
+.twoContentRow {
+  columns: 2;
+}
+
+.oneContentRow {
+  columns: 1;
+}
 h1 {
   text-align: center;
 }
@@ -30,7 +39,7 @@ ion-card {
 
 }
 .ionCard {
-  width: 33%;
+  //width: 33%;
   padding: 20px;
 
   ion-button {
@@ -39,10 +48,10 @@ ion-card {
 }
 
 .twoRow {
-  width: 46%;
+  //width: 46%;
 }
 .oneRow {
-  width: 100%;
+  //width: 100%;
 }
 
 ul li {

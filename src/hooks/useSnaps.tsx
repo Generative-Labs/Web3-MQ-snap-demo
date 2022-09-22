@@ -50,7 +50,6 @@ export const useSnaps = () => {
     const response = await getChannelListBySnaps().catch((e) => {
       console.log(e, "getChannelListBySnaps - error");
     });
-    console.log(response, 'getChannelList- response')
     showRes && setCurrentMessages(JSON.stringify(response, null, "\t"));
     await store.setChannelList(response);
     if (setActiveTopic) {
@@ -72,7 +71,6 @@ export const useSnaps = () => {
         await connectWeb3Mq();
       // }
       const response = await createRoomsBySnaps(roomName);
-      console.log(response, 'response')
       showRes && setCurrentMessages(JSON.stringify(response, null, "\t"));
       await getChannelList();
     } catch (err: any) {
@@ -95,7 +93,6 @@ export const useSnaps = () => {
     // if (!isConnected) {
       await connectWeb3Mq();
     // }
-    console.log(topic, 'topic')
     let payload = topic ? topic : activeChannel
     if (!payload) {
       alert('Please Choose Channel')
@@ -104,7 +101,6 @@ export const useSnaps = () => {
     const res = await getMessagesBySnaps(payload).catch((e) => {
       console.log(e, "getMessages - error");
     });
-    console.log(res, 'getMessages - error')
     res && setMessageList(res);
     showRes && setCurrentMessages(JSON.stringify(res, null, "\t"));
   };
