@@ -21,7 +21,7 @@ import { observer } from "mobx-react";
 import { useStore } from "../../services/mobx/service";
 import { useSnaps } from "../../hooks/useSnaps";
 import moment from "moment";
-import {getShortAddressByAddress} from "../../services/utils/utils";
+import { getShortAddressByAddress } from "../../services/utils/utils";
 
 const userIcon = require("../../assert/svg/user.svg").default;
 const MobileDemo: React.FC = () => {
@@ -59,7 +59,9 @@ const MobileDemo: React.FC = () => {
       <div className={ss.userTitleBox}>
         <div className={ss.userInfoBox}>
           <img src={userIcon} alt="" />
-          <div className={ss.username}>{getShortAddressByAddress(message.senderId)}</div>
+          <div className={ss.username}>
+            {getShortAddressByAddress(message.senderId)}
+          </div>
           {message.created_at > 0 && (
             <div className={ss.createAt}>
               {moment
@@ -85,8 +87,8 @@ const MobileDemo: React.FC = () => {
 
   return (
     <div className={ss.ionCard}>
-      <h2>Demo</h2>
       <IonCard className={ss.demoPage}>
+        <h2>Demo</h2>
         <IonHeader
           style={{
             boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",

@@ -119,8 +119,8 @@ const Channels: React.FC = () => {
 
   return (
     <div className={ss.ionCard}>
-      <h2>Selected Channel : {getShortAddressByAddress(activeChannel)} </h2>
       <IonCard className={ss.box}>
+        <h2>Selected Channel : {getShortAddressByAddress(activeChannel)} </h2>
         <IonInput
           className={ss.messageInput}
           value={roomName}
