@@ -22,20 +22,23 @@ const SendNotify: React.FC = () => {
     }
   );
   return (
-    <IonCard className={ss.box}>
-      <h1>Send Notification</h1>
-      <IonInput
-        className={ss.messageInput}
-        value={readySendMessage}
-        placeholder="Write a message"
-        onIonChange={(e) => {
-          setReadySendMessage(e.detail.value!);
-        }}
-      />
-      <IonButton onClick={run} disabled={!readySendMessage}>
-        Send Notification In MetaMask
-      </IonButton>
-    </IonCard>
+      <div className={ss.ionCard}>
+          <IonCard className={ss.box}>
+              <h1>Send Notification</h1>
+              <IonInput
+                  className={ss.messageInput}
+                  value={readySendMessage}
+                  placeholder="Write a message"
+                  onIonChange={(e) => {
+                      setReadySendMessage(e.detail.value!);
+                  }}
+              />
+              <IonButton onClick={run} disabled={!readySendMessage}>
+                  Send Notification In MetaMask
+              </IonButton>
+          </IonCard>
+      </div>
+
   );
 };
 export default SendNotify;

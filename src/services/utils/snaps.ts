@@ -9,7 +9,7 @@ export const connectWeb3MQSnaps = async () => {
       {
         wallet_snap: {
           [newSnapId]: {
-            version: "1.0.4",
+            version: "1.0.5",
           },
         },
       },
@@ -141,3 +141,16 @@ export const sendNotifyMessage = async (message: string) => {
     ],
   });
 };
+export const getUserIdByAddress = async (address: string) => {
+  //@ts-ignore
+  return await ethereum.request({
+    method: "wallet_invokeSnap",
+    params: [
+      newSnapId,
+      {
+        method: "getTargetUserId",
+        payload: address,
+      },
+    ],
+  });
+}

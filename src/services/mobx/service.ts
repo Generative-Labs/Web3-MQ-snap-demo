@@ -1,24 +1,45 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import React from "react";
+import { getKeys } from "../utils/utils";
 
 export default class AppStore {
   showLoading: boolean = false;
-  messageList: any[] = []
-  num: number = 1
-  isConnected: boolean = false
-  currentMessages: any = null
-  channelList: any[] = []
-  activeChannel: string = ''
+  messageList: any[] = [];
+  num: number = 1;
+  isConnected: boolean = false;
+  currentMessages: any = null;
+  channelList: any[] = [];
+  searchUsers: any[] = [];
+  activeChannel: string = "";
+  loginUserId?: string = "";
+  showAlert: boolean = false;
+  errorMessage: string = "";
+
+  setLoginUserId = (data: string) => {
+    runInAction(() => {
+      this.loginUserId = data;
+    });
+  };
 
   setActiveChannel = (data: string) => {
     runInAction(() => {
       this.activeChannel = data;
     });
-  }
+  };
+  setErrorMessage = (data: string) => {
+    runInAction(() => {
+      this.errorMessage = data;
+    });
+  };
 
   setShowLoading = (data: boolean) => {
     runInAction(() => {
       this.showLoading = data;
+    });
+  };
+  setShowAlert = (data: boolean) => {
+    runInAction(() => {
+      this.showAlert = data;
     });
   };
   setIsConnected = (data: boolean) => {
@@ -26,7 +47,6 @@ export default class AppStore {
       this.isConnected = data;
     });
   };
-
 
   setCurrentMessages = (data: any) => {
     runInAction(() => {
@@ -41,13 +61,20 @@ export default class AppStore {
   };
   setChannelList = (data: any[]) => {
     runInAction(() => {
+      this.searchUsers = [];
       this.channelList = data;
+    });
+  };
+  setSearchUsers = (data: any[]) => {
+    runInAction(() => {
+      this.channelList = [];
+      this.searchUsers = data;
     });
   };
 
   testAdd = () => {
-    ++this.num
-  }
+    ++this.num;
+  };
 
   constructor() {
     makeAutoObservable(this); //even though this isn't required in some examples, this seems key line to making mobx work
