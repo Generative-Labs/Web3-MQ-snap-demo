@@ -11,6 +11,7 @@ import {
   IonInput,
   IonTitle,
   IonToolbar,
+  useIonLoading,
 } from "@ionic/react";
 
 import ss from "./index.module.scss";
@@ -26,14 +27,15 @@ import { getShortAddressByAddress } from "../../services/utils/utils";
 const userIcon = require("../../assert/svg/user.svg").default;
 const MobileDemo: React.FC = () => {
   const store = useStore();
-  const { messageList, isConnected, setShowLoading, activeChannel } = store;
+  const [present, dismiss] = useIonLoading();
+  const { messageList, isConnected, activeChannel } = store;
   const { connectWeb3Mq, getMessages } = useSnaps();
   const [readySendMessage, setReadySendMessage] = useState("");
 
   const { run } = useDebounceFn(
     async () => {
       if (!readySendMessage) return;
-      setShowLoading(true);
+      await present({ message: "Loading..." });
       // if (!isConnected) {
       await connectWeb3Mq();
       // }
@@ -46,7 +48,7 @@ const MobileDemo: React.FC = () => {
       });
       await getMessages(true, activeChannel);
       setReadySendMessage("");
-      setShowLoading(false);
+      await dismiss();
     },
     {
       wait: 500,
@@ -100,9 +102,9 @@ const MobileDemo: React.FC = () => {
                 className="settingIcon"
                 onClick={async () => {
                   if (activeChannel) {
-                    setShowLoading(true);
+                    await present({ message: "Loading..." });
                     await getMessages();
-                    setShowLoading(false);
+                    await dismiss();
                   }
                 }}
               >
@@ -179,9 +181,9 @@ const MobileDemo: React.FC = () => {
               {!isConnected && (
                 <IonButton
                   onClick={async () => {
-                    setShowLoading(true);
+                    await present({ message: "Loading..." });
                     await connectWeb3Mq();
-                    setShowLoading(false);
+                    await dismiss();
                   }}
                   className={ss.button}
                 >

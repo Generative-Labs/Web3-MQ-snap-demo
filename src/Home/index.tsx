@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { IonAlert, IonButton, IonCard, IonLoading } from "@ionic/react";
+import { IonAlert, IonButton, IonCard, useIonLoading } from "@ionic/react";
 
 import ss from "./index.module.scss";
 import cx from "classnames";
@@ -20,20 +20,19 @@ import Channels from "../components/Channels";
 
 const Home: React.FC = () => {
   const store = useStore();
-  const {
-    isConnected,
-    setShowLoading,
-    showLoading,
-    activeChannel,
-    loginUserId,
-    showAlert,
-    setShowAlert,
-    errorMessage,
-    setErrorMessage,
-    setLoginUserId,
-  } = store;
-  const { register, creatRoom, connectWeb3Mq, getMessages, getChannelList } =
-    useSnaps();
+    const {
+      isConnected,
+      activeChannel,
+      loginUserId,
+      showAlert,
+      setShowAlert,
+      errorMessage,
+      setErrorMessage,
+      setLoginUserId,
+    } = store;
+    const [present, dismiss] = useIonLoading();
+    const { register, creatRoom, connectWeb3Mq, getMessages, getChannelList } =
+      useSnaps();
   const [readySendMessage, setReadySendMessage] = useState("");
   const [showRows, setShowRows] = useState(
     window.innerWidth <= 800
@@ -46,20 +45,22 @@ const Home: React.FC = () => {
   const { run } = useDebounceFn(
     async () => {
       if (!readySendMessage) return;
+      await present({ message: "Loading..." });
       if (!isConnected) {
         await connectWeb3Mq();
       }
       if (!activeChannel) {
+        await dismiss();
         alert("Please Choose Channel");
         return false;
       }
       await sendMessageBySnaps(readySendMessage, activeChannel).catch((e) => {
+        dismiss();
         console.log(e, "sendMessage error");
-        setShowLoading(false);
       });
       setReadySendMessage("");
       await getMessages(true);
-      setShowLoading(false);
+      await dismiss();
     },
     {
       wait: 500,
@@ -70,6 +71,11 @@ const Home: React.FC = () => {
     const init = async () => {
       if (getKeys()) {
         setLoginUserId(getLoginUserId());
+        await present({
+          message: "Loading...",
+        });
+        await getChannelList();
+        await dismiss();
       }
     };
     init();
@@ -102,9 +108,12 @@ const Home: React.FC = () => {
             <h1>Connect to MetaMask Flask</h1>
             <IonButton
               onClick={async () => {
-                setShowLoading(true);
+                await present({
+                  message: "Connecting...",
+                  spinner: "circles",
+                });
                 await connectWeb3Mq();
-                setShowLoading(false);
+                await dismiss();
               }}
               disabled={isConnected}
             >
@@ -113,9 +122,12 @@ const Home: React.FC = () => {
             <h1>Connect to Web3MQ network</h1>
             <IonButton
               onClick={async () => {
-                setShowLoading(true);
+                await present({
+                  message: "Loading...",
+                  spinner: "circles",
+                });
                 await connectWeb3Mq();
-                setShowLoading(false);
+                await dismiss();
               }}
               disabled={!!getKeys()}
             >
@@ -127,13 +139,6 @@ const Home: React.FC = () => {
         <MobileDemo />
         <SendNotify />
       </div>
-      <IonLoading
-        isOpen={showLoading}
-        onDidDismiss={() => {
-          setShowLoading(false);
-        }}
-        message={"Loading"}
-      />
       <IonAlert
         isOpen={showAlert}
         onDidDismiss={() => {

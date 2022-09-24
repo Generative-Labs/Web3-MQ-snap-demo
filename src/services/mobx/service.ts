@@ -1,9 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import React from "react";
-import { getKeys } from "../utils/utils";
 
 export default class AppStore {
-  showLoading: boolean = false;
   messageList: any[] = [];
   num: number = 1;
   isConnected: boolean = false;
@@ -32,11 +30,6 @@ export default class AppStore {
     });
   };
 
-  setShowLoading = (data: boolean) => {
-    runInAction(() => {
-      this.showLoading = data;
-    });
-  };
   setShowAlert = (data: boolean) => {
     runInAction(() => {
       this.showAlert = data;

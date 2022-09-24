@@ -9,6 +9,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  useIonLoading,
 } from "@ionic/react";
 
 import ss from "./index.module.scss";
@@ -37,10 +38,10 @@ const Channels: React.FC = () => {
     channelList,
     setActiveChannel,
     activeChannel,
-    setShowLoading,
     searchUsers,
     setSearchUsers,
   } = useStore();
+  const [present, dismiss] = useIonLoading();
   const { getChannelList, creatRoom, getMessages, getUserId } = useSnaps();
   const [readySendMessage, setReadySendMessage] = useState("");
   const [roomName, setRoomName] = useState("");
@@ -87,10 +88,12 @@ const Channels: React.FC = () => {
         <IonItem
           className={ss.chatListItem}
           onClick={async () => {
-            setShowLoading(true);
+            await present({
+              message: "Loading...",
+            });
             setActiveChannel(topic);
             await getMessages(true, topic);
-            setShowLoading(false);
+            await dismiss();
           }}
         >
           <IonAvatar slot="start" className={ss.messageListAvatar}>
@@ -114,7 +117,7 @@ const Channels: React.FC = () => {
         </IonItem>
       );
     },
-    [activeChannel, getMessages, setActiveChannel, setShowLoading]
+    [activeChannel, getMessages, setActiveChannel]
   );
 
   return (
@@ -131,22 +134,24 @@ const Channels: React.FC = () => {
         />
         <IonButton
           onClick={async () => {
-            setShowLoading(true);
+            await present({ message: "Loading..." });
             await creatRoom(false, roomName);
-            setShowLoading(false);
+            setRoomName("");
+            await dismiss();
           }}
         >
           Create Channel
         </IonButton>
         <IonButton
           onClick={async () => {
-            setShowLoading(true);
+            await present({ message: "Loading..." });
             await getChannelList(true);
-            setShowLoading(false);
+            await dismiss();
           }}
         >
           Get Channel List
         </IonButton>
+        <h3>Search user to chat</h3>
         <div className={ss.oneChatBox}>
           <div className={ss.searchUserBox}>
             <div className={ss.searchTypeBox}>
@@ -188,7 +193,7 @@ const Channels: React.FC = () => {
               onClick={async () => {
                 console.log(readySendMessage, "readySendMessage");
                 let address = readySendMessage;
-                setShowLoading(true);
+                await present({ message: "Loading..." });
                 if (searchType !== STARCH_TYPE.WALLET) {
                   address = await getAddressByDids(
                     searchType,
@@ -198,7 +203,7 @@ const Channels: React.FC = () => {
                 console.log(address, "address");
                 const users = await getUserId(address);
                 setSearchUsers(users);
-                setShowLoading(false);
+                await dismiss();
                 console.log(users, "users");
               }}
             />
@@ -207,30 +212,34 @@ const Channels: React.FC = () => {
           {/*  className={ss.oneButton}*/}
           {/*  onClick={async () => {*/}
           {/*    console.log("1v1 room");*/}
-          {/*    // setShowLoading(true);*/}
+          {/*    // await present({ message: 'Loading...' });*/}
           {/*    // await getChannelList(true);*/}
-          {/*    // setShowLoading(false);*/}
+          {/*    // await dismiss();*/}
           {/*  }}*/}
           {/*>*/}
           {/*  Search Users*/}
           {/*</IonButton>*/}
         </div>
-        <h3>Results</h3>
-
-        <IonList>
-          {searchUsers &&
-            searchUsers.length > 0 &&
-            searchUsers.map((item, index) => (
-              <RenderChannelItem key={index} channel={item} isUser={true} />
-            ))}
-        </IonList>
-        <IonList>
-          {channelList &&
-            channelList.length > 0 &&
-            channelList.map((item, index) => (
-              <RenderChannelItem key={index} channel={item} />
-            ))}
-        </IonList>
+        {searchUsers && searchUsers.length > 0 && (
+          <>
+            <h3>Users</h3>
+            <IonList>
+              {searchUsers.map((item, index) => (
+                <RenderChannelItem key={index} channel={item} isUser={true} />
+              ))}
+            </IonList>
+          </>
+        )}
+        {channelList && channelList.length > 0 && (
+          <>
+            <h3>Channel List</h3>
+            <IonList>
+              {channelList.map((item, index) => (
+                <RenderChannelItem key={index} channel={item} />
+              ))}
+            </IonList>
+          </>
+        )}
       </IonCard>
     </div>
   );
