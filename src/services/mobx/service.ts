@@ -7,11 +7,28 @@ export default class AppStore {
   isConnected: boolean = false;
   currentMessages: any = null;
   channelList: any[] = [];
-  searchUsers: any[] = [];
+  searchUsers: any[] | null = null;
   activeChannel: string = "";
   loginUserId?: string = "";
   showAlert: boolean = false;
   errorMessage: string = "";
+  activeChannelItem: any = null;
+  activeUser: any = null;
+
+  setActiveChannelItem = (data: any) => {
+    console.log(data, "setActiveChannelItem");
+    runInAction(() => {
+      this.activeChannelItem = data;
+      this.activeUser = null;
+    });
+  };
+  setActiveUser = (data: any) => {
+    console.log(data, "setActiveUser");
+    runInAction(() => {
+      this.activeUser = data;
+      this.activeChannelItem = null;
+    });
+  };
 
   setLoginUserId = (data: string) => {
     runInAction(() => {
@@ -54,13 +71,11 @@ export default class AppStore {
   };
   setChannelList = (data: any[]) => {
     runInAction(() => {
-      this.searchUsers = [];
       this.channelList = data;
     });
   };
   setSearchUsers = (data: any[]) => {
     runInAction(() => {
-      this.channelList = [];
       this.searchUsers = data;
     });
   };

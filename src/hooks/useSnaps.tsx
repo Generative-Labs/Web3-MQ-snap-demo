@@ -8,7 +8,12 @@ import {
   initSnaps,
   registerBySnaps,
 } from "../services/utils/snaps";
-import { getKeys, setKeys, sleep } from "../services/utils/utils";
+import {
+  getKeys,
+  getShortAddressByAddress,
+  setKeys,
+  sleep,
+} from "../services/utils/utils";
 import { useStore } from "../services/mobx/service";
 import { paw } from "ionicons/icons";
 
@@ -21,6 +26,9 @@ export const useSnaps = () => {
     setIsConnected,
     activeChannel,
     setActiveChannel,
+    setActiveChannelItem,
+    setSearchUsers,
+    setActiveUser,
   } = store;
 
   // 连接snap后获取keys
@@ -67,6 +75,7 @@ export const useSnaps = () => {
     if (setActiveTopic) {
       if (response && response.length > 0) {
         setActiveChannel(response[0].topic);
+        setActiveChannelItem(response[0]);
       } else {
         alert("Please Create Room");
       }
@@ -118,9 +127,22 @@ export const useSnaps = () => {
 
   const getUserId = async (address: string) => {
     await connectWeb3Mq();
-    return await getUserIdByAddress(address).catch((e) => {
+    const users = await getUserIdByAddress(address).catch((e) => {
       console.log(e, "getUserIdByAddress - errir");
     });
+    if (users && users.length > 0) {
+      setSearchUsers(users);
+      if (users.length === 1) {
+        setActiveChannel(users[0].userid);
+        setActiveUser(users[0]);
+      }
+    } else {
+      setSearchUsers([]);
+      let roomName = `Chat with ${getShortAddressByAddress(address, 6)}`;
+      // creatRoom(false, roomName)
+      setActiveUser(null);
+      setActiveChannel("");
+    }
   };
 
   return {

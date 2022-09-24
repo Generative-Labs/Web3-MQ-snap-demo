@@ -10,12 +10,14 @@ import {
   IonLabel,
   IonList,
   useIonLoading,
+  useIonToast,
 } from "@ionic/react";
 
 import ss from "./index.module.scss";
 import {
   checkmarkCircleOutline,
   chevronDownOutline,
+  paw,
   searchOutline,
 } from "ionicons/icons";
 import { observer } from "mobx-react";
@@ -26,6 +28,7 @@ import {
   getAddressByDids,
   getShortAddressByAddress,
 } from "../../services/utils/utils";
+import copy from "copy-to-clipboard";
 
 export enum STARCH_TYPE {
   WALLET = "Wallet",
@@ -37,11 +40,14 @@ const Channels: React.FC = () => {
   const {
     channelList,
     setActiveChannel,
+    setActiveChannelItem,
+    setActiveUser,
     activeChannel,
     searchUsers,
     setSearchUsers,
   } = useStore();
   const [present, dismiss] = useIonLoading();
+  const [presentToast] = useIonToast();
   const { getChannelList, creatRoom, getMessages, getUserId } = useSnaps();
   const [readySendMessage, setReadySendMessage] = useState("");
   const [roomName, setRoomName] = useState("");
@@ -92,6 +98,11 @@ const Channels: React.FC = () => {
               message: "Loading...",
             });
             setActiveChannel(topic);
+            if (isUser) {
+              setActiveUser(channel);
+            } else {
+              setActiveChannelItem(channel);
+            }
             await getMessages(true, topic);
             await dismiss();
           }}
@@ -117,7 +128,13 @@ const Channels: React.FC = () => {
         </IonItem>
       );
     },
-    [activeChannel, getMessages, setActiveChannel]
+    [
+      activeChannel,
+      getMessages,
+      setActiveChannel,
+      setActiveChannelItem,
+      setActiveUser,
+    ]
   );
 
   return (
@@ -151,6 +168,16 @@ const Channels: React.FC = () => {
         >
           Get Channel List
         </IonButton>
+        {channelList && channelList.length > 0 && (
+          <>
+            <h3>Channel List</h3>
+            <IonList>
+              {channelList.map((item, index) => (
+                <RenderChannelItem key={index} channel={item} />
+              ))}
+            </IonList>
+          </>
+        )}
         <h3>Search user to chat</h3>
         <div className={ss.oneChatBox}>
           <div className={ss.searchUserBox}>
@@ -201,43 +228,65 @@ const Channels: React.FC = () => {
                   );
                 }
                 console.log(address, "address");
-                const users = await getUserId(address);
-                setSearchUsers(users);
+                await getUserId(address);
                 await dismiss();
-                console.log(users, "users");
               }}
             />
           </div>
-          {/*<IonButton*/}
-          {/*  className={ss.oneButton}*/}
-          {/*  onClick={async () => {*/}
-          {/*    console.log("1v1 room");*/}
-          {/*    // await present({ message: 'Loading...' });*/}
-          {/*    // await getChannelList(true);*/}
-          {/*    // await dismiss();*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*  Search Users*/}
-          {/*</IonButton>*/}
         </div>
-        {searchUsers && searchUsers.length > 0 && (
+        {searchUsers && (
           <>
-            <h3>Users</h3>
-            <IonList>
-              {searchUsers.map((item, index) => (
-                <RenderChannelItem key={index} channel={item} isUser={true} />
-              ))}
-            </IonList>
-          </>
-        )}
-        {channelList && channelList.length > 0 && (
-          <>
-            <h3>Channel List</h3>
-            <IonList>
-              {channelList.map((item, index) => (
-                <RenderChannelItem key={index} channel={item} />
-              ))}
-            </IonList>
+            {searchUsers.length == 0 && (
+              <div className={ss.emptyUserText}>
+                <div className={ss.top}>
+                  This address/did is not on Web3MQ yet, invite them to join
+                  with
+                </div>
+                <a
+                  className={ss.bottom}
+                  onClick={() => {
+                    copy("https://web3mq-snap-demo.pages.dev");
+                    presentToast({
+                      message: "Copied!",
+                      duration: 3000,
+                      position: "middle",
+                    }).then();
+                  }}
+                >
+                  {`"Chat with ${readySendMessage}"`}
+                  <div className={ss.copyTopic}>
+                    <IonButton
+                      className={ss.oneButton}
+                      onClick={async () => {
+                        copy("https://web3mq-snap-demo.pages.dev");
+                        await presentToast({
+                          message: "Copied!",
+                          duration: 3000,
+                          position: "middle",
+                        });
+                      }}
+                    >
+                      Copy to clipboard
+                    </IonButton>
+                  </div>
+                </a>
+              </div>
+            )}
+
+            {searchUsers.length > 0 && (
+              <>
+                <h3>Users</h3>
+                <IonList>
+                  {searchUsers.map((item, index) => (
+                    <RenderChannelItem
+                      key={index}
+                      channel={item}
+                      isUser={true}
+                    />
+                  ))}
+                </IonList>
+              </>
+            )}
           </>
         )}
       </IonCard>

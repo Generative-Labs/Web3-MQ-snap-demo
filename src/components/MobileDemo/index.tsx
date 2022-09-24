@@ -22,13 +22,23 @@ import { observer } from "mobx-react";
 import { useStore } from "../../services/mobx/service";
 import { useSnaps } from "../../hooks/useSnaps";
 import moment from "moment";
-import { getShortAddressByAddress } from "../../services/utils/utils";
+import {
+  getGroupName,
+  getShortAddressByAddress,
+  getUserName,
+} from "../../services/utils/utils";
 
 const userIcon = require("../../assert/svg/user.svg").default;
 const MobileDemo: React.FC = () => {
   const store = useStore();
   const [present, dismiss] = useIonLoading();
-  const { messageList, isConnected, activeChannel } = store;
+  const {
+    messageList,
+    isConnected,
+    activeChannel,
+    activeChannelItem,
+    activeUser,
+  } = store;
   const { connectWeb3Mq, getMessages } = useSnaps();
   const [readySendMessage, setReadySendMessage] = useState("");
 
@@ -90,7 +100,7 @@ const MobileDemo: React.FC = () => {
   return (
     <div className={ss.ionCard}>
       <IonCard className={ss.demoPage}>
-        <h2>Demo</h2>
+        <h2>Web3 MQ Demo</h2>
         <IonHeader
           style={{
             boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
@@ -115,7 +125,13 @@ const MobileDemo: React.FC = () => {
                 />
               </IonButton>
             </IonButtons>
-            <IonTitle>Web3 MQ Demo</IonTitle>
+            <IonTitle>
+              {activeChannel
+                ? activeUser
+                  ? `Chat With ${getUserName(activeUser)}`
+                  : getGroupName(activeChannelItem)
+                : "Web3 MQ Demo"}
+            </IonTitle>
             <IonButtons slot="end">
               <IonButton
                 className="settingIcon"

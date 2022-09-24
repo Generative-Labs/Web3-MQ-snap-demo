@@ -31,10 +31,10 @@ export const getLoginUserId = () => {
   return `user:${getKeys().PublicKey}`;
 };
 
-export function getShortAddressByAddress(address: string) {
+export function getShortAddressByAddress(address: string, num: number = 10) {
   let strLength = address.length;
   return (
-    address.substring(0, 10) +
+    address.substring(0, num) +
     "..." +
     address.substring(strLength - 4, strLength)
   );
@@ -56,4 +56,22 @@ export const getAddressByDids = async (type: STARCH_TYPE, value: string) => {
     return address;
   }
   return "";
+};
+
+export const getGroupName = (group: any) => {
+  if (group.chat_name) {
+    return group.chat_name;
+  } else {
+    return getShortAddressByAddress(group.topic);
+  }
+};
+
+export const getUserName = (user: any) => {
+  if (user.nickname) {
+    return user.nickname;
+  } else if (user.wallet_address) {
+    return getShortAddressByAddress(user.wallet_address, 6);
+  } else {
+    return getShortAddressByAddress(user.userid);
+  }
 };
