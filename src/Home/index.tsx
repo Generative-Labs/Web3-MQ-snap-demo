@@ -5,11 +5,12 @@ import { IonAlert, IonButton, IonCard, useIonLoading } from "@ionic/react";
 import ss from "./index.module.scss";
 import cx from "classnames";
 import { useDebounceFn } from "ahooks";
-import { sendMessageBySnaps } from "../services/utils/snaps";
+import { getInstance, sendMessageBySnaps } from "../services/utils/snaps";
 import {
   getKeys,
   getLoginUserId,
   getShortAddressByAddress,
+  sleep,
 } from "../services/utils/utils";
 import SendNotify from "../components/SendNotify";
 import { useStore } from "../services/mobx/service";
@@ -31,26 +32,41 @@ const Home: React.FC = () => {
     setErrorMessage,
     setLoginUserId,
   } = store;
-  const [present, dismiss] = useIonLoading();
-  const { register, creatRoom, connectWeb3Mq, getMessages, getChannelList } =
-    useSnaps();
-  const { showRows } = useRows();
+    const [present, dismiss] = useIonLoading();
+    const {
+      register,
+      getSnaps,
+      creatRoom,
+      connectWeb3Mq,
+      getMessages,
+      getChannelList,
+    } = useSnaps();
+    const { showRows } = useRows();
 
-  useEffect(() => {
-    console.log(123123123);
-    const init = async () => {
-      if (getKeys()) {
-        await dismiss();
-        await present({
-          message: "Loading...",
-        });
-        setLoginUserId(getLoginUserId());
-        await getChannelList();
-        await dismiss();
-      }
-    };
-    init();
-  }, []);
+    useEffect(() => {
+      console.log(123123123);
+      window.addEventListener(
+        "message",
+        (event) => {
+          // console.log(event, 'event')
+          console.log(event, "event");
+        },
+        false
+      );
+
+      const init = async () => {
+        if (getKeys()) {
+          await dismiss();
+          await present({
+            message: "Loading...",
+          });
+          setLoginUserId(getLoginUserId());
+          await getChannelList();
+          await dismiss();
+        }
+      };
+      // init();
+    }, []);
 
   return (
     <div className={ss.container}>
@@ -65,6 +81,18 @@ const Home: React.FC = () => {
           <h2>Status {getShortAddressByAddress(loginUserId || "")}</h2>
           <IonCard>
             <h1>Connect to MetaMask Flask</h1>
+            <IonButton
+              onClick={async () => {
+                await present({
+                  message: "Connecting...",
+                  spinner: "circles",
+                });
+                await getSnaps();
+                await dismiss();
+              }}
+            >
+              getSnaps
+            </IonButton>
             <IonButton
               onClick={async () => {
                 await present({

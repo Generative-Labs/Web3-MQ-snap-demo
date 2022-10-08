@@ -4,6 +4,7 @@ import {
   getChannelListBySnaps,
   getInstance,
   getMessagesBySnaps,
+  getSnapsBySnaps,
   getUserIdByAddress,
   initSnaps,
   registerBySnaps,
@@ -65,7 +66,7 @@ export const useSnaps = () => {
     setActiveTopic: boolean = false
   ) => {
     // if (!isConnected) {
-    await connectWeb3Mq();
+    // await connectWeb3Mq();
     // }
     const response = await getChannelListBySnaps().catch((e) => {
       console.log(e, "getChannelListBySnaps - error");
@@ -145,6 +146,12 @@ export const useSnaps = () => {
     }
   };
 
+  const getSnaps = async () => {
+    const res = await getSnapsBySnaps();
+    console.log(res, "res");
+    return res;
+  };
+
   return {
     register,
     connectWeb3Mq,
@@ -153,5 +160,6 @@ export const useSnaps = () => {
     getMessages,
     getChannelList,
     getUserId,
+    getSnaps,
   };
 };

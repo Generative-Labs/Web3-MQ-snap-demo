@@ -1,5 +1,5 @@
-const newSnapId = `npm:web3-mq-snaps`;
-// const newSnapId = `local:http://localhost:8081/`;
+// const newSnapId = `npm:web3-mq-snaps`;
+const newSnapId = `local:http://localhost:8081/`;
 
 export const connectWeb3MQSnaps = async () => {
   //@ts-ignore
@@ -9,13 +9,17 @@ export const connectWeb3MQSnaps = async () => {
       {
         wallet_snap: {
           [newSnapId]: {
-            version: "1.0.5",
+            // version: "1.0.5",
           },
         },
       },
     ],
   });
-  console.log(res, "connect snap success ");
+  console.log(res, "install snap success ");
+};
+export const getSnapsBySnaps = async () => {
+  //@ts-ignore
+  return await ethereum.request({method: 'wallet_getSnaps'})
 };
 
 export const getInstance = async (keys: any) => {
@@ -141,6 +145,19 @@ export const sendNotifyMessage = async (message: string) => {
     ],
   });
 };
+export const sendNativeNotifyMessage = async (message: string) => {
+  //@ts-ignore
+  return await ethereum.request({
+    method: "wallet_invokeSnap",
+    params: [
+      newSnapId,
+      {
+        method: "sendNativeNotifyMessage",
+        payload: { message },
+      },
+    ],
+  });
+};
 export const getUserIdByAddress = async (address: string) => {
   //@ts-ignore
   return await ethereum.request({
@@ -153,4 +170,4 @@ export const getUserIdByAddress = async (address: string) => {
       },
     ],
   });
-}
+};
