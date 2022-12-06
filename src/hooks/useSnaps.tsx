@@ -3,6 +3,7 @@ import {
   createRoomsBySnaps,
   getChannelListBySnaps,
   getInstance,
+  getKeysBySnaps,
   getMessagesBySnaps,
   getSnapsBySnaps,
   getUserIdByAddress,
@@ -16,7 +17,6 @@ import {
   sleep,
 } from "../services/utils/utils";
 import { useStore } from "../services/mobx/service";
-import { paw } from "ionicons/icons";
 
 export const useSnaps = () => {
   const store = useStore();
@@ -33,13 +33,20 @@ export const useSnaps = () => {
   } = store;
 
   // 连接snap后获取keys
-  const connectWeb3Mq = async () => {
-    await connectWeb3MQSnaps();
-    await initSnaps();
+  const connectWeb3Mq = async (needInstall = false) => {
+    if (needInstall) {
+      console.log("install");
+      await connectWeb3MQSnaps();
+    }
     if (getKeys()) {
-      await getInstance(getKeys());
-      await sleep(3000);
-      setIsConnected(true);
+      const snapKeys = await getSnapsBySnaps();
+      console.log(snapKeys, "snapKeys");
+      if (!snapKeys || Object.keys(snapKeys).length <= 0) {
+        await initSnaps();
+        await getInstance(getKeys());
+        await sleep(3000);
+        setIsConnected(true);
+      }
     } else {
       return await register();
     }
@@ -47,12 +54,12 @@ export const useSnaps = () => {
   // 注册后获取返回keys
   const register = async (showRes: boolean = false) => {
     try {
+      console.log("init client");
       const initResponse = await initSnaps();
       if (!initResponse) alert("something was wrong, please retry");
+      console.log("registerBySnaps");
       const registerRes = await registerBySnaps(initResponse);
-      setKeys(registerRes);
-      await getInstance(getKeys());
-      await sleep(3000);
+      await setKeys(registerRes);
       setIsConnected(true);
       return getKeys();
     } catch (err: any) {
@@ -65,9 +72,6 @@ export const useSnaps = () => {
     showRes: boolean = false,
     setActiveTopic: boolean = false
   ) => {
-    // if (!isConnected) {
-    // await connectWeb3Mq();
-    // }
     const response = await getChannelListBySnaps().catch((e) => {
       console.log(e, "getChannelListBySnaps - error");
     });
@@ -87,10 +91,6 @@ export const useSnaps = () => {
   // 创建房间
   const creatRoom = async (showRes: boolean = false, roomName: string = "") => {
     try {
-      //@ts-ignore
-      // if (!isConnected) {
-      await connectWeb3Mq();
-      // }
       const response = await createRoomsBySnaps(roomName);
       showRes && setCurrentMessages(JSON.stringify(response, null, "\t"));
       await getChannelList();
@@ -110,9 +110,6 @@ export const useSnaps = () => {
   };
 
   const getMessages = async (showRes: boolean = false, topic: string = "") => {
-    // if (!isConnected) {
-    await connectWeb3Mq();
-    // }
     let payload = topic ? topic : activeChannel;
     if (!payload) {
       alert("Please Choose Channel");
@@ -127,7 +124,6 @@ export const useSnaps = () => {
   };
 
   const getUserId = async (address: string) => {
-    await connectWeb3Mq();
     const users = await getUserIdByAddress(address).catch((e) => {
       console.log(e, "getUserIdByAddress - errir");
     });
@@ -151,6 +147,11 @@ export const useSnaps = () => {
     console.log(res, "res");
     return res;
   };
+  const getSnapKeys = async () => {
+    const res = await getKeysBySnaps();
+    console.log(res, "res");
+    return res;
+  };
 
   return {
     register,
@@ -161,5 +162,6 @@ export const useSnaps = () => {
     getChannelList,
     getUserId,
     getSnaps,
+    getSnapKeys,
   };
 };

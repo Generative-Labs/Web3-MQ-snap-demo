@@ -9,7 +9,7 @@ export const connectWeb3MQSnaps = async () => {
       {
         wallet_snap: {
           [newSnapId]: {
-            // version: "1.0.5",
+            version: "1.0.5",
           },
         },
       },
@@ -19,10 +19,11 @@ export const connectWeb3MQSnaps = async () => {
 };
 export const getSnapsBySnaps = async () => {
   //@ts-ignore
-  return await ethereum.request({method: 'wallet_getSnaps'})
+  return await ethereum.request({ method: "wallet_getSnaps" });
 };
 
 export const getInstance = async (keys: any) => {
+  console.log("getInstance");
   try {
     //@ts-ignore
     await ethereum.request({
@@ -167,6 +168,31 @@ export const getUserIdByAddress = async (address: string) => {
       {
         method: "getTargetUserId",
         payload: address,
+      },
+    ],
+  });
+};
+export const getKeysBySnaps = async () => {
+  //@ts-ignore
+  return await ethereum.request({
+    method: "wallet_invokeSnap",
+    params: [
+      newSnapId,
+      {
+        method: "getKeys",
+      },
+    ],
+  });
+};
+
+export const saveKeysBySnaps = async () => {
+  //@ts-ignore
+  return await ethereum.request({
+    method: "wallet_invokeSnap",
+    params: [
+      newSnapId,
+      {
+        method: "saveKeys",
       },
     ],
   });

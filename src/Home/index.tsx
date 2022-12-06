@@ -4,8 +4,6 @@ import { IonAlert, IonButton, IonCard, useIonLoading } from "@ionic/react";
 
 import ss from "./index.module.scss";
 import cx from "classnames";
-import { useDebounceFn } from "ahooks";
-import { getInstance, sendMessageBySnaps } from "../services/utils/snaps";
 import {
   getKeys,
   getLoginUserId,
@@ -19,6 +17,11 @@ import MobileDemo from "../components/MobileDemo";
 import { useSnaps } from "../hooks/useSnaps";
 import Channels from "../components/Channels";
 import { useRows } from "../hooks/useRows";
+import {
+  getKeysBySnaps,
+  getSnapsBySnaps,
+  saveKeysBySnaps,
+} from "../services/utils/snaps";
 
 const Home: React.FC = () => {
   const store = useStore();
@@ -31,42 +34,30 @@ const Home: React.FC = () => {
     errorMessage,
     setErrorMessage,
     setLoginUserId,
+    setIsConnected,
   } = store;
-    const [present, dismiss] = useIonLoading();
-    const {
-      register,
-      getSnaps,
-      creatRoom,
-      connectWeb3Mq,
-      getMessages,
-      getChannelList,
-    } = useSnaps();
-    const { showRows } = useRows();
+  const [present, dismiss] = useIonLoading();
+  const {
+    register,
+    getSnaps,
+    creatRoom,
+    connectWeb3Mq,
+    getMessages,
+    getChannelList,
+    getSnapKeys,
+  } = useSnaps();
+  const { showRows } = useRows();
 
-    useEffect(() => {
-      console.log(123123123);
-      window.addEventListener(
-        "message",
-        (event) => {
-          // console.log(event, 'event')
-          console.log(event, "event");
-        },
-        false
-      );
-
-      const init = async () => {
-        if (getKeys()) {
-          await dismiss();
-          await present({
-            message: "Loading...",
-          });
-          setLoginUserId(getLoginUserId());
-          await getChannelList();
-          await dismiss();
-        }
-      };
-      // init();
-    }, []);
+  useEffect(() => {
+    const init = async () => {
+      const snapsKeys = await getKeysBySnaps();
+      console.log(snapsKeys, "snapsKeys");
+      if (snapsKeys && Object.keys(snapsKeys).length > 0) {
+        setIsConnected(true);
+      }
+    };
+    // init();
+  }, []);
 
   return (
     <div className={ss.container}>
@@ -99,10 +90,33 @@ const Home: React.FC = () => {
                   message: "Connecting...",
                   spinner: "circles",
                 });
-                await connectWeb3Mq();
+                await getSnapKeys();
                 await dismiss();
               }}
-              disabled={isConnected}
+            >
+              getSnapKeys
+            </IonButton>
+            <IonButton
+              onClick={async () => {
+                await present({
+                  message: "Connecting...",
+                  spinner: "circles",
+                });
+                await saveKeysBySnaps();
+                await dismiss();
+              }}
+            >
+              saveKeysBySnaps
+            </IonButton>
+            <IonButton
+              onClick={async () => {
+                await present({
+                  message: "Connecting...",
+                  spinner: "circles",
+                });
+                await connectWeb3Mq(true);
+                await dismiss();
+              }}
             >
               {isConnected ? "Connected" : "Connect"}
             </IonButton>

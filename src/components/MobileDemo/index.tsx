@@ -47,7 +47,7 @@ const MobileDemo: React.FC = () => {
       if (!readySendMessage) return;
       await present({ message: "Loading..." });
       // if (!isConnected) {
-      await connectWeb3Mq();
+      // await connectWeb3Mq();
       // }
       if (!activeChannel) {
         alert("Please Choose Channel");
