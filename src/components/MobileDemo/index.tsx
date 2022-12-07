@@ -46,9 +46,6 @@ const MobileDemo: React.FC = () => {
     async () => {
       if (!readySendMessage) return;
       await present({ message: "Loading..." });
-      // if (!isConnected) {
-      await connectWeb3Mq();
-      // }
       if (!activeChannel) {
         alert("Please Choose Channel");
         return false;
@@ -187,25 +184,13 @@ const MobileDemo: React.FC = () => {
           </IonButton>
         </IonFooter>
 
-        {(!isConnected || !activeChannel) && (
+        {!activeChannel && (
           <div className={ss.demoNoLogin}>
             <div>
               <h1>
                 Before using it, please click to get channel list and choose one
                 to chat with
               </h1>
-              {!isConnected && (
-                <IonButton
-                  onClick={async () => {
-                    await present({ message: "Loading..." });
-                    await connectWeb3Mq();
-                    await dismiss();
-                  }}
-                  className={ss.button}
-                >
-                  Connect
-                </IonButton>
-              )}
             </div>
           </div>
         )}
