@@ -5,7 +5,6 @@ import { IonAlert, IonButton, IonCard, useIonLoading } from "@ionic/react";
 import ss from "./index.module.scss";
 import cx from "classnames";
 import { useDebounceFn } from "ahooks";
-import { sendMessageBySnaps } from "../services/utils/snaps";
 import {
   getKeys,
   getLoginUserId,
@@ -32,12 +31,10 @@ const Home: React.FC = () => {
     setLoginUserId,
   } = store;
   const [present, dismiss] = useIonLoading();
-  const { register, creatRoom, connectWeb3Mq, getMessages, getChannelList } =
-    useSnaps();
+  const { creatRoom, connectWeb3Mq, getMessages, getChannelList } = useSnaps();
   const { showRows } = useRows();
 
   useEffect(() => {
-    console.log(123123123);
     const init = async () => {
       if (getKeys()) {
         await dismiss();
@@ -77,20 +74,6 @@ const Home: React.FC = () => {
               disabled={isConnected}
             >
               {isConnected ? "Connected" : "Connect"}
-            </IonButton>
-            <h1>Connect to Web3MQ network</h1>
-            <IonButton
-              onClick={async () => {
-                await present({
-                  message: "Loading...",
-                  spinner: "circles",
-                });
-                await connectWeb3Mq();
-                await dismiss();
-              }}
-              disabled={!!getKeys()}
-            >
-              {getKeys() ? "Registered" : "Register And Login"}
             </IonButton>
           </IonCard>
         </div>
