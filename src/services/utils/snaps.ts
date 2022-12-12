@@ -1,5 +1,5 @@
-// const newSnapId = `npm:web3-mq-snaps`;
-const newSnapId = `local:http://localhost:8081/`;
+const newSnapId = `npm:web3-mq-snaps`;
+// const newSnapId = `local:http://localhost:8081/`;
 
 export const connectWeb3MQSnaps = async () => {
   //@ts-ignore
@@ -9,7 +9,7 @@ export const connectWeb3MQSnaps = async () => {
       {
         wallet_snap: {
           [newSnapId]: {
-            version: "1.0.5",
+            version: "1.0.6",
           },
         },
       },
