@@ -9,7 +9,7 @@ export const connectWeb3MQSnaps = async () => {
       {
         wallet_snap: {
           [newSnapId]: {
-            version: "1.0.6",
+            version: "1.0.8",
           },
         },
       },
