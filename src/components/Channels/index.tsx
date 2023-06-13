@@ -23,7 +23,7 @@ import {
 import { observer } from "mobx-react";
 import { useStore } from "../../services/mobx/service";
 import { useSnaps } from "../../hooks/useSnaps";
-import userIcon from "../../assert/svg/user.svg";
+import userIcon from "../../assets/svg/user.svg";
 import {
   getAddressByDids,
   getShortAddressByAddress,
@@ -128,14 +128,14 @@ const Channels: React.FC = () => {
         </IonItem>
       );
     },
-    [
-      activeChannel,
-      getMessages,
-      setActiveChannel,
-      setActiveChannelItem,
-      setActiveUser,
-    ]
+    [activeChannel, dismiss, getMessages, present, setActiveChannel, setActiveChannelItem, setActiveUser]
   );
+
+  const handleGetChannelList = async () => {
+    await present({ message: "Loading..." });
+    const res = await getChannelList(true);
+    await dismiss();
+  }
 
   return (
     <div className={ss.ionCard}>
@@ -160,11 +160,7 @@ const Channels: React.FC = () => {
           Create Channel
         </IonButton>
         <IonButton
-          onClick={async () => {
-            await present({ message: "Loading..." });
-            await getChannelList(true);
-            await dismiss();
-          }}
+          onClick={handleGetChannelList}
         >
           Get Channel List
         </IonButton>

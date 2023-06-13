@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { IonAlert, IonButton, IonCard, useIonLoading } from "@ionic/react";
 
@@ -18,8 +18,13 @@ import { useSnaps } from "../hooks/useSnaps";
 import Channels from "../components/Channels";
 import { useRows } from "../hooks/useRows";
 import {newSnapId} from "../services/utils/snaps";
+import { MetaMaskContext, MetamaskActions } from "../hooks/MetamaskContext";
+import { Card } from "../components/Card/Card";
+import { connectSnap, getSnap } from "../utils";
+import { ConnectButton } from "../components/Button/ConnectButton/ConnectButton";
 
 const Home: React.FC = () => {
+  const [state, dispatch] = React.useContext(MetaMaskContext);
   const store = useStore();
   const {
     isConnected,
@@ -32,8 +37,23 @@ const Home: React.FC = () => {
     setLoginUserId,
   } = store;
   const [present, dismiss] = useIonLoading();
-  const { creatRoom, connectWeb3Mq, getMessages, getChannelList } = useSnaps();
+  const { creatRoom, getMessages, getChannelList } = useSnaps();
   const { showRows } = useRows();
+
+  const handleConnectClick = async () => {
+    try {
+      await connectSnap();
+      const installedSnap = await getSnap();
+
+      dispatch({
+        type: MetamaskActions.SetInstalled,
+        payload: installedSnap,
+      });
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
+  };
 
     async function testCallSnaps() {
         //@ts-ignore
@@ -67,7 +87,8 @@ const Home: React.FC = () => {
                 request: {
                     method: 'connectToWeb3MQ',
                     params: {
-                        password: '123123',
+                        password: 'daohaoqu4',
+                        nickname: 'testAccount',
                     },
                 },
             },
@@ -100,8 +121,14 @@ const Home: React.FC = () => {
         })}
       >
         <div className={ss.ionCard}>
+          <h2>web3mq snaps installed? {state.installedSnap ? 'true' : 'false'}</h2>
+          <h2>is flask wallet? {state.isFlask ? 'true' : 'false'}</h2>
           <h2>Status {getShortAddressByAddress(loginUserId || "")}</h2>
-            <IonButton onClick={connectWeb3Mq}>install</IonButton>
+          <IonButton onClick={handleConnectClick}>override installed snap</IonButton> 
+            {!state.installedSnap && state.isFlask &&
+              <IonButton onClick={handleConnectClick}>install</IonButton>
+            }
+            
             <IonButton onClick={testCallSnaps}>testCallSnaps</IonButton>
           <IonCard>
             <h1>Connect to MetaMask Flask</h1>
@@ -112,6 +139,7 @@ const Home: React.FC = () => {
                   spinner: "circles",
                 });
                 await connectToWeb3MQ();
+                store.setIsConnected(true)
                 await dismiss();
               }}
               disabled={isConnected}

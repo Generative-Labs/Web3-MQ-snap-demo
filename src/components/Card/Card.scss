@@ -1,0 +1,23 @@
+.CardWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  background-color: #FFF;
+  margin-top: 2.4rem;
+  margin-bottom: 2.4rem;
+  padding: 2.4rem;
+  border: 1px solid #BBC0C5;
+  border-radius: 6px;
+  box-shadow: '0px 7px 42px rgba(0, 0, 0, 0.1)';
+  align-self: stretch;
+}
+
+.Title {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.Description {
+  margin-top: 2.4rem;
+  margin-bottom: 2.4rem;
+}

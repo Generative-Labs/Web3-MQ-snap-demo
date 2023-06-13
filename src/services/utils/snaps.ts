@@ -49,16 +49,16 @@ export const getMessagesBySnaps = async (topic: string) => {
   //@ts-ignore
   return await ethereum.request({
     method: "wallet_invokeSnap",
-    params: [
-      newSnapId,
-      {
+    params: {
+      snapId: newSnapId,
+      request: {
         method: "getMessageList",
         params: {
-          options: { page: 1, size: 100 },
+          option: { page: 1, size: 100 },
           topic,
         },
       },
-    ],
+    },
   });
 };
 

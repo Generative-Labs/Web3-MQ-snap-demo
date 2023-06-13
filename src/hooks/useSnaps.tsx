@@ -1,5 +1,4 @@
 import {
-  connectWeb3MQSnaps,
   createRoomsBySnaps,
   getChannelListBySnaps,
   getMessagesBySnaps,
@@ -11,6 +10,7 @@ import {
 } from "../services/utils/utils";
 import { useStore } from "../services/mobx/service";
 import { paw } from "ionicons/icons";
+import { connectSnap } from "../utils";
 
 export const useSnaps = () => {
   const store = useStore();
@@ -28,7 +28,7 @@ export const useSnaps = () => {
 
   // 连接snap后获取keys
   const connectWeb3Mq = async () => {
-    await connectWeb3MQSnaps();
+    await connectSnap();
   };
 
   const getChannelList = async (

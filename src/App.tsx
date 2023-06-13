@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext, useState } from "react";
 
 import "@ionic/react/css/core.css";
 /* Basic CSS for apps built with Ionic */
@@ -14,12 +14,20 @@ import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 import { setupIonicReact } from "@ionic/react";
 import Home from "./Home";
+import { MetaMaskProvider } from "./hooks/MetamaskContext";
+
 
 const App: React.FC = () => {
   setupIonicReact({
     mode: "ios",
   });
 
-  return <Home />;
+  return (
+    <MetaMaskProvider>
+      <Home />
+    </MetaMaskProvider>
+  )
 };
 export default App;
+
+

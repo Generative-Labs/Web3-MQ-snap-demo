@@ -28,7 +28,7 @@ import {
   getUserName,
 } from "../../services/utils/utils";
 
-const userIcon = require("../../assert/svg/user.svg").default;
+const userIcon = require("../../assets/svg/user.svg").default;
 const MobileDemo: React.FC = () => {
   const store = useStore();
   const [present, dismiss] = useIonLoading();
