@@ -17,6 +17,7 @@ import MobileDemo from "../components/MobileDemo";
 import { useSnaps } from "../hooks/useSnaps";
 import Channels from "../components/Channels";
 import { useRows } from "../hooks/useRows";
+import {newSnapId} from "../services/utils/snaps";
 
 const Home: React.FC = () => {
   const store = useStore();
@@ -33,6 +34,46 @@ const Home: React.FC = () => {
   const [present, dismiss] = useIonLoading();
   const { creatRoom, connectWeb3Mq, getMessages, getChannelList } = useSnaps();
   const { showRows } = useRows();
+
+    async function testCallSnaps() {
+        //@ts-ignore
+        const result = await window.ethereum.request({ method: 'wallet_getSnaps' });
+        console.log(result, 'result')
+        //@ts-ignore
+        const res =  await ethereum.request({
+            method: "wallet_invokeSnap",
+            params: {
+                snapId: newSnapId,
+                request: {
+                    method: "testCall",
+                    params: {
+                        str: '12312',
+                        content: '123123123'
+                    },
+                },
+            },
+        });
+        console.log(res, 'res')
+    }
+    async function connectToWeb3MQ() {
+        //@ts-ignore
+        const result = await window.ethereum.request({ method: 'wallet_getSnaps' });
+        console.log(result, 'result');
+        //@ts-ignore
+        const res = await ethereum.request({
+            method: 'wallet_invokeSnap',
+            params: {
+                snapId: newSnapId,
+                request: {
+                    method: 'connectToWeb3MQ',
+                    params: {
+                        password: '123123',
+                    },
+                },
+            },
+        });
+        console.log(res, 'res');
+    }
 
   useEffect(() => {
     const init = async () => {
@@ -60,6 +101,8 @@ const Home: React.FC = () => {
       >
         <div className={ss.ionCard}>
           <h2>Status {getShortAddressByAddress(loginUserId || "")}</h2>
+            <IonButton onClick={connectWeb3Mq}>install</IonButton>
+            <IonButton onClick={testCallSnaps}>testCallSnaps</IonButton>
           <IonCard>
             <h1>Connect to MetaMask Flask</h1>
             <IonButton
@@ -68,7 +111,7 @@ const Home: React.FC = () => {
                   message: "Connecting...",
                   spinner: "circles",
                 });
-                await connectWeb3Mq();
+                await connectToWeb3MQ();
                 await dismiss();
               }}
               disabled={isConnected}

@@ -1,19 +1,14 @@
-const newSnapId = `npm:web3-mq-snaps`;
-// const newSnapId = `local:http://localhost:8081/`;
+// const newSnapId = `npm:web3-mq-snaps`;
+// const newSnapId = `local:http://localhost:3001/`;
+export const newSnapId = `local:http://localhost:8080`;
 
 export const connectWeb3MQSnaps = async () => {
   //@ts-ignore
   const res = await ethereum.request({
-    method: "wallet_enable",
-    params: [
-      {
-        wallet_snap: {
-          [newSnapId]: {
-            version: "1.0.8",
-          },
-        },
-      },
-    ],
+    method: "wallet_requestSnaps",
+    params: {
+      [newSnapId]: {},
+    },
   });
   console.log(res, "connect snap success ");
 };
@@ -35,13 +30,18 @@ export const getChannelListBySnaps = async () => {
   //@ts-ignore
   return await ethereum.request({
     method: "wallet_invokeSnap",
-    params: [
-      newSnapId,
-      {
-        method: "queryChannelList",
-        params: { options: { page: 1, size: 100 } },
+    params: {
+      snapId: newSnapId,
+      request: {
+        method: "getChannelList",
+        params: {
+          options: {
+            page: 1,
+            size: 100,
+          },
+        },
       },
-    ],
+    },
   });
 };
 
@@ -66,26 +66,28 @@ export const createRoomsBySnaps = async (roomName: string = "") => {
   //@ts-ignore
   return await ethereum.request({
     method: "wallet_invokeSnap",
-    params: [
-      newSnapId,
-      {
+    params: {
+      snapId: newSnapId,
+      request: {
         method: "creatRoom",
-        params: { group_name: roomName },
+        params: {
+          group_name: roomName,
+        },
       },
-    ],
+    },
   });
 };
 export const sendNotifyMessage = async (message: string) => {
   //@ts-ignore
   return await ethereum.request({
     method: "wallet_invokeSnap",
-    params: [
-      newSnapId,
-      {
+    params: {
+      snapId: newSnapId,
+      request: {
         method: "sendNotifyMessage",
         params: { message },
       },
-    ],
+    },
   });
 };
 export const getUserIdByAddress = async (address: string) => {
@@ -100,4 +102,4 @@ export const getUserIdByAddress = async (address: string) => {
       },
     ],
   });
-}
+};
