@@ -1,8 +1,4 @@
-import {
-  getShortAddressByAddress,
-} from "../services/utils/utils";
 import { useStore } from "../services/mobx/service";
-import { connectSnap } from "../utils";
 import { useSnapClient } from "./useSnapClient";
 
 export const useSnaps = () => {
@@ -18,11 +14,6 @@ export const useSnaps = () => {
     setSearchUsers,
     setActiveUser,
   } = store;
-
-  // 连接snap后获取keys
-  const connectWeb3Mq = async () => {
-    await connectSnap();
-  };
 
   const getChannelList = async (
     showRes: boolean = false,
@@ -98,7 +89,6 @@ export const useSnaps = () => {
   };
 
   return {
-    connectWeb3Mq,
     creatRoom,
     getTopic,
     getMessages,

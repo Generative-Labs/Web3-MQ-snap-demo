@@ -39,7 +39,7 @@ const MobileDemo: React.FC = () => {
     activeChannelItem,
     activeUser,
   } = store;
-  const { connectWeb3Mq, getMessages } = useSnaps();
+  const { getMessages } = useSnaps();
   const [readySendMessage, setReadySendMessage] = useState("");
 
   const { run } = useDebounceFn(
