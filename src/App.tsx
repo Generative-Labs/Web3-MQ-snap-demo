@@ -14,7 +14,6 @@ import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 import { setupIonicReact } from "@ionic/react";
 import Home from "./Home";
-import { MetaMaskProvider } from "./hooks/MetamaskContext";
 
 
 const App: React.FC = () => {
@@ -23,9 +22,7 @@ const App: React.FC = () => {
   });
 
   return (
-    <MetaMaskProvider>
       <Home />
-    </MetaMaskProvider>
   )
 };
 export default App;

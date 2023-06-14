@@ -1,24 +1,17 @@
 import {
-  createRoomsBySnaps,
-  getChannelListBySnaps,
-  getMessagesBySnaps,
-  getUserIdByAddress,
-} from "../services/utils/snaps";
-import {
   getShortAddressByAddress,
-  sleep,
 } from "../services/utils/utils";
 import { useStore } from "../services/mobx/service";
-import { paw } from "ionicons/icons";
 import { connectSnap } from "../utils";
+import { useSnapClient } from "./useSnapClient";
 
 export const useSnaps = () => {
+  const { snapClient } = useSnapClient()
   const store = useStore();
   const {
     setCurrentMessages,
     channelList,
     setMessageList,
-    setIsConnected,
     activeChannel,
     setActiveChannel,
     setActiveChannelItem,
@@ -35,7 +28,7 @@ export const useSnaps = () => {
     showRes: boolean = false,
     setActiveTopic: boolean = false
   ) => {
-    const response = await getChannelListBySnaps().catch((e) => {
+    const response = await snapClient.getChannelList({}).catch((e) => {
       console.log(e, "getChannelListBySnaps - error");
     });
     showRes && setCurrentMessages(JSON.stringify(response, null, "\t"));
@@ -54,7 +47,7 @@ export const useSnaps = () => {
   // 创建房间
   const creatRoom = async (showRes: boolean = false, roomName: string = "") => {
     try {
-      const response = await createRoomsBySnaps(roomName);
+      const response = await snapClient.creatRoom({ group_name: roomName });
       showRes && setCurrentMessages(JSON.stringify(response, null, "\t"));
       await getChannelList();
     } catch (err: any) {
@@ -78,7 +71,7 @@ export const useSnaps = () => {
       alert("Please Choose Channel");
       return false;
     }
-    const res = await getMessagesBySnaps(payload).catch((e) => {
+    const res = await snapClient.getMessageList({ topic: payload }).catch((e) => {
       console.log(e, "getMessages - error");
     });
     res && setMessageList(res);
@@ -87,7 +80,7 @@ export const useSnaps = () => {
   };
 
   const getUserId = async (address: string) => {
-    const users = await getUserIdByAddress(address).catch((e) => {
+    const users = await snapClient.getUserIdByAddress({ address }).catch((e) => {
       console.log(e, "getUserIdByAddress - errir");
     });
     if (users && users.length > 0) {
@@ -98,7 +91,6 @@ export const useSnaps = () => {
       }
     } else {
       setSearchUsers([]);
-      let roomName = `Chat with ${getShortAddressByAddress(address, 6)}`;
       // creatRoom(false, roomName)
       setActiveUser(null);
       setActiveChannel("");
