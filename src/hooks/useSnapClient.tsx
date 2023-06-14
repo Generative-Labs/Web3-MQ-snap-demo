@@ -88,7 +88,7 @@ export function useConnectSnap() {
         dispatch({ type: MetamaskActions.SetError, payload: e });
       }
     };
-    return handler;
+    return handler();
   }, [dispatch, snapClient]);
   return handleConnectClick;
 }
