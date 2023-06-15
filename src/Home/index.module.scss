@@ -40,6 +40,12 @@ ion-card {
 .ionCard {
   //width: 33%;
   padding: 20px;
+  .input {
+    border: 1px solid #DDE8E8;
+    border-radius: 4px;
+    padding-left: 16px;
+    --padding-start: 16px
+  }
 
   ion-button {
     width: 100%;

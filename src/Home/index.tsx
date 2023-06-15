@@ -1,6 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-import { IonAlert, IonButton, IonCard, useIonLoading } from "@ionic/react";
+import {
+  IonAlert,
+  IonButton,
+  IonCard,
+  IonInput,
+  useIonLoading,
+} from "@ionic/react";
 
 import ss from "./index.module.scss";
 import cx from "classnames";
@@ -17,10 +23,11 @@ import { useSnaps } from "../hooks/useSnaps";
 import Channels from "../components/Channels";
 import { useRows } from "../hooks/useRows";
 import { useConnectSnap, useSnapClient } from "../hooks/useSnapClient";
+import Contacts from "../components/Contacts";
 
 const Home: React.FC = () => {
   const { snapClient, isFlask, installedSnap } = useSnapClient();
-  const handleConnectClick = useConnectSnap()
+  const handleConnectClick = useConnectSnap();
   const store = useStore();
   const {
     isConnected,
@@ -33,6 +40,7 @@ const Home: React.FC = () => {
   } = store;
   const [present, dismiss] = useIonLoading();
   const { getChannelList } = useSnaps();
+  const [password, setPassword] = useState("123123");
   const { showRows } = useRows();
 
   useEffect(() => {
@@ -72,6 +80,14 @@ const Home: React.FC = () => {
 
           <IonCard>
             <h1>Connect to MetaMask Flask</h1>
+            <IonInput
+              className={ss.input}
+              value={password}
+              placeholder="Enter password"
+              onIonChange={(e) => {
+                setPassword(e.detail.value!);
+              }}
+            />
             <IonButton
               onClick={async () => {
                 await present({
@@ -79,7 +95,7 @@ const Home: React.FC = () => {
                   spinner: "circles",
                 });
                 await snapClient.connectToWeb3MQ({
-                  password: "daohaoqu4",
+                  password: password,
                   nickname: "testAccount",
                 });
                 store.setIsConnected(true);
@@ -93,16 +109,16 @@ const Home: React.FC = () => {
         </div>
         {showRows === 3 && (
           <>
-            <SendNotify />
             <Channels />
+            <Contacts />
             <MobileDemo />
           </>
         )}
         {[1, 2].includes(showRows) && (
           <>
             <Channels />
+            <Contacts />
             <MobileDemo />
-            <SendNotify />
           </>
         )}
       </div>

@@ -65,21 +65,6 @@ const Channels: React.FC = () => {
       let topic = "",
         avatar = userIcon,
         chatName = "";
-      ///avatar_url
-      // :
-      // ""
-      // nickname
-      // :
-      // ""
-      // userid
-      // :
-      // "user:183e1038a8d2375b375fa9cf2e27597df275876537b1d569f857099a2061c024"
-      // wallet_address
-      // :
-      // "0x3797e4c0cf73207c0ef766678ad41e1abbc5c08c"
-      // wallet_type
-      // :
-      // "eth"
       if (isUser) {
         topic = channel.userid;
         chatName = channel.nickname ? channel.nickname : channel.userid;

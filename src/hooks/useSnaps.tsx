@@ -1,8 +1,13 @@
 import { useStore } from "../services/mobx/service";
 import { useSnapClient } from "./useSnapClient";
+import {
+  FollowOperationDto,
+  PageDto,
+  RequestFollowRpcDto,
+} from "../services/snap/dto";
 
 export const useSnaps = () => {
-  const { snapClient } = useSnapClient()
+  const { snapClient } = useSnapClient();
   const store = useStore();
   const {
     setCurrentMessages,
@@ -13,6 +18,10 @@ export const useSnaps = () => {
     setActiveChannelItem,
     setSearchUsers,
     setActiveUser,
+    setContactsList,
+    setFollowerList,
+    setFollowingList,
+    setFriendRequestList,
   } = store;
 
   const getChannelList = async (
@@ -58,22 +67,33 @@ export const useSnaps = () => {
 
   const getMessages = async (showRes: boolean = false, topic: string = "") => {
     let payload = topic ? topic : activeChannel;
+    console.log(payload, "payload - getmessages ");
     if (!payload) {
       alert("Please Choose Channel");
       return false;
     }
-    const res = await snapClient.getMessageList({ topic: payload }).catch((e) => {
-      console.log(e, "getMessages - error");
-    });
+    const res = await snapClient
+      .getMessageList({
+        option: {
+          page: 1,
+          size: 30,
+        },
+        topic: payload,
+      })
+      .catch((e) => {
+        console.log(e, "getMessages - error");
+      });
     res && setMessageList(res);
     showRes && setCurrentMessages(JSON.stringify(res, null, "\t"));
     console.log(res, "get messages");
   };
 
   const getUserId = async (address: string) => {
-    const users = await snapClient.getUserIdByAddress({ address }).catch((e) => {
-      console.log(e, "getUserIdByAddress - errir");
-    });
+    const users = await snapClient
+      .getUserIdByAddress({ address })
+      .catch((e) => {
+        console.log(e, "getUserIdByAddress - errir");
+      });
     if (users && users.length > 0) {
       setSearchUsers(users);
       if (users.length === 1) {
@@ -88,11 +108,65 @@ export const useSnaps = () => {
     }
   };
 
+  const getContactList = async (payload: PageDto) => {
+    const response = await snapClient.getContactList(payload).catch((e) => {
+      console.log(e, "getContactList - error");
+    });
+    console.log(response, "getContactList - res");
+    setContactsList(response);
+    return response;
+  };
+  const getFollowerList = async (payload: PageDto) => {
+    const response = await snapClient.getFollowerList(payload).catch((e) => {
+      console.log(e, "getFollowerList - error");
+    });
+    console.log(response, "getFollowerList - res");
+    setFollowerList(response);
+    return response;
+  };
+  const getFollowingList = async (payload: PageDto) => {
+    const response = await snapClient.getFollowingList(payload).catch((e) => {
+      console.log(e, "getFollowingList - error");
+    });
+    console.log(response, "getFollowingList - res");
+    setFollowingList(response);
+    return response;
+  };
+  const getMyFriendRequestList = async (payload: PageDto) => {
+    const response = await snapClient
+      .getMyFriendRequestList(payload)
+      .catch((e) => {
+        console.log(e, "getMyFriendRequestList - error");
+      });
+    console.log(response, "getMyFriendRequestList - res");
+    setFriendRequestList(response);
+    return response;
+  };
+  const requestFollow = async (payload: RequestFollowRpcDto) => {
+    const response = await snapClient.requestFollow(payload).catch((e) => {
+      console.log(e, "requestFollow - error");
+    });
+    console.log(response, "requestFollow - res");
+    return response;
+  };
+  const followOperation = async (payload: FollowOperationDto) => {
+    const response = await snapClient.followOperation(payload).catch((e) => {
+      console.log(e, "followOperation - error");
+    });
+    console.log(response, "followOperation - res");
+    return response;
+  };
   return {
     creatRoom,
     getTopic,
     getMessages,
     getChannelList,
     getUserId,
+    getContactList,
+    getFollowerList,
+    getFollowingList,
+    requestFollow,
+    followOperation,
+    getMyFriendRequestList,
   };
 };

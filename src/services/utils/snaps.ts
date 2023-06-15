@@ -97,7 +97,7 @@ export const getUserIdByAddress = async (address: string) => {
     params: [
       newSnapId,
       {
-        method: "getTargetUserId",
+        method: "searchUser",
         params: { address },
       },
     ],
