@@ -145,7 +145,7 @@ const Contacts: React.FC = () => {
               <IonLabel>Friend request list</IonLabel>
             </IonSegmentButton>
           </IonSegment>
-          <div>
+          <div style={{ maxHeight: '625px', overflowY: 'auto' }}>
             <IonList>
               {datList.map((item, index) => (
                 <RenderChannelItem key={index} user={item} />
