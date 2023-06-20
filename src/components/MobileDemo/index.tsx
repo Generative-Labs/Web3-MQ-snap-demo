@@ -3,7 +3,6 @@ import React, { useCallback, useState } from "react";
 import {
   IonButton,
   IonButtons,
-  IonCard,
   IonContent,
   IonFooter,
   IonHeader,
@@ -16,8 +15,7 @@ import {
 
 import ss from "./index.module.scss";
 import { useDebounceFn } from "ahooks";
-import { cloudDownloadOutline, reloadOutline, send } from "ionicons/icons";
-import { sendMessageBySnaps } from "../../services/utils/snaps";
+import { cloudDownloadOutline, reloadOutline } from "ionicons/icons";
 import { observer } from "mobx-react";
 import { useStore } from "../../services/mobx/service";
 import { useSnaps } from "../../hooks/useSnaps";
@@ -28,6 +26,8 @@ import {
   getUserName,
 } from "../../services/utils/utils";
 import { useSnapClient } from "../../hooks/useSnapClient";
+import { RefreshIcon, SendIcon, SyncIcon, TipIcon } from "../../icons";
+import web3MqLogo from "../../assets/web3mq.logo.png";
 
 const userIcon = require("../../assets/svg/user.svg").default;
 const MobileDemo: React.FC = () => {
@@ -104,103 +104,85 @@ const MobileDemo: React.FC = () => {
 
   return (
     <div className={ss.mobilePannel}>
-        <IonHeader
-          style={{
-            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
+      <header className={ss.header}>
+        <SyncIcon
+          className={ss.pointer}
+          onClick={async () => {
+            if (activeChannel) {
+              await present({ message: "Loading..." });
+              await getMessages();
+              await dismiss();
+            }
           }}
-        >
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonButton
-                className="settingIcon"
-                onClick={async () => {
-                  if (activeChannel) {
-                    await present({ message: "Loading..." });
-                    await getMessages();
-                    await dismiss();
-                  }
-                }}
-              >
-                <IonIcon
-                  style={{ color: "#000", fontSize: "24px" }}
-                  slot="icon-only"
-                  icon={cloudDownloadOutline}
-                />
-              </IonButton>
-            </IonButtons>
-            <IonTitle>
-              {activeChannel
-                ? activeUser
-                  ? `Chat With ${getUserName(activeUser)}`
-                  : getGroupName(activeChannelItem)
-                : "Web3 MQ Demo"}
-            </IonTitle>
-            <IonButtons slot="end">
-              <IonButton
-                className="settingIcon"
-                onClick={() => {
-                  localStorage.clear();
-                  let href = window.location.href;
-                  window.location.href = href;
-                }}
-              >
-                <IonIcon
-                  style={{ color: "#000", fontSize: "24px" }}
-                  slot="icon-only"
-                  icon={reloadOutline}
-                />
-              </IonButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className={ss.demoContent}>
-          <div className={ss.messagesContent}>
-            {messageList &&
-              messageList.length > 0 &&
-              messageList.map((message, index) => (
-                <div className={ss.messageBox} key={index}>
-                  <RenderMessageAvatar message={message} />
-                  <div className={ss.messageBodyContentBox}>
-                    <RenderMessage message={message} />
-                  </div>
-                </div>
-              ))}
+        />
+        <div className={ss.chatTitle}>
+          <img src={web3MqLogo} alt="" width={16} />
+          <div className={ss.title}>
+            {activeChannel
+              ? activeUser
+                ? `Chat With ${getUserName(activeUser)}`
+                : getGroupName(activeChannelItem)
+              : "Web3 MQ Demo"}
           </div>
-        </IonContent>
-        <IonFooter className={ss.footer}>
-          <IonInput
-            className={ss.messageInput}
-            value={readySendMessage}
-            placeholder="Write a message"
-            onIonChange={(e) => {
-              setReadySendMessage(e.detail.value!);
-            }}
-            onKeyDown={async (e) => {
-              if (e.keyCode === 13) {
-                run();
-              }
-            }}
-          />
-          <IonButton onClick={run}>
-            <IonIcon
-              style={{ color: "#fff", fontSize: "24px" }}
-              slot="icon-only"
-              icon={send}
-            />
-          </IonButton>
-        </IonFooter>
+        </div>
+        <RefreshIcon
+          className={ss.pointer}
+          onClick={() => {
+            localStorage.clear();
+            let href = window.location.href;
+            window.location.href = href;
+          }}
+        />
+      </header>
+      <IonContent className={ss.demoContent}>
+        <div className={ss.messagesContent}>
+          {messageList &&
+            messageList.length > 0 &&
+            messageList.map((message, index) => (
+              <div className={ss.messageBox} key={index}>
+                <RenderMessageAvatar message={message} />
+                <div className={ss.messageBodyContentBox}>
+                  <RenderMessage message={message} />
+                </div>
+              </div>
+            ))}
+        </div>
+      </IonContent>
+      <IonFooter className={ss.footer}>
+        <IonInput
+          className={ss.messageInput}
+          value={readySendMessage}
+          placeholder="Send a Message"
+          onIonChange={(e) => {
+            setReadySendMessage(e.detail.value!);
+          }}
+          onKeyDown={async (e) => {
+            if (e.keyCode === 13) {
+              run();
+            }
+          }}
+        />
+        {activeChannel && (
+          <SendIcon style={{ color: "#663CEE" }} onClick={run} />
+        )}
+        {!activeChannel && <SendIcon />}
 
-        {!activeChannel && (
-          <div className={ss.notLoginMask}>
-            <div>
-              <h1>
-                Before using it, please click to get channel list and choose one
-                to chat with
-              </h1>
+        {/* <IonButton onClick={run}>
+          </IonButton> */}
+      </IonFooter>
+
+      {!activeChannel && (
+        <div className={ss.notLoginMask}>
+          <div className={ss.content}>
+            <TipIcon className={ss.largeTip} />
+            <div className={ss.tip}>
+              Before using it, please click to get channel list and choose one
+              to chat with
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+    </div>
   );
 };
 export default observer(MobileDemo);

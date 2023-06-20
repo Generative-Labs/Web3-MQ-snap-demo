@@ -25,7 +25,7 @@ const App: React.FC = () => {
     mode: "ios",
   });
   // todo: isConnected not always work
-  if (isConnected) {
+  if (!isConnected) {
     return <Login />
   }
   return (

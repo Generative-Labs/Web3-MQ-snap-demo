@@ -14,3 +14,6 @@ export * from './TipIcon';
 export * from './LoginErrorIcon';
 export * from './UserSearchIcon';
 export * from './ChannelSearchIcon';
+export * from './SendIcon';
+export * from './SyncIcon';
+export * from './RefreshIcon';
