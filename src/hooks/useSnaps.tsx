@@ -44,7 +44,6 @@ export const useSnaps = () => {
     return response;
   };
 
-  // 创建房间
   const creatRoom = async (showRes: boolean = false, roomName: string = "") => {
     try {
       const response = await snapClient.creatRoom({ group_name: roomName });

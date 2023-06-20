@@ -24,6 +24,12 @@ import Channels from "../components/Channels";
 import { useRows } from "../hooks/useRows";
 import { useConnectSnap, useSnapClient } from "../hooks/useSnapClient";
 import Contacts from "../components/Contacts";
+import { getEthAccount, signWithEth } from "../utils/metamask";
+import {
+  ConnectRpcDto,
+  RegisterToWeb3MQDto,
+  WalletType,
+} from "../services/snap/dto";
 
 const Home: React.FC = () => {
   const { snapClient, isFlask, installedSnap } = useSnapClient();
@@ -58,6 +64,93 @@ const Home: React.FC = () => {
     init();
   }, []);
 
+  const getNewMainKeys = async (
+    address: string,
+    password: string,
+    walletType?: WalletType
+  ) => {
+    const { signContent } = await snapClient.getMainKeySignContent({
+      password,
+      walletType: walletType || "eth",
+      address,
+    });
+    const { sign } = await signWithEth(signContent, address);
+    const { publicKey, secretKey } = await snapClient.getMainKeypairBySignature(
+      {
+        signature: sign,
+        password,
+      }
+    );
+    return { publicKey, secretKey };
+  };
+
+  const connectToWeb3mq = async () => {
+    await present({
+      message: "Connecting...",
+      spinner: "circles",
+    });
+    const { address } = await getEthAccount();
+    let mainPubKey = "";
+    let mainPriKey = "";
+    const {
+      privateKey: localPriKey,
+      publicKey: localPubKey,
+      address: localAddress,
+    } = await snapClient.exportWeb3MQKeys();
+
+    if (address === localAddress && localPriKey && localPubKey) {
+      // the secret key pair already exists in the snap state
+      mainPriKey = localPriKey;
+      mainPubKey = localPubKey;
+    } else {
+      // need to create main keys
+      const { publicKey, secretKey } = await getNewMainKeys(address, password);
+      mainPubKey = publicKey;
+      mainPriKey = secretKey;
+    }
+
+    const { userid, userExist } = await snapClient.checkUserExist({
+      address,
+    });
+    console.log(userExist,'userExist')
+    if (!userExist) {
+      const signContentRes = await snapClient.getRegisterSignContent({
+        userid,
+        mainPublicKey: mainPubKey,
+        didType: "eth",
+        didValue: address,
+      });
+      console.log(signContentRes, "signContentRes");
+      const { signContent, registerTime } = signContentRes;
+      const { sign } = await signWithEth(signContent, address);
+      const params: RegisterToWeb3MQDto = {
+        walletAddress: address,
+        password,
+        mainPublicKey: mainPubKey,
+        mainPrivateKey: mainPriKey,
+        walletType: "eth",
+        signature: sign,
+        registerSignContent: signContent,
+        registerTime,
+        userid,
+      };
+      await snapClient.registerToWeb3MQNetwork(params);
+    } else {
+      console.log('ready login')
+      const params: ConnectRpcDto = {
+        walletAddress: address,
+        password,
+        mainPublicKey: mainPubKey,
+        mainPrivateKey: mainPriKey,
+        userid,
+      };
+      console.log(params, 'params')
+      await snapClient.connectToWeb3MQ(params);
+    }
+    store.setIsConnected(true);
+    await dismiss();
+  };
+
   return (
     <div className={ss.container}>
       <h1> Web3 MQ test-dapp </h1>
@@ -88,21 +181,7 @@ const Home: React.FC = () => {
                 setPassword(e.detail.value!);
               }}
             />
-            <IonButton
-              onClick={async () => {
-                await present({
-                  message: "Connecting...",
-                  spinner: "circles",
-                });
-                await snapClient.connectToWeb3MQ({
-                  password: password,
-                  nickname: "testAccount",
-                });
-                store.setIsConnected(true);
-                await dismiss();
-              }}
-              disabled={isConnected}
-            >
+            <IonButton onClick={connectToWeb3mq} disabled={isConnected}>
               {isConnected ? "Connected" : "Connect"}
             </IonButton>
           </IonCard>

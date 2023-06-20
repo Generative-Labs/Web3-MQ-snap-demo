@@ -1,6 +1,7 @@
 import { GetSnapsResponse, Snap } from "../../types";
 
 const defaultSnapOrigin = `local:http://localhost:8080`
+// const defaultSnapOrigin = `npm:@web3mq/snap`
 
 export class BaseSnapClient {
   snapId = defaultSnapOrigin;

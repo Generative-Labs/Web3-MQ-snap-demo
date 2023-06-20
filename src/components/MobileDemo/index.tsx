@@ -27,6 +27,7 @@ import {
   getShortAddressByAddress,
   getUserName,
 } from "../../services/utils/utils";
+import { useSnapClient } from "../../hooks/useSnapClient";
 
 const userIcon = require("../../assets/svg/user.svg").default;
 const MobileDemo: React.FC = () => {
@@ -40,6 +41,7 @@ const MobileDemo: React.FC = () => {
     activeUser,
   } = store;
   const { getMessages } = useSnaps();
+  const { snapClient } = useSnapClient();
   const [readySendMessage, setReadySendMessage] = useState("");
 
   const { run } = useDebounceFn(
@@ -50,9 +52,15 @@ const MobileDemo: React.FC = () => {
         alert("Please Choose Channel");
         return false;
       }
-      await sendMessageBySnaps(readySendMessage, activeChannel).catch((e) => {
-        console.log(e, "sendMessage error");
-      });
+      console.log(activeChannel, "activeChannel");
+      await snapClient
+        .sendMessage({
+          msg: readySendMessage,
+          topic: activeChannel,
+        })
+        .catch((e) => {
+          console.log(e, "sendMessage error");
+        });
       await getMessages(true, activeChannel);
       setReadySendMessage("");
       await dismiss();

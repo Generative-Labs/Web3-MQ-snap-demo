@@ -1,59 +1,97 @@
-export type ConnectRpcDto = {
-  password: string
-  nickname: string
-}
-
 export type SendNotifyMessageRpcDto = {
-  message: string
-}
+  message: string;
+};
 
 export type GetChannelListRpcDto = {
   options?: {
-    page: number,
-    size: number,
-  }
-}
+    page: number;
+    size: number;
+  };
+};
 
 export type GetMessageListRpcDto = {
   option?: {
     page?: number;
     size?: number;
-  }
-  topic: string
-}
+  };
+  topic: string;
+};
 
 export type SendMessageRpcDto = {
-  msg: string
-  topic: string
-}
+  msg: string;
+  topic: string;
+};
 
 export type CreateRoomDto = {
-  group_name?: string
-}
+  group_name?: string;
+};
 
 export type GetUserIdByAddressDto = {
-  address: string
-}
+  address: string;
+};
 export type PageDto = {
   page?: number;
   size?: number;
 };
+export type CheckUserDto = { address: string };
 export type RequestFollowRpcDto = {
   target_id: string;
   content?: string;
 };
+export type GetKeysSignContentDto = {
+  password: string;
+  address: string;
+  walletType?: WalletType;
+};
+export type GetKeysDto = {
+  password: string;
+  signature: string;
+};
+export type GetRegisterSignContentDto = {
+  userid: string;
+  mainPublicKey: string;
+  didType?: WalletType;
+  didValue: string;
+};
 
-export type WalletType = 'eth' | 'starknet' | 'qrcode';
+export type ConnectRpcDto = {
+  mainPrivateKey?: string; // in snap state || register
+  mainPublicKey?: string; // in snap state  || register
+  walletType?: WalletType;
+  walletAddress: string;
+  password: string;
+  pubkeyExpiredTimestamp?: number;
+  userid?: string;
+};
+export type RegisterToWeb3MQDto = {
+  mainPrivateKey: string; // in snap state || register
+  mainPublicKey: string; // in snap state  || register
+  walletType?: WalletType;
+  walletAddress: string;
+  password: string;
+  signature: string; // require by register
+  didPubkey?: string; // require by starknet
+  registerSignContent: string; // require by register
+  registerTime: number; // require by register
+  nickname?: string;
+  avatarUrl?: string;
+  userid: string;
+};
 
-export type FollowOperationDto  = {
+export type WalletType = "eth" | "starknet" | "qrcode";
+
+export type FollowOperationDto = {
   address: string;
   targetUserid: string;
-  action: 'follow' | 'cancel';
+  action: "follow" | "cancel";
   didType: WalletType;
-}
+};
 
-export type FollowStatusDto = 'following' | 'follower' | 'follow_each';
-export type UserPermissionsDto = Record<string, { type: string; value: boolean }>;
+export type FollowStatusDto = "following" | "follower" | "follow_each";
+export type UserPermissionsDto = Record<
+  string,
+  { type: string; value: boolean }
+>;
 export type ContactListItemType = {
   avatar_url: string;
   follow_status: FollowStatusDto;
