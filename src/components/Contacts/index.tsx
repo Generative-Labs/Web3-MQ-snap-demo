@@ -13,7 +13,6 @@ import {
   useIonToast,
 } from "@ionic/react";
 
-import ss from "./index.module.scss";
 import { observer } from "mobx-react";
 import { useStore } from "../../services/mobx/service";
 import { useSnaps } from "../../hooks/useSnaps";
@@ -23,6 +22,8 @@ import {
   getShortAddressByAddress,
   getUserAvatar,
 } from "../../services/utils/utils";
+import { Button } from "../Button";
+import "./index.scss";
 
 enum UsersTab {
   FOLLOWER = "0",
@@ -75,7 +76,7 @@ const Contacts: React.FC = () => {
 
       return (
         <IonItem
-          className={ss.chatListItem}
+          className="chatListItem"
           onClick={async () => {
             if (user.follow_status === "follow_each") {
               await present({
@@ -88,12 +89,12 @@ const Contacts: React.FC = () => {
             }
           }}
         >
-          <IonAvatar slot="start" className={ss.messageListAvatar}>
+          <IonAvatar slot="start" className="messageListAvatar">
             <img src={avatar} alt="" />
           </IonAvatar>
-          <IonLabel className={ss.messageBody}>
-            <p className={ss.upText}>{nickname}</p>
-            <p className={ss.downText}>{user.userid}</p>
+          <IonLabel className="messageBody">
+            <p className="upText">{nickname}</p>
+            <p className="downText">{user.userid}</p>
           </IonLabel>
         </IonItem>
       );
@@ -120,12 +121,10 @@ const Contacts: React.FC = () => {
   ]);
 
   return (
-    <div className={ss.ionCard}>
-      <IonCard className={ss.box}>
-        <h2>Contacts List </h2>
-        <IonButton onClick={handleGetList}>Get Contacts List</IonButton>
+      <div className="contactsPanel">
+        <Button onClick={handleGetList} title="Get Contacts List" />
 
-        <div className={ss.tabs}>
+        <div className="tabs">
           <IonSegment
             value={segmentValue}
             onIonChange={(e: any) => {
@@ -153,8 +152,7 @@ const Contacts: React.FC = () => {
             </IonList>
           </div>
         </div>
-      </IonCard>
-    </div>
+      </div>
   );
 };
 export default observer(Contacts);

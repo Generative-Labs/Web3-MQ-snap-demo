@@ -29,6 +29,8 @@ import {
   getShortAddressByAddress,
 } from "../../services/utils/utils";
 import copy from "copy-to-clipboard";
+import { ChannelSearchIcon, UserSearchIcon } from "../../icons";
+import { Button } from "../Button";
 
 export enum STARCH_TYPE {
   WALLET = "Wallet",
@@ -113,57 +115,75 @@ const Channels: React.FC = () => {
         </IonItem>
       );
     },
-    [activeChannel, dismiss, getMessages, present, setActiveChannel, setActiveChannelItem, setActiveUser]
+    [
+      activeChannel,
+      dismiss,
+      getMessages,
+      present,
+      setActiveChannel,
+      setActiveChannelItem,
+      setActiveUser,
+    ]
   );
 
   const handleGetChannelList = async () => {
     await present({ message: "Loading..." });
     const res = await getChannelList(true);
     await dismiss();
-  }
+  };
 
   return (
-    <div className={ss.ionCard}>
-      <IonCard className={ss.box}>
-        <h2>Selected Channel : {getShortAddressByAddress(activeChannel)} </h2>
+    <div className="channelPanel">
+      <div className="cardWrapper">
+        <div className="cardTitle">
+          <ChannelSearchIcon />
+          <div className="text">Selected Channel</div>
+        </div>
+
         <IonInput
-          className={ss.messageInput}
+          className="messageInput"
           value={roomName}
           placeholder="Enter a channel name"
           onIonChange={(e) => {
             setRoomName(e.detail.value!);
           }}
         />
-        <IonButton
-          onClick={async () => {
-            await present({ message: "Loading..." });
-            await creatRoom(false, roomName);
-            setRoomName("");
-            await dismiss();
-          }}
-        >
-          Create Channel
-        </IonButton>
-        <IonButton
-          onClick={handleGetChannelList}
-        >
-          Get Channel List
-        </IonButton>
-        {channelList && channelList.length > 0 && (
-          <>
-            <h3>Channel List</h3>
-            <IonList>
-              {channelList.map((item, index) => (
-                <RenderChannelItem key={index} channel={item} />
-              ))}
-            </IonList>
-          </>
-        )}
-        <h3>Search user to chat</h3>
-        <div className={ss.oneChatBox}>
-          <div className={ss.searchUserBox}>
-            <div className={ss.searchTypeBox}>
-              <div className={ss.searchType}>
+        <div className="btnWrapper">
+          <Button
+            title="Create Channel"
+            className="channelBtn"
+            onClick={async () => {
+              await present({ message: "Loading..." });
+              await creatRoom(false, roomName);
+              setRoomName("");
+              await dismiss();
+            }}
+          />
+          <Button
+            title="Get Channel List"
+            className="channelBtn disable"
+            onClick={handleGetChannelList}
+          />
+        </div>
+      </div>
+      {channelList && channelList.length > 0 && (
+        <>
+          <h3>Channel List</h3>
+          <IonList>
+            {channelList.map((item, index) => (
+              <RenderChannelItem key={index} channel={item} />
+            ))}
+          </IonList>
+        </>
+      )}
+       <div className="cardWrapper" style={{ marginTop: '34px' }}>
+          <div className="cardTitle">
+            <UserSearchIcon />
+            <div className="text">Search user to chat</div>
+          </div>
+          <div className="searchUserBox">
+            <div className="searchTypeBox">
+              <div className="searchType">
                 {searchType}
                 <IonIcon
                   style={{ color: "#000", fontSize: "14px" }}
@@ -171,7 +191,7 @@ const Channels: React.FC = () => {
                   icon={chevronDownOutline}
                 />
               </div>
-              <div className={ss.selectSearchType}>
+              <div className="selectSearchType">
                 <ul>
                   {searchTypes.map((item, index) => (
                     <li
@@ -187,7 +207,7 @@ const Channels: React.FC = () => {
               </div>
             </div>
             <IonInput
-              className={ss.input}
+              className="input"
               value={readySendMessage}
               placeholder="Write a message"
               onIonChange={(e) => {
@@ -195,7 +215,7 @@ const Channels: React.FC = () => {
               }}
             />
             <IonIcon
-              className={ss.searchButton}
+              className="searchButton"
               slot="icon-only"
               icon={searchOutline}
               onClick={async () => {
@@ -203,10 +223,7 @@ const Channels: React.FC = () => {
                 let address = readySendMessage;
                 await present({ message: "Loading..." });
                 if (searchType !== STARCH_TYPE.WALLET) {
-                  address = await getAddressByDids(
-                    searchType,
-                    readySendMessage
-                  );
+                  address = await getAddressByDids(searchType, readySendMessage);
                 }
                 console.log(address, "address");
                 await getUserId(address);
@@ -214,63 +231,57 @@ const Channels: React.FC = () => {
               }}
             />
           </div>
-        </div>
-        {searchUsers && (
-          <>
-            {searchUsers.length == 0 && (
-              <div className={ss.emptyUserText}>
-                <div className={ss.top}>
-                  This address/did is not on Web3MQ yet, invite them to join
-                  with
-                </div>
-                <a
-                  className={ss.bottom}
-                  onClick={() => {
-                    copy("https://web3mq-snap-demo.pages.dev");
-                    presentToast({
-                      message: "Copied!",
-                      duration: 3000,
-                      position: "middle",
-                    }).then();
-                  }}
-                >
-                  {`"Chat with ${readySendMessage}"`}
-                  <div className={ss.copyTopic}>
-                    <IonButton
-                      className={ss.oneButton}
-                      onClick={async () => {
-                        copy("https://web3mq-snap-demo.pages.dev");
-                        await presentToast({
-                          message: "Copied!",
-                          duration: 3000,
-                          position: "middle",
-                        });
-                      }}
-                    >
-                      Copy to clipboard
-                    </IonButton>
+          {searchUsers && (
+            <>
+              {searchUsers.length == 0 && (
+                <div className={ss.emptyUserText}>
+                  <div className={ss.top}>
+                    This address/did is not on Web3MQ yet, invite them to join with
                   </div>
-                </a>
-              </div>
-            )}
+                  <a
+                    className={ss.bottom}
+                    onClick={() => {
+                      copy("https://web3mq-snap-demo.pages.dev");
+                      presentToast({
+                        message: "Copied!",
+                        duration: 3000,
+                        position: "middle",
+                      }).then();
+                    }}
+                  >
+                    {`"Chat with ${readySendMessage}"`}
+                    <div className={ss.copyTopic}>
+                      <IonButton
+                        className={ss.oneButton}
+                        onClick={async () => {
+                          copy("https://web3mq-snap-demo.pages.dev");
+                          await presentToast({
+                            message: "Copied!",
+                            duration: 3000,
+                            position: "middle",
+                          });
+                        }}
+                      >
+                        Copy to clipboard
+                      </IonButton>
+                    </div>
+                  </a>
+                </div>
+              )}
 
-            {searchUsers.length > 0 && (
-              <>
-                <h3>Users</h3>
-                <IonList>
-                  {searchUsers.map((item, index) => (
-                    <RenderChannelItem
-                      key={index}
-                      channel={item}
-                      isUser={true}
-                    />
-                  ))}
-                </IonList>
-              </>
-            )}
-          </>
-        )}
-      </IonCard>
+              {searchUsers.length > 0 && (
+                <>
+                  <h3>Users</h3>
+                  <IonList>
+                    {searchUsers.map((item, index) => (
+                      <RenderChannelItem key={index} channel={item} isUser={true} />
+                    ))}
+                  </IonList>
+                </>
+              )}
+            </>
+          )}
+       </div>
     </div>
   );
 };

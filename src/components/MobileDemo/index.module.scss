@@ -3,12 +3,49 @@ ion-card {
   padding: 15px;
 }
 
-.ionCard {
-  //width: 33%;
-  padding: 20px;
+.mobilePannel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
 
+  height: 756px;
+  background: #FFFFFF;
+  /* shadow/Small */
+
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  flex: 1;
+  min-width: 448px;
+  max-width: 752px;
   ion-button {
     width: 100%;
+  }
+}
+
+.notLoginMask {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 0 50px;
+  border-radius: 12px;
+
+  h1 {
+    color: #333;
+  }
+
+  .button {
+    width: 50%;
   }
 }
 
@@ -126,28 +163,4 @@ ion-header {
   }
 }
 
-
-.demoNoLogin {
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: 10;
-  position: absolute;
-  top: 0;
-  left: 0;
-  text-align: center;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  padding: 0 50px;
-
-  h1 {
-    color: #333;
-  }
-
-  .button {
-    width: 50%;
-  }
-}
 

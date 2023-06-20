@@ -1,0 +1,166 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  background: #F6F6F6;
+}
+
+.mainContainer {
+  padding: 24px;
+  width: 100%;
+  .content {
+    min-width: 1220px;
+    gap: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+}
+
+.channelPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 24px;
+  width: 448px;
+  height: 370px;
+  background: #FFFFFF;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+
+  .cardWrapper {
+    width: 100%;
+  }
+  .cardTitle {
+    display: flex;
+    align-items: center;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    color: #18181B;
+    .text {
+      margin-left: 6px;
+    }
+  }
+  .messageInput {
+    border: 1px solid #ccc;
+    height: 40px;
+    border-radius: 8px;
+    padding-left: 16px;
+    --padding-start: 16px;
+    margin-right: 8px;
+    margin-bottom: 20px;
+    margin-top: 18px;
+  }
+
+  .searchUserBox {
+    display: flex;
+    margin-right: 24px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    height: 44px;
+    border-radius: 8px;
+    border: 1px solid #DDE8E8;
+    padding-right: 20px;
+    margin-top: 18px;
+  
+  
+    .searchTypeBox {
+      position: relative;
+      border-right: 1px solid #DDE8E8;
+      padding: 10px 20px;
+      width: 20%;
+  
+      .searchType {
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+  
+        ion-icon {
+          margin-left: 8px;
+        }
+  
+      }
+  
+      .selectSearchType {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: -93px;
+        z-index: 99;
+  
+        ul {
+          margin: 0;
+          padding: 0;
+        }
+  
+        li {
+          text-align: center;
+          width: 100px;
+          height: 30px;
+          //background: #fff;
+          background-color: rgb(236, 235, 235);
+          font-size: 16px;
+          line-height: 30px;
+        }
+  
+        li:hover {
+          background-color: #fff;
+        }
+      }
+  
+      &:hover {
+        cursor: pointer;
+  
+        .selectSearchType {
+          display: block;
+        }
+      }
+    }
+  
+    .input {
+      //border: 1px solid #DDE8E8;
+      border-radius: 4px;
+      padding-left: 16px;
+      --padding-start: 16px
+    }
+  
+  
+    .searchButton {
+      cursor: pointer;
+      color: #333;
+      font-size: 24px;
+    }
+  
+    .searchButton:hover {
+      color: #000;
+      font-size: 26px;
+  
+    }
+  
+  }
+  .btnWrapper {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 32px;
+    border-bottom: 1px solid #E4E4E7;
+    gap: 16px;
+    .channelBtn {
+      flex: 1;
+      height: 40px;
+      font-size: 16px;
+      font-weight: 400;
+    }
+  }
+}
+
+ion-card {
+  padding: 15px;
+}
+
+ion-button {
+  width: 100%;
+}

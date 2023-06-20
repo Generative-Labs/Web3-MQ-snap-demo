@@ -13,18 +13,25 @@ import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 import { setupIonicReact } from "@ionic/react";
+import Login from "./Login";
+import { useStore } from "./services/mobx/service";
 import Home from "./Home";
+import { observer } from "mobx-react";
 
 
 const App: React.FC = () => {
+  const { isConnected} = useStore();
   setupIonicReact({
     mode: "ios",
   });
-
+  // todo: isConnected not always work
+  if (isConnected) {
+    return <Login />
+  }
   return (
       <Home />
   )
 };
-export default App;
+export default observer(App);;
 
 

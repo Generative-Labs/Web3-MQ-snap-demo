@@ -1,0 +1,23 @@
+.snapDemoBtn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0px 18px;
+  height: 48px;
+  background: #663CEE;
+  color: #fff;
+  border-radius: 8px;
+  font-family: 'Inter';
+  font-size: 22px;
+  font-weight: 400;
+  cursor: pointer;
+  svg {
+      margin-right: 10px;
+  }
+  &.disable {
+      background: #F5F0FF;
+      color: #8F6BF4;
+  }
+}

@@ -1,7 +1,5 @@
+import { defaultSnapOrigin } from "../../config";
 import { GetSnapsResponse, Snap } from "../../types";
-
-const defaultSnapOrigin = `local:http://localhost:8080`
-// const defaultSnapOrigin = `npm:@web3mq/snap`
 
 export class BaseSnapClient {
   snapId = defaultSnapOrigin;
@@ -90,7 +88,10 @@ export class BaseSnapClient {
     await window.ethereum.request({
       method: "wallet_requestSnaps",
       params: {
-        [snapId]: params,
+        [snapId]: {
+          version: '^0.2.0',
+        },
+        
       },
     });
   }

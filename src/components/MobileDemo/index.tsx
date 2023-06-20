@@ -103,9 +103,7 @@ const MobileDemo: React.FC = () => {
   }, []);
 
   return (
-    <div className={ss.ionCard}>
-      <IonCard className={ss.demoPage}>
-        <h2>Web3 MQ Demo</h2>
+    <div className={ss.mobilePannel}>
         <IonHeader
           style={{
             boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.1)",
@@ -193,7 +191,7 @@ const MobileDemo: React.FC = () => {
         </IonFooter>
 
         {!activeChannel && (
-          <div className={ss.demoNoLogin}>
+          <div className={ss.notLoginMask}>
             <div>
               <h1>
                 Before using it, please click to get channel list and choose one
@@ -202,8 +200,7 @@ const MobileDemo: React.FC = () => {
             </div>
           </div>
         )}
-      </IonCard>
-    </div>
+      </div>
   );
 };
 export default observer(MobileDemo);
