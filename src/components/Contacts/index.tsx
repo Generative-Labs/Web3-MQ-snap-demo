@@ -122,7 +122,7 @@ const Contacts: React.FC = () => {
 
   return (
     <div className="contactsPanel">
-      {/* <Button onClick={handleGetList} title="Get Contacts List" /> */}
+      <Button onClick={handleGetList} title="Get Contacts List" />
       <div className="contactTabs">
         {["Followers", "Following", "Contacts"].map((title, index) => (
           <div

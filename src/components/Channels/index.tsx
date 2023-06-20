@@ -101,7 +101,7 @@ const Channels: React.FC = () => {
             <p className={ss.upText}>{chatName}</p>
             <p className={ss.downText}>{topic}</p>
           </IonLabel>
-          <IonLabel slot="end" className={ss.messageBody}>
+          <IonLabel slot="end">
             {activeChannel === topic && (
               <div className={ss.unReadCount}>
                 <IonIcon
@@ -168,8 +168,7 @@ const Channels: React.FC = () => {
       </div>
       {channelList && channelList.length > 0 && (
         <>
-          <h3>Channel List</h3>
-          <IonList>
+          <IonList className="channelList">
             {channelList.map((item, index) => (
               <RenderChannelItem key={index} channel={item} />
             ))}

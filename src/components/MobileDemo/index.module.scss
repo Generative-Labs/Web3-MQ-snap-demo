@@ -47,6 +47,11 @@ ion-card {
       font-size: 18px;
       line-height: 22px;
       color: #18181b;
+      height: 22px;
+      width: 160px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 }

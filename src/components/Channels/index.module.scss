@@ -1,16 +1,12 @@
 
-ion-card {
-  padding: 15px;
-}
-
 
 
 .chatListItem {
   position: relative;
   height: 68px;
-  padding-top: 18px;
+  margin-top: 18px;
   --border-style: none;
-  --padding-start: 24px;
+  --padding-start: 0;
   justify-content: space-between;
   background: #fff;
   border-left: 2px solid #fff;
@@ -87,11 +83,6 @@ ion-card {
     }
   }
 
-  &:hover {
-    cursor: pointer;
-    border-color: #4b7ef7;
-
-  }
 }
 
 .messageInput {
