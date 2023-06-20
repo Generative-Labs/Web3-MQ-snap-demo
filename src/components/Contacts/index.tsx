@@ -26,10 +26,10 @@ import { Button } from "../Button";
 import "./index.scss";
 
 enum UsersTab {
-  FOLLOWER = "0",
-  FOLLOWING = "1",
-  CONTACTS = "2",
-  FRIEND_REQUEST_LIST = "3",
+  FOLLOWER = 0,
+  FOLLOWING,
+  CONTACTS,
+  FRIEND_REQUEST_LIST,
 }
 
 const Contacts: React.FC = () => {
@@ -121,38 +121,28 @@ const Contacts: React.FC = () => {
   ]);
 
   return (
-      <div className="contactsPanel">
-        <Button onClick={handleGetList} title="Get Contacts List" />
-
-        <div className="tabs">
-          <IonSegment
-            value={segmentValue}
-            onIonChange={(e: any) => {
-              setSegmentValue(e.detail.value);
-            }}
+    <div className="contactsPanel">
+      {/* <Button onClick={handleGetList} title="Get Contacts List" /> */}
+      <div className="contactTabs">
+        {["Followers", "Following", "Contacts"].map((title, index) => (
+          <div
+            className={`tab ${index === segmentValue  ? 'active': ''}`}
+            key={title}
+            onClick={() => setSegmentValue(index)}
           >
-            <IonSegmentButton value={UsersTab.FOLLOWER}>
-              <IonLabel>Follower</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value={UsersTab.FOLLOWING}>
-              <IonLabel>Following</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value={UsersTab.CONTACTS}>
-              <IonLabel>contacts</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value={UsersTab.FRIEND_REQUEST_LIST}>
-              <IonLabel>Friend request list</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-          <div style={{ maxHeight: '625px', overflowY: 'auto' }}>
-            <IonList>
-              {datList.map((item, index) => (
-                <RenderChannelItem key={index} user={item} />
-              ))}
-            </IonList>
+            {title}
           </div>
-        </div>
+        ))}
+        {/* <IonLabel>Friend request list</IonLabel> */}
       </div>
+      <div style={{ maxHeight: "625px", overflowY: "auto" }}>
+        <IonList>
+          {datList.map((item, index) => (
+            <RenderChannelItem key={index} user={item} />
+          ))}
+        </IonList>
+      </div>
+    </div>
   );
 };
 export default observer(Contacts);

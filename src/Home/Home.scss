@@ -22,7 +22,7 @@
   flex-direction: column;
   align-items: flex-start;
   padding: 24px;
-  width: 448px;
+  max-width: 478px;
   height: 370px;
   background: #FFFFFF;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1);
@@ -55,7 +55,7 @@
     margin-top: 18px;
   }
 
-  .searchUserBox {
+  .searchUserBoxInChannel {
     display: flex;
     margin-right: 24px;
     width: 100%;
@@ -72,7 +72,6 @@
       position: relative;
       border-right: 1px solid #DDE8E8;
       padding: 10px 20px;
-      width: 20%;
   
       .searchType {
         display: flex;
