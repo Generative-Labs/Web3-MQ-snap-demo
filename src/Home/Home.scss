@@ -6,14 +6,14 @@
 }
 
 .mainContainer {
-  padding: 24px;
   width: 100%;
+  padding-top: 24px;
   .content {
     min-width: 1220px;
     gap: 24px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: center;
   }
 }
 
@@ -22,13 +22,17 @@
   flex-direction: column;
   align-items: flex-start;
   padding: 24px;
-  max-width: 478px;
+  width: 448px;
   background: #FFFFFF;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
+  max-height: 670px;
 
   .channelList {
     width: 100%;
+    max-height: 500px;
+    overflow-y: auto;
+
   }
   .cardWrapper {
     width: 100%;
@@ -36,7 +40,7 @@
   .cardTitle {
     display: flex;
     align-items: center;
-    font-family: 'Inter';
+    font-family: 'Inter', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 18px;

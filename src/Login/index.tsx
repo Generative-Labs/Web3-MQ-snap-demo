@@ -11,7 +11,11 @@ import {
 
 import "./index.scss";
 import { useConnectSnap, useSnapClient } from "../hooks/useSnapClient";
-import { ConnectRpcDto, RegisterToWeb3MQDto, WalletType } from "../services/snap/dto";
+import {
+  ConnectRpcDto,
+  RegisterToWeb3MQDto,
+  WalletType,
+} from "../services/snap/dto";
 import { getEthAccount, signWithEth } from "../utils/metamask";
 import { useIonLoading } from "@ionic/react";
 import { useStore } from "../services/mobx/service";
@@ -27,7 +31,7 @@ const Login: React.FC<IProps> = () => {
   const [present, dismiss] = useIonLoading();
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [errorInfo, setErrorInfo] = useState('')
+  const [errorInfo, setErrorInfo] = useState("");
 
   const getNewMainKeys = async (
     address: string,
@@ -53,11 +57,8 @@ const Login: React.FC<IProps> = () => {
       return;
     }
     if (!password) {
-      setErrorInfo('invalid password')
+      setErrorInfo("invalid password");
       return;
-    }
-    if (!installedSnap) {
-      await handleConnectClick()
     }
     await present({
       message: "Connecting...",
@@ -86,7 +87,7 @@ const Login: React.FC<IProps> = () => {
     const { userid, userExist } = await snapClient.checkUserExist({
       address,
     });
-    console.log(userExist,'userExist')
+    console.log(userExist, "userExist");
     if (!userExist) {
       const signContentRes = await snapClient.getRegisterSignContent({
         userid,
@@ -110,7 +111,7 @@ const Login: React.FC<IProps> = () => {
       };
       await snapClient.registerToWeb3MQNetwork(params);
     } else {
-      console.log('ready login')
+      console.log("ready login");
       const params: ConnectRpcDto = {
         walletAddress: address,
         password,
@@ -118,7 +119,7 @@ const Login: React.FC<IProps> = () => {
         mainPrivateKey: mainPriKey,
         userid,
       };
-      console.log(params, 'params')
+      console.log(params, "params");
       await snapClient.connectToWeb3MQ(params);
     }
     store.setIsConnected(true);
@@ -144,11 +145,11 @@ const Login: React.FC<IProps> = () => {
                 placeholder="Write something..."
                 type={showPassword ? "text" : "password"}
                 onChange={(e) => {
-                  const value = e.target.value
+                  const value = e.target.value;
                   if (value) {
-                    setErrorInfo('')
+                    setErrorInfo("");
                   }
-                  setPassword(e.target.value)
+                  setPassword(e.target.value);
                 }}
                 value={password}
               />
@@ -174,13 +175,13 @@ const Login: React.FC<IProps> = () => {
             </div>
           </div>
           {errorInfo && (
-          <div className="errorBox">
-            <div className="errorIcon">
-              <LoginErrorIcon />
+            <div className="errorBox">
+              <div className="errorIcon">
+                <LoginErrorIcon />
+              </div>
+              <div>{errorInfo}</div>
             </div>
-            <div>{errorInfo}</div>
-          </div>
-        )}
+          )}
         </div>
         {/* <div>{errorInfo}</div> */}
         <div className="pwdTip">
@@ -188,7 +189,18 @@ const Login: React.FC<IProps> = () => {
           automatically
         </div>
         <div className="walletConnect-btnBox">
-          <Button onClick={connectToWeb3mq} icon={<ConnectWalletIcon />} title="Connect" />
+          <Button
+            className={"channelBtn"}
+            onClick={handleConnectClick}
+            title="Install Snap"
+          />
+        </div>
+        <div className="walletConnect-btnBox">
+          <Button
+            className={"channelBtn"}
+            onClick={connectToWeb3mq}
+            title="Connect"
+          />
         </div>
         {!isFlask && (
           <div className="notInstalled">
@@ -211,4 +223,4 @@ const Login: React.FC<IProps> = () => {
   );
 };
 
-export default observer(Login);;
+export default observer(Login);

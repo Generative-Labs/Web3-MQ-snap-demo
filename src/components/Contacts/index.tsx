@@ -122,7 +122,9 @@ const Contacts: React.FC = () => {
 
   return (
     <div className="contactsPanel">
-      <Button onClick={handleGetList} title="Get Contacts List" />
+      <div style={{ padding: '12px', width: '100%', borderBottom: '1px solid #e4e4e7' }}>
+        <Button className={'getContactsListBtn'} onClick={handleGetList} title="Get Contacts List" />
+      </div>
       <div className="contactTabs">
         {["Followers", "Following", "Contacts"].map((title, index) => (
           <div
@@ -135,7 +137,7 @@ const Contacts: React.FC = () => {
         ))}
         {/* <IonLabel>Friend request list</IonLabel> */}
       </div>
-      <div style={{ maxHeight: "625px", overflowY: "auto" }}>
+      <div style={{ maxHeight: "625px", overflowY: "auto", width: '100%' }}>
         <IonList>
           {datList.map((item, index) => (
             <RenderChannelItem key={index} user={item} />
