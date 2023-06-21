@@ -2,13 +2,9 @@ import React, { useCallback, useMemo, useState } from "react";
 
 import {
   IonAvatar,
-  IonButton,
-  IonCard,
   IonItem,
   IonLabel,
   IonList,
-  IonSegment,
-  IonSegmentButton,
   useIonLoading,
   useIonToast,
 } from "@ionic/react";
@@ -119,12 +115,19 @@ const Contacts: React.FC = () => {
     followingList,
     friendRequestList,
   ]);
+  if (datList.length <= 0) {
+    return <div className="contactsPanel" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ padding: '12px', width: '100%'}}>
+        <Button className={'getContactsListBtn'} onClick={handleGetList} title="Get Contacts List" />
+        <div style={{ textAlign: 'center' }} className={'emptyContactsText'}>
+          Please click the button for the contact list
+        </div>
+      </div>
+    </div>
+  }
 
   return (
     <div className="contactsPanel">
-      <div style={{ padding: '12px', width: '100%', borderBottom: '1px solid #e4e4e7' }}>
-        <Button className={'getContactsListBtn'} onClick={handleGetList} title="Get Contacts List" />
-      </div>
       <div className="contactTabs">
         {["Followers", "Following", "Contacts"].map((title, index) => (
           <div
