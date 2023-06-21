@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import React from "react";
+import {ContactListItemType} from "../snap/dto";
 
 export default class AppStore {
   messageList: any[] = [];
@@ -14,6 +15,23 @@ export default class AppStore {
   errorMessage: string = "";
   activeChannelItem: any = null;
   activeUser: any = null;
+  followerList: ContactListItemType[] = []
+  followingList: ContactListItemType[] = []
+  contactsList: ContactListItemType[] = []
+  friendRequestList: ContactListItemType[] = []
+
+  setContactsList = (data : ContactListItemType[]) => {
+    this.contactsList = data
+  }
+  setFollowerList = (data : ContactListItemType[]) => {
+    this.followerList = data
+  }
+  setFollowingList = (data : ContactListItemType[]) => {
+    this.followingList = data
+  }
+  setFriendRequestList = (data : ContactListItemType[]) => {
+    this.friendRequestList = data
+  }
 
   setActiveChannelItem = (data: any) => {
     console.log(data, "setActiveChannelItem");

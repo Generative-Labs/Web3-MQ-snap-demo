@@ -1,41 +1,34 @@
-import {
-  connectWeb3MQSnaps,
-  createRoomsBySnaps,
-  getChannelListBySnaps,
-  getMessagesBySnaps,
-  getUserIdByAddress,
-} from "../services/utils/snaps";
-import {
-  getShortAddressByAddress,
-  sleep,
-} from "../services/utils/utils";
 import { useStore } from "../services/mobx/service";
-import { paw } from "ionicons/icons";
+import { useSnapClient } from "./useSnapClient";
+import {
+  FollowOperationDto,
+  PageDto,
+  RequestFollowRpcDto,
+} from "../services/snap/dto";
 
 export const useSnaps = () => {
+  const { snapClient } = useSnapClient();
   const store = useStore();
   const {
     setCurrentMessages,
     channelList,
     setMessageList,
-    setIsConnected,
     activeChannel,
     setActiveChannel,
     setActiveChannelItem,
     setSearchUsers,
     setActiveUser,
+    setContactsList,
+    setFollowerList,
+    setFollowingList,
+    setFriendRequestList,
   } = store;
-
-  // 连接snap后获取keys
-  const connectWeb3Mq = async () => {
-    await connectWeb3MQSnaps();
-  };
 
   const getChannelList = async (
     showRes: boolean = false,
     setActiveTopic: boolean = false
   ) => {
-    const response = await getChannelListBySnaps().catch((e) => {
+    const response = await snapClient.getChannelList({}).catch((e) => {
       console.log(e, "getChannelListBySnaps - error");
     });
     showRes && setCurrentMessages(JSON.stringify(response, null, "\t"));
@@ -51,10 +44,9 @@ export const useSnaps = () => {
     return response;
   };
 
-  // 创建房间
   const creatRoom = async (showRes: boolean = false, roomName: string = "") => {
     try {
-      const response = await createRoomsBySnaps(roomName);
+      const response = await snapClient.creatRoom({ group_name: roomName });
       showRes && setCurrentMessages(JSON.stringify(response, null, "\t"));
       await getChannelList();
     } catch (err: any) {
@@ -74,22 +66,33 @@ export const useSnaps = () => {
 
   const getMessages = async (showRes: boolean = false, topic: string = "") => {
     let payload = topic ? topic : activeChannel;
+    console.log(payload, "payload - getmessages ");
     if (!payload) {
       alert("Please Choose Channel");
       return false;
     }
-    const res = await getMessagesBySnaps(payload).catch((e) => {
-      console.log(e, "getMessages - error");
-    });
+    const res = await snapClient
+      .getMessageList({
+        option: {
+          page: 1,
+          size: 30,
+        },
+        topic: payload,
+      })
+      .catch((e) => {
+        console.log(e, "getMessages - error");
+      });
     res && setMessageList(res);
     showRes && setCurrentMessages(JSON.stringify(res, null, "\t"));
     console.log(res, "get messages");
   };
 
   const getUserId = async (address: string) => {
-    const users = await getUserIdByAddress(address).catch((e) => {
-      console.log(e, "getUserIdByAddress - errir");
-    });
+    const users = await snapClient
+      .getUserIdByAddress({ address })
+      .catch((e) => {
+        console.log(e, "getUserIdByAddress - errir");
+      });
     if (users && users.length > 0) {
       setSearchUsers(users);
       if (users.length === 1) {
@@ -98,19 +101,71 @@ export const useSnaps = () => {
       }
     } else {
       setSearchUsers([]);
-      let roomName = `Chat with ${getShortAddressByAddress(address, 6)}`;
       // creatRoom(false, roomName)
       setActiveUser(null);
       setActiveChannel("");
     }
   };
 
+  const getContactList = async (payload: PageDto) => {
+    const response = await snapClient.getContactList(payload).catch((e) => {
+      console.log(e, "getContactList - error");
+    });
+    console.log(response, "getContactList - res");
+    setContactsList(response);
+    return response;
+  };
+  const getFollowerList = async (payload: PageDto) => {
+    const response = await snapClient.getFollowerList(payload).catch((e) => {
+      console.log(e, "getFollowerList - error");
+    });
+    console.log(response, "getFollowerList - res");
+    setFollowerList(response);
+    return response;
+  };
+  const getFollowingList = async (payload: PageDto) => {
+    const response = await snapClient.getFollowingList(payload).catch((e) => {
+      console.log(e, "getFollowingList - error");
+    });
+    console.log(response, "getFollowingList - res");
+    setFollowingList(response);
+    return response;
+  };
+  const getMyFriendRequestList = async (payload: PageDto) => {
+    const response = await snapClient
+      .getMyFriendRequestList(payload)
+      .catch((e) => {
+        console.log(e, "getMyFriendRequestList - error");
+      });
+    console.log(response, "getMyFriendRequestList - res");
+    setFriendRequestList(response);
+    return response;
+  };
+  const requestFollow = async (payload: RequestFollowRpcDto) => {
+    const response = await snapClient.requestFollow(payload).catch((e) => {
+      console.log(e, "requestFollow - error");
+    });
+    console.log(response, "requestFollow - res");
+    return response;
+  };
+  const followOperation = async (payload: FollowOperationDto) => {
+    const response = await snapClient.followOperation(payload).catch((e) => {
+      console.log(e, "followOperation - error");
+    });
+    console.log(response, "followOperation - res");
+    return response;
+  };
   return {
-    connectWeb3Mq,
     creatRoom,
     getTopic,
     getMessages,
     getChannelList,
     getUserId,
+    getContactList,
+    getFollowerList,
+    getFollowingList,
+    requestFollow,
+    followOperation,
+    getMyFriendRequestList,
   };
 };

@@ -31,12 +31,16 @@ export const getLoginUserId = () => {
   return `user:${getKeys().PublicKey}`;
 };
 
-export function getShortAddressByAddress(address: string, num: number = 10) {
+export function getShortAddressByAddress(
+    address: string = '',
+    num: number = 5,
+    endNum = 4
+) {
   let strLength = address.length;
   return (
-    address.substring(0, num) +
-    "..." +
-    address.substring(strLength - 4, strLength)
+      address.substring(0, num) +
+      '...' +
+      address.substring(strLength - endNum, strLength)
   );
 }
 
@@ -74,4 +78,7 @@ export const getUserName = (user: any) => {
   } else {
     return getShortAddressByAddress(user.userid);
   }
+};
+export const getUserAvatar = (address: string) =>  {
+  return `https://cdn.stamp.fyi/avatar/${address}?s=300`;
 };

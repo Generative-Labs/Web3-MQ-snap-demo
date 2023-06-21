@@ -11,7 +11,6 @@ export const useRows = () => {
 
   useEffect(() => {
     window.addEventListener("resize", () => {
-      console.log(window.innerWidth, "window.innerWidth");
       if (window.innerWidth <= 1500 && window.innerWidth > 800) {
         setShowRows(2);
       } else if (window.innerWidth <= 800) {

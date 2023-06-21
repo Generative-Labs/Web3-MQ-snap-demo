@@ -1,29 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
-import { IonAlert, IonButton, IonCard, useIonLoading } from "@ionic/react";
+import {
+  IonAlert,
+  useIonLoading,
+} from "@ionic/react";
 
-import ss from "./index.module.scss";
-import cx from "classnames";
-import { useDebounceFn } from "ahooks";
 import {
   getKeys,
   getLoginUserId,
-  getShortAddressByAddress,
 } from "../services/utils/utils";
-import SendNotify from "../components/SendNotify";
 import { useStore } from "../services/mobx/service";
 import { observer } from "mobx-react";
 import MobileDemo from "../components/MobileDemo";
 import { useSnaps } from "../hooks/useSnaps";
 import Channels from "../components/Channels";
-import { useRows } from "../hooks/useRows";
+import Contacts from "../components/Contacts";
+import { Header } from "../components/Header";
+
+import "./Home.scss";
+
 
 const Home: React.FC = () => {
   const store = useStore();
   const {
-    isConnected,
-    activeChannel,
-    loginUserId,
     showAlert,
     setShowAlert,
     errorMessage,
@@ -31,8 +30,7 @@ const Home: React.FC = () => {
     setLoginUserId,
   } = store;
   const [present, dismiss] = useIonLoading();
-  const { creatRoom, connectWeb3Mq, getMessages, getChannelList } = useSnaps();
-  const { showRows } = useRows();
+  const { getChannelList } = useSnaps();
 
   useEffect(() => {
     const init = async () => {
@@ -49,49 +47,18 @@ const Home: React.FC = () => {
     init();
   }, []);
 
+
+
   return (
-    <div className={ss.container}>
-      <h1> Web3 MQ test-dapp </h1>
-      <div
-        className={cx(ss.content, {
-          [ss.twoContentRow]: showRows === 2,
-          [ss.oneContentRow]: showRows === 1,
-        })}
-      >
-        <div className={ss.ionCard}>
-          <h2>Status {getShortAddressByAddress(loginUserId || "")}</h2>
-          <IonCard>
-            <h1>Connect to MetaMask Flask</h1>
-            <IonButton
-              onClick={async () => {
-                await present({
-                  message: "Connecting...",
-                  spinner: "circles",
-                });
-                await connectWeb3Mq();
-                await dismiss();
-              }}
-              disabled={isConnected}
-            >
-              {isConnected ? "Connected" : "Connect"}
-            </IonButton>
-          </IonCard>
+    <div className="container">
+      <Header />
+      <main className="mainContainer">
+        <div className="content">
+          <Channels />
+          <Contacts />
+          <MobileDemo />
         </div>
-        {showRows === 3 && (
-          <>
-            <SendNotify />
-            <Channels />
-            <MobileDemo />
-          </>
-        )}
-        {[1, 2].includes(showRows) && (
-          <>
-            <Channels />
-            <MobileDemo />
-            <SendNotify />
-          </>
-        )}
-      </div>
+      </main>
       <IonAlert
         isOpen={showAlert}
         onDidDismiss={() => {
@@ -105,4 +72,5 @@ const Home: React.FC = () => {
     </div>
   );
 };
+
 export default observer(Home);
