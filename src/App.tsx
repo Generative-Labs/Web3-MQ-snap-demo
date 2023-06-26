@@ -29,13 +29,13 @@ const _App: React.FC = () => {
     mode: "ios",
   });
 
-  // useEffect(() => {
-  //   if (state.loading) {
-  //     present('loading')
-  //   } else {
-  //     dismiss()
-  //   }
-  // }, [dismiss, present, state.loading])
+  useEffect(() => {
+    if (state.loading) {
+      present('loading')
+    } else {
+      dismiss()
+    }
+  }, [dismiss, present, state.loading])
 
   if (state.loading) {
     return <Home />
