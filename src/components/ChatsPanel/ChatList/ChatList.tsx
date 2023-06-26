@@ -1,33 +1,23 @@
-import React, { useCallback, useState } from "react";
+import { useState } from "react";
 
 import {
-  IonAvatar,
-  IonButton,
   IonIcon,
   IonInput,
-  IonItem,
-  IonLabel,
-  IonList,
   useIonLoading,
-  useIonToast,
 } from "@ionic/react";
 
 import {
-  checkmarkCircleOutline,
   chevronDownOutline,
   searchOutline,
 } from "ionicons/icons";
 import { observer } from "mobx-react";
-import { useStore } from "../../services/mobx/service";
-import { useSnaps } from "../../hooks/useSnaps";
-import userIcon from "../../assets/svg/user.svg";
-import { getAddressByDids } from "../../services/utils/utils";
-import copy from "copy-to-clipboard";
-import { ChatIcon } from "../../icons";
-import { Button } from "../Button";
 
-import "./Chats.scss";
-import { EmptyList } from "../../EmptyList";
+import "./ChatList.scss";
+import { useSnaps } from "../../../hooks/useSnaps";
+import { getAddressByDids } from "../../../services/utils/utils";
+import { ChatIcon } from "../../../icons";
+import { EmptyList } from "../../../EmptyList";
+import { Button } from "../../Button";
 
 export enum STARCH_TYPE {
   WALLET = "Wallet",
@@ -37,7 +27,7 @@ export enum STARCH_TYPE {
 
 
 
-const Chats: React.FC = () => {
+const ChatList = () => {
   const [present, dismiss] = useIonLoading();
   const { getUserId } = useSnaps();
   const [readySendMessage, setReadySendMessage] = useState("");
@@ -114,4 +104,4 @@ const Chats: React.FC = () => {
     </div>
   );
 };
-export default observer(Chats);
+export default observer(ChatList);

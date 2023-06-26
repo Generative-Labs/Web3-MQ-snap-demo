@@ -1,21 +1,21 @@
 import React, {  } from "react";
 import { observer } from "mobx-react";
 import { Tabs } from "../Tabs/Tabs";
-import Chats from "./Chats";
+import ChatList from "./ChatList/ChatList";
+import ContactsList from "./ContactList/ContactList";
 
 import "./index.scss";
-import Contacts from "./Contacts";
 
 const items = [
   {
     label: 'Chats',
     key: 'Chats',
-    children: <Chats />,
+    children: <ChatList />,
   },
   {
     label: 'Contacts',
     key: 'Contacts',
-    children: <Contacts />,
+    children: <ContactsList />,
   },
 ]
 
