@@ -18,6 +18,11 @@ import {
 } from "./dto";
 
 export class SnapClient extends BaseSnapClient {
+
+  detectIsWeb3MqConnected = async () => {
+    return this.exportWeb3MQKeys()
+  }
+  
   connectToWeb3MQ = (payload: ConnectRpcDto) =>
     this.createSnapRpc<ConnectRpcDto>("connectToWeb3MQ")(payload);
 

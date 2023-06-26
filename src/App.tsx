@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 import "@ionic/react/css/core.css";
 /* Basic CSS for apps built with Ionic */
@@ -24,8 +24,7 @@ import Login from "./Login/Login";
 
 
 const _App: React.FC = () => {
-  const { isConnected } = useStore();
-  const { state } = useSnapClient();
+  const { state, snapClient } = useSnapClient();
   setupIonicReact({
     mode: "ios",
   });
@@ -35,8 +34,7 @@ const _App: React.FC = () => {
     return <NotFlaskLogin />
   } else if (!state.installedSnap) {
     return <NotSnapIntalledLogin />
-  } else if (!isConnected) {
-    // todo: isConnected not always work
+  } else if (!state.isWeb3MqConnected) {
     return <Login />
   }
   return (

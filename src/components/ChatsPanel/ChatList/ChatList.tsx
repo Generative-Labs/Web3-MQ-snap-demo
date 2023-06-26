@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   IonIcon,
@@ -18,6 +18,8 @@ import { getAddressByDids } from "../../../services/utils/utils";
 import { ChatIcon } from "../../../icons";
 import { EmptyList } from "../../../EmptyList";
 import { Button } from "../../Button";
+import { useStore } from "../../../services/mobx/service";
+import { List } from "./list";
 
 export enum STARCH_TYPE {
   WALLET = "Wallet",
@@ -28,8 +30,9 @@ export enum STARCH_TYPE {
 
 
 const ChatList = () => {
+  const { channelList } = useStore()
   const [present, dismiss] = useIonLoading();
-  const { getUserId } = useSnaps();
+  const { getUserId, getChannelList } = useSnaps();
   const [readySendMessage, setReadySendMessage] = useState("");
   const [searchType, setSearchType] = useState<STARCH_TYPE>(STARCH_TYPE.WALLET);
 
@@ -39,9 +42,17 @@ const ChatList = () => {
     STARCH_TYPE.ENS,
   ];
 
-  function onPullChats() {
-
+  async function onPullChats() {
+    await present({
+      message: "Loading...",
+    });
+    await getChannelList();
+    await dismiss();
   }
+
+  useEffect(() => {
+    console.log(channelList)
+  }, [channelList])
 
   return (
     <div className="mq-chats">
@@ -95,9 +106,7 @@ const ChatList = () => {
           }}
         />
       </div>
-      <div className="chatResult">
-        <EmptyList icon={<ChatIcon />} title="Your message list is empty" />
-      </div>
+      <List list={channelList}/>
       <div>
         <Button className="bottomBtn" title={"Pull the latest status"} onClick={onPullChats} />
       </div>

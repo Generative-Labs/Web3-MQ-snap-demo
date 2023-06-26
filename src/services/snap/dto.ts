@@ -101,3 +101,13 @@ export type ContactListItemType = {
   wallet_address: string;
   wallet_type: WalletType;
 };
+
+export type ChannelItemType = {
+  avatar_base64: string;
+  avatar_url: string;
+  chat_name: string;
+  chat_type: string;
+  chatid: string;
+  topic: string;
+  topic_type: string;
+};

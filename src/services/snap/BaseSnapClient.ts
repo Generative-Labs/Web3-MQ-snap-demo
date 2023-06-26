@@ -13,6 +13,7 @@ export class BaseSnapClient {
   async detect() {
     let isFlaskDetected = false;
     let installedSnap = undefined;
+    let isWeb3MqConnected = false;
     try {
       isFlaskDetected = await this.isFlask();
     } catch (error) {}
@@ -23,11 +24,19 @@ export class BaseSnapClient {
 
     this.isFlaskDetected = isFlaskDetected;
     this.installedSnap = installedSnap;
+
+    if (isFlaskDetected && installedSnap) {
+      isWeb3MqConnected = !!(await this.detectIsWeb3MqConnected())
+    }
     return {
       isFlaskDetected,
       installedSnap,
+      isWeb3MqConnected,
     };
   }
+
+  // for override
+  detectIsWeb3MqConnected = async (): Promise<boolean> => false
 
   /**
    * Detect if the wallet injecting the ethereum object is Flask.
