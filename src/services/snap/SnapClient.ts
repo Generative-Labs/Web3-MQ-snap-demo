@@ -4,7 +4,9 @@ import {
   ConnectRpcDto,
   CreateRoomDto,
   FollowOperationDto,
+  FollowOperationRes,
   GetChannelListRpcDto,
+  GetFollowSignContentDto,
   GetKeysDto,
   GetKeysSignContentDto,
   GetMessageListRpcDto,
@@ -15,6 +17,8 @@ import {
   RequestFollowRpcDto,
   SendMessageRpcDto,
   SendNotifyMessageRpcDto,
+  SignFollowContentRes,
+  SnapRpcResponse,
 } from "./dto";
 
 export class SnapClient extends BaseSnapClient {
@@ -51,17 +55,24 @@ export class SnapClient extends BaseSnapClient {
     this.createSnapRpc<PageDto>("getFollowingList")(payload);
   requestFollow = (payload: RequestFollowRpcDto) =>
     this.createSnapRpc<RequestFollowRpcDto>("requestFollow")(payload);
+
   followOperation = (payload: FollowOperationDto) =>
-    this.createSnapRpc<FollowOperationDto>("followOperation")(payload);
+    this.createSnapRpc<FollowOperationDto, FollowOperationRes>("followOperation")(payload);
+
   getMyFriendRequestList = (payload: PageDto) =>
     this.createSnapRpc<PageDto>("getMyFriendRequestList")(payload);
+
   checkUserExist = (payload: CheckUserDto) =>
     this.createSnapRpc<CheckUserDto>("checkUserExist")(payload);
+
   getMainKeySignContent = (payload: GetKeysSignContentDto) =>
     this.createSnapRpc<GetKeysSignContentDto>("getMainKeySignContent")(payload);
+
   getMainKeypairBySignature = (payload: GetKeysDto) =>
     this.createSnapRpc<GetKeysDto>("getMainKeypairBySignature")(payload);
+
   exportWeb3MQKeys = () => this.createSnapRpc("exportWeb3MQKeys")({});
+
   getRegisterSignContent = (payload: GetRegisterSignContentDto) =>
     this.createSnapRpc<GetRegisterSignContentDto>("getRegisterSignContent")(
       payload
@@ -70,4 +81,10 @@ export class SnapClient extends BaseSnapClient {
     this.createSnapRpc<RegisterToWeb3MQDto>("registerToWeb3MQNetwork")(
       payload
     );
+ 
+  getFollowSignContent = (payload: GetFollowSignContentDto) =>
+  this.createSnapRpc<GetFollowSignContentDto, SignFollowContentRes>("getFollowSignContent")(
+    payload
+  );
+ 
 }

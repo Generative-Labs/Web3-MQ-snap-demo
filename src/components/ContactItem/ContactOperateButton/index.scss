@@ -1,0 +1,14 @@
+.opBtn {
+  width: 90px;
+  padding: 0 12px;
+  height: 32px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  &.unfollow.hover {
+    border-radius: 6px;
+    border: 1px solid #FEC8C8;
+    color: #EF4343;
+    background: #FFF;
+  }
+}

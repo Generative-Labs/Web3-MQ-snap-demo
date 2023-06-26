@@ -5,6 +5,7 @@ import { Snap } from "../types";
 const snapClient: SnapClient = new SnapClient();
 
 export enum MetamaskActions {
+  SetLoading = 'SetLoading',
   SetInstalled = "SetInstalled",
   SetConnected = "SetConnected",
   SetFlaskDetected = "SetFlaskDetected",
@@ -12,9 +13,10 @@ export enum MetamaskActions {
 }
 
 export type MetamaskState = {
+  loading: boolean;
   isFlask: boolean;
   installedSnap: Snap | undefined;
-  isWeb3MqConnected: boolean
+  isWeb3MqConnected: boolean;
   error?: Error;
 };
 
@@ -44,6 +46,11 @@ const reducer: Reducer<MetamaskState, MetamaskDispatch> = (state, action) => {
         ...state,
         isWeb3MqConnected: action.payload,
       }
+    case MetamaskActions.SetLoading:
+      return {
+        ...state,
+        loading: action.payload,
+      }
     default:
       return state;
   }
@@ -54,6 +61,7 @@ const initialState: MetamaskState = {
   error: undefined,
   installedSnap: undefined,
   isWeb3MqConnected: false,
+  loading: true,
 };
 
 
@@ -67,6 +75,10 @@ export const SnapProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
+    dispatch({
+      type: MetamaskActions.SetLoading,
+      payload: true,
+    });
     snapClient.detect().then((res) => {
       dispatch({
         type: MetamaskActions.SetFlaskDetected,
@@ -79,6 +91,11 @@ export const SnapProvider = ({ children }: { children: ReactNode }) => {
       dispatch({
         type: MetamaskActions.SetConnected,
         payload: res.isWeb3MqConnected,
+      });
+    }).finally(() => {
+      dispatch({
+        type: MetamaskActions.SetLoading,
+        payload: false,
       });
     });
   }, [state.isFlask]);

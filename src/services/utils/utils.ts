@@ -1,6 +1,6 @@
 import { createInstance } from "dotbit";
 import Web3 from "web3";
-import { STARCH_TYPE } from "../../components/Channels";
+import { STARCH_TYPE } from "../../utils/const";
 //@ts-ignore
 const web3 = new Web3(window.ethereum);
 const dotbit = createInstance();

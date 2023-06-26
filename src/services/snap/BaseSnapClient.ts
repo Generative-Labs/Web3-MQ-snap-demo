@@ -102,8 +102,8 @@ export class BaseSnapClient {
     });
   };
 
-  createSnapRpc<P>(method: string) {
-    return async (params: P) =>
+  createSnapRpc<P, R = any>(method: string) {
+    return async (params: P): Promise<R> =>
       window.ethereum.request({
         method: "wallet_invokeSnap",
         params: {

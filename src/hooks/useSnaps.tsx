@@ -112,7 +112,7 @@ export const useSnaps = () => {
       console.log(e, "getContactList - error");
     });
     console.log(response, "getContactList - res");
-    setContactsList(response);
+    setContactsList(response.user_list);
     return response;
   };
   const getFollowerList = async (payload: PageDto) => {
@@ -120,7 +120,7 @@ export const useSnaps = () => {
       console.log(e, "getFollowerList - error");
     });
     console.log(response, "getFollowerList - res");
-    setFollowerList(response);
+    setFollowerList(response.user_list);
     return response;
   };
   const getFollowingList = async (payload: PageDto) => {
@@ -128,7 +128,7 @@ export const useSnaps = () => {
       console.log(e, "getFollowingList - error");
     });
     console.log(response, "getFollowingList - res");
-    setFollowingList(response);
+    setFollowingList(response.user_list);
     return response;
   };
   const getMyFriendRequestList = async (payload: PageDto) => {
@@ -141,6 +141,7 @@ export const useSnaps = () => {
     setFriendRequestList(response);
     return response;
   };
+  // follow request in following list
   const requestFollow = async (payload: RequestFollowRpcDto) => {
     const response = await snapClient.requestFollow(payload).catch((e) => {
       console.log(e, "requestFollow - error");
@@ -148,6 +149,8 @@ export const useSnaps = () => {
     console.log(response, "requestFollow - res");
     return response;
   };
+  // follow opt in follower list
+  // follow or unfollow
   const followOperation = async (payload: FollowOperationDto) => {
     const response = await snapClient.followOperation(payload).catch((e) => {
       console.log(e, "followOperation - error");
@@ -155,7 +158,17 @@ export const useSnaps = () => {
     console.log(response, "followOperation - res");
     return response;
   };
+
+  const getContactsAll = async () => {
+    const batch = Promise.all([
+      getFollowerList({ page: 1, size: 30 }),
+      getFollowingList({ page: 1, size: 30 }),
+    ])
+    await batch
+  }
+
   return {
+    snapClient,
     creatRoom,
     getTopic,
     getMessages,
@@ -164,6 +177,7 @@ export const useSnaps = () => {
     getContactList,
     getFollowerList,
     getFollowingList,
+    getContactsAll,
     requestFollow,
     followOperation,
     getMyFriendRequestList,

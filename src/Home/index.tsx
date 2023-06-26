@@ -11,11 +11,10 @@ import {
 } from "../services/utils/utils";
 import { useStore } from "../services/mobx/service";
 import { observer } from "mobx-react";
-import MobileDemo from "../components/MobileDemo";
 import { useSnaps } from "../hooks/useSnaps";
-import Channels from "../components/Channels";
-import ChatsPanel from "../components/ChatsPanel";
-import { Header } from "../components/Header";
+import { Header } from "../containers/Header";
+import ChatsPanel from "../containers/ChatsPanel";
+import MobileDemo from "../containers/MobileDemo";
 
 import "./Home.scss";
 
@@ -45,7 +44,7 @@ const Home: React.FC = () => {
       }
     };
     init();
-  }, []);
+  }, [dismiss, getChannelList, present, setLoginUserId]);
 
 
 
