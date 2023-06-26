@@ -22,7 +22,7 @@ function List({ list }: IProp) {
     <div className="mq-contact-list">
       {list.map((item) => {
         return (
-          <ContactItem key={item.wallet_address} user={item}/>
+          <ContactItem key={item.userid} user={item}/>
         )
       })}
     </div>
