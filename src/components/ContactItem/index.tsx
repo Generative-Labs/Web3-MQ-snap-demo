@@ -46,6 +46,10 @@ const ContactItem = (props: IRenderContanctItem) => {
   // }, [user.avatar_url, user.userid, user.wallet_address])
 
   const onSendMessage = useCallback(async () => {
+    if (!user.follow_status) {
+      console.warn(`selected topic not exsit ${JSON.stringify(user)}`)
+      return
+    }
     const topic = user.userid;
     await present({
       message: "Loading...",

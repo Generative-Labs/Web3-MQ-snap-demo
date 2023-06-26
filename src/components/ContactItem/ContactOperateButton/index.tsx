@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { useIonLoading } from "@ionic/react";
+import { observer } from "mobx-react";
 import { ContactListItemType, SearchContactListItemType } from "../../../services/snap/dto";
 import { getEthAccount, signWithEth } from "../../../utils/metamask";
 import { Button } from "../../Button";
@@ -18,7 +19,7 @@ interface IContactOperateButton {
  * 3. accept
  * export type FollowStatusDto = "following" | "follower" | "follow_each";
  */
-export const ContactOperateButton = ({ user, onSuccess }: IContactOperateButton) => {
+export const ContactOperateButton = observer(({ user, onSuccess }: IContactOperateButton) => {
   const { follow_status = '' } = user;
   const [present, dismiss] = useIonLoading();
   const { getContactsAll } = useSnaps();
@@ -64,6 +65,6 @@ export const ContactOperateButton = ({ user, onSuccess }: IContactOperateButton)
     return <Button className="opBtn unfollow" title="Friend" hoverTitle="Unfollow" onClick={() => doFollow('cancel')} />;
   }
   return <Button className="opBtn" title="Follow" onClick={() => doFollow('follow')} />;
-};
+})
 
 

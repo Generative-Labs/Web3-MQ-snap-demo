@@ -52,7 +52,7 @@ export const SearchContactListList = observer(({ readySendMessage = '' }: IProp)
   }
   return (
     <div className="mq-searchlist">
-      {searchUsers.slice().map((item, index) => {
+      {searchUsers.map((item, index) => {
         return <ContactItem key={item.userid} user={item} onSuccess={onSuccess} />;
       })}
     </div>
