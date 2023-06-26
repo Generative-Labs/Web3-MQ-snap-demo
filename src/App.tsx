@@ -13,25 +13,46 @@ import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 import { setupIonicReact } from "@ionic/react";
-import Login from "./Login";
+import DetectUserExsit from "./Login";
 import { useStore } from "./services/mobx/service";
 import Home from "./Home";
 import { observer } from "mobx-react";
+import { SnapProvider, useSnapClient } from "./hooks/useSnapClient";
+import NotFlaskLogin from "./Login/NotFlaskLogin";
+import NotSnapIntalledLogin from "./Login/NotSnapIntalledLogin";
+import Login from "./Login/Login";
 
 
-const App: React.FC = () => {
-  const { isConnected} = useStore();
+const _App: React.FC = () => {
+  const { isConnected } = useStore();
+  const { state } = useSnapClient();
   setupIonicReact({
     mode: "ios",
   });
-  // todo: isConnected not always work
-  if (!isConnected) {
-    return <Login />
-  }
+  console.log(state, 'state in App.tsx')
+
+  // if (!state.isFlask) {
+  //   return <NotFlaskLogin />
+  // } else if (!state.installedSnap) {
+  //   return <NotSnapIntalledLogin />
+  // } else if (!isConnected) {
+  //   // todo: isConnected not always work
+  //   return <Login />
+  // }
   return (
       <Home />
   )
 };
-export default observer(App);;
+
+const _AppWithStore = observer(_App)
+const App = () => {
+
+  return (
+    <SnapProvider>
+      <_AppWithStore/>
+    </SnapProvider>
+  )
+}
+export default observer(App);
 
 

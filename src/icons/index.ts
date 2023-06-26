@@ -17,3 +17,5 @@ export * from './ChannelSearchIcon';
 export * from './SendIcon';
 export * from './SyncIcon';
 export * from './RefreshIcon';
+export * from './ChatIcon';
+export * from './ContactIcon';

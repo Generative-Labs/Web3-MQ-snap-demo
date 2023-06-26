@@ -27,34 +27,6 @@
     text-align: center;
     color: #71717a;
   }
-
-  .contactTabs {
-    width: 100%;
-    height: 46px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 30px;
-    border-bottom: .5px solid #f2fafa;
-
-    .tab {
-      padding: 13px 0;
-      font-family: 'Inter', sans-serif;
-      font-style: normal;
-      font-weight: 600;
-      font-size: 16px;
-      line-height: 20px;
-      color: #A1A1AA;
-      cursor: pointer;
-      box-sizing: border-box;
-
-
-      &.active {
-        color: #663CEE;
-        border-bottom: 3px solid #663CEE;
-      }
-    }
-  }
 }
 
 .chatListItem {
@@ -155,87 +127,6 @@
   margin-bottom: 20px;
 }
 
-.searchUserBox {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  display: flex;
-  margin-right: 24px;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  height: 44px;
-  border: 1px solid #dde8e8;
-  padding-right: 20px;
-
-  .searchTypeBox {
-    position: relative;
-    border-right: 1px solid #dde8e8;
-    padding: 10px 20px;
-
-    .searchType {
-      display: flex;
-      align-items: center;
-      font-size: 16px;
-
-      ion-icon {
-        margin-left: 8px;
-      }
-    }
-
-    .selectSearchType {
-      display: none;
-      position: absolute;
-      left: 0;
-      top: -93px;
-      z-index: 99;
-
-      ul {
-        margin: 0;
-        padding: 0;
-      }
-
-      li {
-        text-align: center;
-        width: 100px;
-        height: 30px;
-        //background: #fff;
-        background-color: rgb(236, 235, 235);
-        font-size: 16px;
-        line-height: 30px;
-      }
-
-      li:hover {
-        background-color: #fff;
-      }
-    }
-
-    &:hover {
-      cursor: pointer;
-
-      .selectSearchType {
-        display: block;
-      }
-    }
-  }
-
-  .input {
-    //border: 1px solid #DDE8E8;
-    border-radius: 4px;
-    padding-left: 16px;
-    --padding-start: 16px;
-  }
-
-  .searchButton {
-    cursor: pointer;
-    color: #333;
-    font-size: 24px;
-  }
-
-  .searchButton:hover {
-    color: #000;
-    font-size: 26px;
-  }
-}
 
 .emptyUserText {
   //font-size: 24px

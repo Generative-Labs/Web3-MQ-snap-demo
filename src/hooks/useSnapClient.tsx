@@ -1,4 +1,4 @@
-import { Reducer, useCallback, useEffect, useReducer } from "react";
+import { ReactNode, Reducer, createContext, useCallback, useContext, useEffect, useReducer } from "react";
 import { SnapClient } from "../services/snap/SnapClient";
 import { Snap } from "../types";
 
@@ -12,7 +12,7 @@ export enum MetamaskActions {
 
 export type MetamaskState = {
   isFlask: boolean;
-  installedSnap?: Snap;
+  installedSnap: Snap | undefined;
   error?: Error;
 };
 
@@ -46,9 +46,17 @@ const reducer: Reducer<MetamaskState, MetamaskDispatch> = (state, action) => {
 const initialState: MetamaskState = {
   isFlask: false,
   error: undefined,
+  installedSnap: undefined,
 };
 
-export function useSnapClient() {
+
+const SnapContext = createContext({
+  state: initialState,
+  snapClient,
+  dispatch: (value: MetamaskDispatch) => {},
+});
+
+export const SnapProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
@@ -63,32 +71,37 @@ export function useSnapClient() {
       });
     });
   }, [state.isFlask]);
+  return (
+    <SnapContext.Provider value={{
+      state,
+      dispatch,
+      snapClient,
+    }}>
+      {children}
+    </SnapContext.Provider>
+  );
+};
 
-  return {
-    dispatch,
-    ...state,
-    snapClient,
-  };
+export function useSnapClient() {
+  const contextValue = useContext(SnapContext);
+  return contextValue;
 }
 
 export function useConnectSnap() {
   const { snapClient, dispatch } = useSnapClient();
-  const handleConnectClick = useCallback(() => {
-    const handler = async () => {
-      try {
-        await snapClient.connectSnap();
-        const installedSnap = await snapClient.getSnap();
+  const handleConnectClick = useCallback(async () => {
+    try {
+      await snapClient.connectSnap();
+      const installedSnap = await snapClient.getSnap();
 
-        dispatch({
-          type: MetamaskActions.SetInstalled,
-          payload: installedSnap,
-        });
-      } catch (e) {
-        console.error(e);
-        dispatch({ type: MetamaskActions.SetError, payload: e });
-      }
-    };
-    return handler();
+      dispatch({
+        type: MetamaskActions.SetInstalled,
+        payload: installedSnap,
+      });
+    } catch (e) {
+      console.error(e);
+      dispatch({ type: MetamaskActions.SetError, payload: e });
+    }
   }, [dispatch, snapClient]);
   return handleConnectClick;
 }

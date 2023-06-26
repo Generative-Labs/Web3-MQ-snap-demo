@@ -14,7 +14,7 @@ import { observer } from "mobx-react";
 import MobileDemo from "../components/MobileDemo";
 import { useSnaps } from "../hooks/useSnaps";
 import Channels from "../components/Channels";
-import Contacts from "../components/Contacts";
+import ChatsPanel from "../components/ChatsPanel";
 import { Header } from "../components/Header";
 
 import "./Home.scss";
@@ -54,8 +54,7 @@ const Home: React.FC = () => {
       <Header />
       <main className="mainContainer">
         <div className="content">
-          <Channels />
-          <Contacts />
+          <ChatsPanel />
           <MobileDemo />
         </div>
       </main>
