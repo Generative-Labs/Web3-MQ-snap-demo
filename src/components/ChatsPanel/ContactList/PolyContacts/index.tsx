@@ -1,11 +1,9 @@
-import React, { useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { observer } from "mobx-react";
 import { useIonLoading } from "@ionic/react";
 import { Button } from "../../../Button";
 import { useSnaps } from "../../../../hooks/useSnaps";
 import { useStore } from "../../../../services/mobx/service";
-import { EmptyList } from "../../../../EmptyList";
-import { ContactIcon } from "../../../../icons";
 import { List } from "./List";
 
 import "./index.scss";

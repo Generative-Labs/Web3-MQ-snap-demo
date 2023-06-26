@@ -31,14 +31,14 @@ const _App: React.FC = () => {
   });
   console.log(state, 'state in App.tsx')
 
-  // if (!state.isFlask) {
-  //   return <NotFlaskLogin />
-  // } else if (!state.installedSnap) {
-  //   return <NotSnapIntalledLogin />
-  // } else if (!isConnected) {
-  //   // todo: isConnected not always work
-  //   return <Login />
-  // }
+  if (!state.isFlask) {
+    return <NotFlaskLogin />
+  } else if (!state.installedSnap) {
+    return <NotSnapIntalledLogin />
+  } else if (!isConnected) {
+    // todo: isConnected not always work
+    return <Login />
+  }
   return (
       <Home />
   )
