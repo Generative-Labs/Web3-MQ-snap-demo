@@ -12,13 +12,13 @@ const items = [
     children: <ChatList />,
   },
   {
-    label: 'Flowers',
-    key: 'Flowers',
+    label: 'Followers',
+    key: 'Followers',
     children: <PolyContacts type="flower" />,
   },
   {
-    label: 'Folowing',
-    key: 'Folowing',
+    label: 'Following',
+    key: 'Following',
     children: <PolyContacts type="folowing" />,
   },
 ]

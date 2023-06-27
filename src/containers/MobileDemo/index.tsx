@@ -115,7 +115,7 @@ const MobileDemo: React.FC = () => {
               ? activeUser
                 ? `Chat With ${getUserName(activeUser)}`
                 : getGroupName(activeChannelItem)
-              : "Web3 MQ Demo"}
+              : "Web3MQ Demo"}
           </div>
         </div>
         <div className={ss.refresh} onClick={pullMessage}>

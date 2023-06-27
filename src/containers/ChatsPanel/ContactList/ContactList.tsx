@@ -5,13 +5,13 @@ import "./ContactList.scss";
 
 const items = [
   {
-    label: 'Flowers',
-    key: 'Flowers',
+    label: 'Followers',
+    key: 'Followers',
     children: <PolyContacts type="flower" />,
   },
   {
-    label: 'Folowing',
-    key: 'Folowing',
+    label: 'Following',
+    key: 'Following',
     children: <PolyContacts type="folowing" />,
   },
   {
@@ -24,7 +24,7 @@ const items = [
 const ContactList = () => {
   return (
     <div className="mq-contacts">
-      <Tabs items={items} defaultActiveKey="Flowers" />
+      <Tabs items={items} defaultActiveKey="Followers" />
     </div>
   );
 };
