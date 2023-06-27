@@ -26,17 +26,20 @@ const _Item = ({ channel, isUser = false }: IRenderChannelItem) => {
   }
 
   const onChannelClick = useCallback(async () => {
-    await present({
-      message: "Loading...",
-    });
-    setActiveChannel(topic);
-    if (isUser) {
-      setActiveUser(channel);
-    } else {
-      setActiveChannelItem(channel);
+    try {   
+      await present({
+        message: "Loading...",
+      });
+      setActiveChannel(topic);
+      if (isUser) {
+        setActiveUser(channel);
+      } else {
+        setActiveChannelItem(channel);
+      }
+      await getMessages(true, topic);
+    } finally {
+      await dismiss();
     }
-    await getMessages(true, topic);
-    await dismiss();
   }, [channel, dismiss, getMessages, isUser, present, setActiveChannel, setActiveChannelItem, setActiveUser, topic]);
   return (
     <div

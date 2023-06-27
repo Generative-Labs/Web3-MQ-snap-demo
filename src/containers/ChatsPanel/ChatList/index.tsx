@@ -34,11 +34,14 @@ const ChatList = () => {
   // const showSearchList = useMemo(() => readySendMessage && )
 
   async function onPullChats() {
-    await present({
-      message: "Loading...",
-    });
-    await getChannelList();
-    await dismiss();
+    try {
+      await present({
+        message: "Loading...",
+      });
+      await getChannelList();
+    } finally {
+      await dismiss();
+    }
   }
 
   const onSearch = useCallback(async () => {

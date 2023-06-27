@@ -51,13 +51,16 @@ const ContactItem = (props: IRenderContanctItem) => {
       return
     }
     const topic = user.userid;
-    await present({
-      message: "Loading...",
-    });
-    setActiveChannel(topic);
-    setActiveUser(user);
-    await getMessages(true, topic);
-    await dismiss();
+    try {   
+      await present({
+        message: "Loading...",
+      });
+      setActiveChannel(topic);
+      setActiveUser(user);
+      await getMessages(true, topic);
+    } finally {
+      await dismiss();
+    }
   }, [dismiss, getMessages, present, setActiveChannel, setActiveUser, user])
   return (
     <div

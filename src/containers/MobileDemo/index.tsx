@@ -39,23 +39,26 @@ const MobileDemo: React.FC = () => {
   const { run } = useDebounceFn(
     async () => {
       if (!readySendMessage) return;
-      await present({ message: "Loading..." });
-      if (!activeChannel) {
-        alert("Please Choose Channel");
-        return false;
+      try {
+        await present({ message: "Loading..." });
+        if (!activeChannel) {
+          alert("Please Choose Channel");
+          return false;
+        }
+        console.log(activeChannel, "activeChannel");
+        await snapClient
+          .sendMessage({
+            msg: readySendMessage,
+            topic: activeChannel,
+          })
+          .catch((e) => {
+            console.log(e, "sendMessage error");
+          });
+        await getMessages(true, activeChannel);
+        setReadySendMessage("");
+      } finally {
+        await dismiss();
       }
-      console.log(activeChannel, "activeChannel");
-      await snapClient
-        .sendMessage({
-          msg: readySendMessage,
-          topic: activeChannel,
-        })
-        .catch((e) => {
-          console.log(e, "sendMessage error");
-        });
-      await getMessages(true, activeChannel);
-      setReadySendMessage("");
-      await dismiss();
     },
     {
       wait: 500,

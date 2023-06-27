@@ -13,10 +13,13 @@ export const Header: React.FC = () => {
   const [present, dismiss] = useIonLoading();
 
   async function disconnect() {
-    await present()
-    const res = await snapClient.disconnect()
-    await dismiss()
-    window.location.reload()
+    try {
+      await present()
+      const res = await snapClient.disconnect()
+      window.location.reload()
+    } finally {
+      await dismiss()
+    }
   }
   return (
     <header className="snapHeader">

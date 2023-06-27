@@ -31,20 +31,20 @@ const Home: React.FC = () => {
   const [present, dismiss] = useIonLoading();
   const { getChannelList } = useSnaps();
 
-  useEffect(() => {
-    const init = async () => {
-      if (getKeys()) {
-        await dismiss();
-        await present({
-          message: "Loading...",
-        });
-        setLoginUserId(getLoginUserId());
-        await getChannelList();
-        await dismiss();
-      }
-    };
-    init();
-  }, [dismiss, getChannelList, present, setLoginUserId]);
+  // useEffect(() => {
+  //   const init = async () => {
+  //     if (getKeys()) {
+  //       await dismiss();
+  //       await present({
+  //         message: "Loading...",
+  //       });
+  //       setLoginUserId(getLoginUserId());
+  //       await getChannelList();
+  //       await dismiss();
+  //     }
+  //   };
+  //   init();
+  // }, [dismiss, getChannelList, present, setLoginUserId]);
 
 
 

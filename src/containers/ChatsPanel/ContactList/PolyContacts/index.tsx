@@ -61,9 +61,12 @@ function PolyContacts({ type }: IBaseContactsProp) {
   }, [contactsList, followerList, followingList, friendRequestList, type]);
 
   const onPullAllContacts = useCallback(async () => {
-    await present({ message: "Loading..." });
-    await getContactsAll()
-    await dismiss();
+    try {
+      await present({ message: "Loading..." });
+      await getContactsAll()
+    } finally {
+      await dismiss();
+    }
   }, [dismiss, getContactsAll, present]);
 
   return (
