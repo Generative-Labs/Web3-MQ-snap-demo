@@ -21,3 +21,4 @@ export * from './ChatIcon';
 export * from './ContactIcon';
 export * from './MetaMaskFlaskIcon';
 export * from './CloseBtn';
+export * from './LogoutIcon';

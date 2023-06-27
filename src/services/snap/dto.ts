@@ -151,3 +151,14 @@ export type FollowOperationRes = {
   target_userid: string
   userid: string
 }
+
+export type Web3MQKeysRes = {
+  privateKey: string
+  publicKey: string
+  userid: string
+  walletAddress: string
+  mainPrivateKey: string
+  mainPublicKey: string
+  didKey: string
+  pubkeyExpiredTimestamp: string
+}

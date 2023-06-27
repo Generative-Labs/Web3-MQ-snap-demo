@@ -19,13 +19,20 @@ import {
   SendNotifyMessageRpcDto,
   SignFollowContentRes,
   SnapRpcResponse,
+  Web3MQKeysRes,
 } from "./dto";
 
 export class SnapClient extends BaseSnapClient {
 
   detectIsWeb3MqConnected = async () => {
-    return this.exportWeb3MQKeys()
+    const { privateKey, publicKey, userid} = await this.exportWeb3MQKeys()
+    if (privateKey && publicKey && userid) {
+      return true
+    }
+    return false
   }
+
+  disconnect = () => this.createSnapRpc("disconnect")({});
   
   connectToWeb3MQ = (payload: ConnectRpcDto) =>
     this.createSnapRpc<ConnectRpcDto>("connectToWeb3MQ")(payload);
@@ -71,7 +78,7 @@ export class SnapClient extends BaseSnapClient {
   getMainKeypairBySignature = (payload: GetKeysDto) =>
     this.createSnapRpc<GetKeysDto>("getMainKeypairBySignature")(payload);
 
-  exportWeb3MQKeys = () => this.createSnapRpc("exportWeb3MQKeys")({});
+  exportWeb3MQKeys = () => this.createSnapRpc<any, Web3MQKeysRes>("exportWeb3MQKeys")({});
 
   getRegisterSignContent = (payload: GetRegisterSignContentDto) =>
     this.createSnapRpc<GetRegisterSignContentDto>("getRegisterSignContent")(

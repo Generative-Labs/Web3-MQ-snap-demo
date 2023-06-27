@@ -14,4 +14,14 @@
     width: 201px;
     height: 24px;
   }
+
+  .loggoutBtn {
+    padding: 0 12px;
+    height: 32px;
+    font-size: 14px;
+    font-weight: 500;
+    svg {
+      margin-right: 4px;
+    }
+  }
 }
