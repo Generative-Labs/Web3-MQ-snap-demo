@@ -24,7 +24,7 @@ import Login from "./containers/Login/Login";
 
 const _App: React.FC = () => {
   const [present, dismiss] = useIonLoading();
-  const { state, snapClient } = useSnapClient();
+  const { state } = useSnapClient();
   setupIonicReact({
     mode: "ios",
   });

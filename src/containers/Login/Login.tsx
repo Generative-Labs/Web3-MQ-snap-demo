@@ -20,16 +20,15 @@ import { useConnectMQ } from "../../hooks/useLogin";
 interface IProps {}
 
 const Login: React.FC<IProps> = () => {
-  const { state: { isFlask } } = useSnapClient();
+  const [signInVisible, setSignInVisible] = useState<boolean>(false)
+  const [signUpVisible, setSignUpVisible] = useState<boolean>(false)
+  const [address, setAddress] = useState<string>('')
+  const [userid, setUserid] = useState<string>('')
   const store = useStore();
   const [present, dismiss] = useIonLoading();
   const [errorInfo, setErrorInfo] = useState("");
   const { dispatch } = useSnapClient()
   const { detectUser, connect, signUpAndConnect} = useConnectMQ()
-  const [signInVisible, setSignInVisible] = useState<boolean>(false)
-  const [signUpVisible, setSignUpVisible] = useState<boolean>(false)
-  const [address, setAddress] = useState<string>('')
-  const [userid, setUserid] = useState<string>('')
 
   const onConnectClick = async () => {
     await present({
@@ -120,22 +119,6 @@ const Login: React.FC<IProps> = () => {
             title="Connect to Web3MQ"
           />
         </div>
-        {!isFlask && (
-          <div className="notInstalled">
-            <TipIcon />
-            <p>
-              Not installed MetaMask Flask{" "}
-              <a
-                className="ephasis"
-                href="https://metamask.io/flask/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                install MetaMask Flask
-              </a>
-            </p>
-          </div>
-        )}
       </div>
       <Modal visible={signUpVisible} closeModal={() => setSignUpVisible(false)}>
         <div className="modalBody">
