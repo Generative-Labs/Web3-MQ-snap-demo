@@ -36,7 +36,6 @@ const _App: React.FC = () => {
       dismiss()
     }
   }, [dismiss, present, state.loading])
-
   if (state.loading) {
     return <Home />
   } else if (!state.isFlask) {

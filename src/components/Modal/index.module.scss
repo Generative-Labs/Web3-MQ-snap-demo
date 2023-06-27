@@ -1,0 +1,125 @@
+
+.modal {
+  // position: fixed;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.24);
+  z-index: 40;
+}
+
+.dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  min-height: 80px;
+  border-radius: 18px;
+  padding-bottom: 16px;
+  background-color: #fff;
+}
+
+.mobileStyle {
+  border-radius: unset;
+  height: 100%;
+  width: 100%;
+  min-height: 600px;
+  min-width: 375px;
+}
+
+.titleContainer {
+  padding: 14px 16px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 500;
+  font-size: 18px;
+  color: #fff;
+}
+
+.closeBtn {
+  position: absolute;
+  right: 16px;
+  cursor: pointer;
+  font-size: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    color: #71717a;
+  }
+}
+
+.leftBtn {
+  cursor: pointer;
+  position: absolute;
+  left: 30px;
+}
+
+.enter {
+  opacity: 0;
+}
+
+.enterActive {
+  transition: opacity 250ms ease-in-out;
+  opacity: 1;
+}
+
+.enterDone {
+  opacity: 1;
+}
+
+.exit {
+  opacity: 1;
+}
+
+.exitActive {
+  opacity: 0;
+  transition: opacity 250ms ease-in-out;
+}
+
+.exitDone {
+  opacity: 0;
+}
+
+// content animation
+.contentEnter {
+  top: 100%;
+}
+
+.contentEnterActive {
+  transition: top 200ms ease-in-out;
+  top: 50%;
+}
+
+.contentEnterDone {
+  top: 50%;
+}
+
+.contentExit {
+  top: 50%;
+}
+
+.contentExitActive {
+  transition: top 200ms ease-in-out;
+  top: 100%;
+}
+
+.contentExitDone {
+  top: 100%;
+}

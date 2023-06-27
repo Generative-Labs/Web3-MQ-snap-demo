@@ -5,17 +5,19 @@ interface IProps {
   title: string;
   hoverTitle?: string;
   disable?: boolean;
+  style?: React.CSSProperties;
   className?: string;
   icon?: React.ReactNode;
   onClick: () => void;
 }
 export function Button({
+  style = {},
   icon,
   title,
   hoverTitle = '',
   className = "",
   onClick,
-  disable = false,
+  disable,
 }: IProps) {
   const [isHovered, setIsHovered] = useState(false);
   const handleHover = () => {
@@ -23,6 +25,7 @@ export function Button({
   };
   return (
     <button
+      style={style}
       className={`snapDemoBtn ${className} ${disable ? "disable" : ""} ${isHovered ? 'hover': ''}`}
       onClick={onClick}
       onMouseEnter={handleHover}

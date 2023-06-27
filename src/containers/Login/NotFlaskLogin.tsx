@@ -34,25 +34,23 @@ const NotFlaskLogin: React.FC<IProps> = () => {
           <Button
             className={"disable"}
             onClick={installFlask}
-            title="Install flask"
+            title="Install metamask flask"
           />
         </div>
-        {!isFlask && (
-          <div className="notInstalled">
-            <TipIcon />
-            <p>
-              Not installed MetaMask Flask{" "}
-              <a
-                className="ephasis"
-                href="https://metamask.io/flask/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                install MetaMask Flask
-              </a>
-            </p>
-          </div>
-        )}
+        <div className="notInstalled">
+          <p>
+            <TipIcon className="warningIcon" />
+            Currently, Snaps only work on MetaMask Flask{" "}
+            <a
+              className="ephasis"
+              href="https://metamask.io/flask/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              install MetaMask Flask
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );

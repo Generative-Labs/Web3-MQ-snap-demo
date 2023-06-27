@@ -57,8 +57,9 @@ export type GetKeysDto = {
 export type GetRegisterSignContentDto = {
   userid: string;
   mainPublicKey: string;
-  didType?: WalletType;
-  didValue: string;
+  walletType: WalletType;
+  walletAddress: string;
+  signContentURI?: string;
 };
 
 export type ConnectRpcDto = {

@@ -58,7 +58,7 @@ export const ContactOperateButton = observer(({ user, onSuccess }: IContactOpera
   }, [dismiss, getContactsAll, onSuccess, present, snapClient, user.userid])
 
   if (follow_status === 'following') {
-    return <Button className="opBtn unfollow" title="Following" hoverTitle="Unfollow" onClick={() => doFollow('cancel')} />;
+    return <Button className="opBtn following unfollow" title="Following" hoverTitle="Unfollow" onClick={() => doFollow('cancel')} />;
   } else if (follow_status === 'follower') {
     return <Button className="opBtn" title="Follow" onClick={() => doFollow('follow')} />;
   } else if (follow_status === 'follow_each') {

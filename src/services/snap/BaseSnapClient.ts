@@ -14,13 +14,9 @@ export class BaseSnapClient {
     let isFlaskDetected = false;
     let installedSnap = undefined;
     let isWeb3MqConnected = false;
-    try {
-      isFlaskDetected = await this.isFlask();
-    } catch (error) {}
 
-    try {
-      installedSnap = await this.getSnap();
-    } catch (error) {}
+    isFlaskDetected = await this.isFlask();
+    installedSnap = await this.getSnap();
 
     this.isFlaskDetected = isFlaskDetected;
     this.installedSnap = installedSnap;
