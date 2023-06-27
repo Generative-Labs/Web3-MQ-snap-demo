@@ -36,10 +36,12 @@ const Login: React.FC<IProps> = () => {
       spinner: "circles",
     });
     try {
-      const { userExist, userid, address } = await detectUser()
-      if (!address || !userid) {
+      const res = await detectUser()
+      if (!res) {
+        await dismiss()
         return
       }
+      const { userExist, userid, address } = res
       setAddress(address)
       setUserid(userid)
       if (userExist) {
@@ -56,11 +58,11 @@ const Login: React.FC<IProps> = () => {
     if (!password) {
       return
     }
+    await present({
+      message: "Connecting...",
+      spinner: "circles",
+    });
     try {
-      await present({
-        message: "Connecting...",
-        spinner: "circles",
-      });
       const res = await signUpAndConnect({
         userid,
         password,
@@ -82,6 +84,10 @@ const Login: React.FC<IProps> = () => {
     if (!password) {
       return
     }
+    await present({
+      message: "Connecting...",
+      spinner: "circles",
+    });
     try {
       const res = await connect({
         userid,
@@ -96,6 +102,7 @@ const Login: React.FC<IProps> = () => {
       })
     } finally {
       setSignInVisible(false)
+      await dismiss()
     }
   }
 

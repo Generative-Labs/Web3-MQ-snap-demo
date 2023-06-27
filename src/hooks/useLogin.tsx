@@ -39,7 +39,7 @@ export function useConnectMQ() {
   const detectUser = useCallback(async () => {
     const { address } = await getEthAccount();
     if (!address) {
-      throw new Error('eth account fetch not success')
+      return null
     }
     const { userExist, userid } = await snapClient.checkUserExist({ address });
     console.log({
