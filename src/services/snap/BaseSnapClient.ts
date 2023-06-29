@@ -5,6 +5,7 @@ export class BaseSnapClient {
   snapId = defaultSnapOrigin;
   isFlaskDetected = false;
   installedSnap: Snap | undefined = undefined;
+  isWeb3MqConnected = false;
 
   constructor(snapId: string = defaultSnapOrigin) {
     this.snapId = snapId;
@@ -15,14 +16,41 @@ export class BaseSnapClient {
     let installedSnap = undefined;
     let isWeb3MqConnected = false;
 
-    isFlaskDetected = await this.isFlask();
-    installedSnap = await this.getSnap();
+    try {
+      isFlaskDetected = await this.isFlask();
+      this.isFlaskDetected = isFlaskDetected;
+    } catch (error) {
+      console.error(error)
+      return {
+        isFlaskDetected,
+        installedSnap,
+        isWeb3MqConnected,
+      }
+    }
+    try {
+      installedSnap = await this.getSnap();
+      this.installedSnap = installedSnap;
+    } catch (error) {
+      console.error(error)
+      return {
+        isFlaskDetected,
+        installedSnap,
+        isWeb3MqConnected,
+      }
+    }
 
-    this.isFlaskDetected = isFlaskDetected;
-    this.installedSnap = installedSnap;
 
     if (isFlaskDetected && installedSnap) {
-      isWeb3MqConnected = !!(await this.detectIsWeb3MqConnected())
+      try {
+        isWeb3MqConnected = await this.detectIsWeb3MqConnected()
+        this.isWeb3MqConnected = isWeb3MqConnected
+      } catch (error) {
+        return {
+          isFlaskDetected,
+          installedSnap,
+          isWeb3MqConnected,
+        }
+      }
     }
     return {
       isFlaskDetected,
@@ -99,13 +127,19 @@ export class BaseSnapClient {
   };
 
   createSnapRpc<P, R = any>(method: string) {
-    return async (params: P): Promise<R> =>
-      window.ethereum.request({
-        method: "wallet_invokeSnap",
-        params: {
-          snapId: this.snapId,
-          request: { method, params },
-        },
-      });
+    return async (params: P): Promise<R> => {
+      return new Promise<R>((resolve, reject) => {
+        setTimeout(() => {
+          reject('snap rpc timeout error')
+        }, 5000)
+        window.ethereum.request({
+          method: "wallet_invokeSnap",
+          params: {
+            snapId: this.snapId,
+            request: { method, params },
+          },
+        }).then(resolve)
+      })
+    }
   }
 }

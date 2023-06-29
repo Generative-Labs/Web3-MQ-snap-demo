@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 import {
   IonContent,
@@ -21,6 +21,22 @@ import {
 import { useSnapClient } from "../../hooks/useSnapClient";
 import { RefreshIcon, SendIcon, TipIcon } from "../../icons";
 import web3MqLogo from "../../assets/web3mq.logo.png";
+
+type MessageOfMq = {
+  _id: number
+  id: number
+  content: string
+  senderId: string
+  username: string
+  avatar: string
+  date: string
+  timestamp: string
+  system: boolean
+  saved: boolean
+  distributed: boolean
+  seen: boolean
+  failure: boolean
+}
 
 const userIcon = require("../../assets/svg/user.svg").default;
 const MobileDemo: React.FC = () => {
@@ -65,8 +81,20 @@ const MobileDemo: React.FC = () => {
     }
   );
 
-  const RenderMessageAvatar = useCallback((props: { message: any }) => {
+  const RenderMessageAvatar = useCallback((props: { message: MessageOfMq }) => {
     const { message } = props;
+    // const nickname = useMemo(() => {
+    //   if (user.nickname) {
+    //     return user.nickname
+    //   }
+    //   if (user.wallet_address) {
+    //     return getShortAddressByAddress(user.wallet_address)
+    //   }
+    //   if (user.userid) {
+    //     return getShortAddressByAddress(user.userid, 10, 6)
+    //   }
+    //   return '-'
+    // }, [user.nickname, user.userid, user.wallet_address]);
     return (
       <div className={ss.userTitleBox}>
         <div className={ss.userInfoBox}>
@@ -74,14 +102,14 @@ const MobileDemo: React.FC = () => {
           <div className={ss.username}>
             {getShortAddressByAddress(message.senderId)}
           </div>
-          {message.created_at > 0 && (
+          {/* {message.created_at > 0 && (
             <div className={ss.createAt}>
               {moment
                 .utc(message.created_at / 1000000)
                 .local()
                 .format("MM/DD HH:mm")}
             </div>
-          )}
+          )} */}
         </div>
       </div>
     );
