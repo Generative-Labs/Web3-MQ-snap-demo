@@ -1,7 +1,6 @@
 import { createInstance } from "dotbit";
 import Web3 from "web3";
 import { STARCH_TYPE } from "../../utils/const";
-import { getUserPublicProfileRequest } from "@web3mq/client";
 //@ts-ignore
 const web3 = new Web3(window.ethereum);
 const dotbit = createInstance();
