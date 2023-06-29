@@ -131,7 +131,7 @@ export class BaseSnapClient {
       return new Promise<R>((resolve, reject) => {
         setTimeout(() => {
           reject('snap rpc timeout error')
-        }, 5000)
+        }, 20000)
         window.ethereum.request({
           method: "wallet_invokeSnap",
           params: {
