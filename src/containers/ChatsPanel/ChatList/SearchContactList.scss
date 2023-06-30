@@ -1,0 +1,37 @@
+.mq-search-empty {
+  margin-top: 12px;
+  position: relative;
+  padding: 0 50px;
+  margin-bottom: 50px;
+  text-align: center;
+  font-size: 20px;
+
+  .bottom {
+    font-size: 16px;
+    color: #3880ff;
+  }
+
+  .bottom:hover {
+    text-decoration: underline;
+    cursor: pointer;
+
+    .copyTopic {
+      display: block;
+    }
+  }
+
+
+  .copyTopic {
+    position: absolute;
+    bottom: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: calc(50% - 50px);
+    transform: translateX(-50%);
+    display: none;
+  }
+}
+
+.mq-searchlist {
+  border-top: 0.5px solid var(--color-gray-100, #F4F4F5);
+}

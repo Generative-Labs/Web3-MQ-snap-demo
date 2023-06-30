@@ -1,6 +1,6 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, observable, runInAction } from "mobx";
 import React from "react";
-import {ContactListItemType} from "../snap/dto";
+import {ContactListItemType, SearchContactListItemType} from "../snap/dto";
 
 export default class AppStore {
   messageList: any[] = [];
@@ -8,13 +8,15 @@ export default class AppStore {
   isConnected: boolean = false;
   currentMessages: any = null;
   channelList: any[] = [];
-  searchUsers: any[] | null = null;
+  
+  searchUsers: SearchContactListItemType[] = [];
   activeChannel: string = "";
   loginUserId?: string = "";
   showAlert: boolean = false;
   errorMessage: string = "";
   activeChannelItem: any = null;
   activeUser: any = null;
+  address: string = "";
   followerList: ContactListItemType[] = []
   followingList: ContactListItemType[] = []
   contactsList: ContactListItemType[] = []
@@ -92,11 +94,21 @@ export default class AppStore {
       this.channelList = data;
     });
   };
+
   setSearchUsers = (data: any[]) => {
     runInAction(() => {
       this.searchUsers = data;
     });
   };
+
+  updateTodoItem = (userid: string, follow_status: string) => {
+    runInAction(() => {
+      const target = this.searchUsers.find(item => item.userid === userid);
+      if (target) {
+        target.follow_status = follow_status;
+      }
+    })
+  }
 
   testAdd = () => {
     ++this.num;

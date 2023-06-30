@@ -17,3 +17,8 @@ export * from './ChannelSearchIcon';
 export * from './SendIcon';
 export * from './SyncIcon';
 export * from './RefreshIcon';
+export * from './ChatIcon';
+export * from './ContactIcon';
+export * from './MetaMaskFlaskIcon';
+export * from './CloseBtn';
+export * from './LogoutIcon';

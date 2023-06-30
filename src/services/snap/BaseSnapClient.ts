@@ -5,6 +5,7 @@ export class BaseSnapClient {
   snapId = defaultSnapOrigin;
   isFlaskDetected = false;
   installedSnap: Snap | undefined = undefined;
+  isWeb3MqConnected = false;
 
   constructor(snapId: string = defaultSnapOrigin) {
     this.snapId = snapId;
@@ -13,21 +14,53 @@ export class BaseSnapClient {
   async detect() {
     let isFlaskDetected = false;
     let installedSnap = undefined;
+    let isWeb3MqConnected = false;
+
     try {
       isFlaskDetected = await this.isFlask();
-    } catch (error) {}
-
+      this.isFlaskDetected = isFlaskDetected;
+    } catch (error) {
+      console.error(error)
+      return {
+        isFlaskDetected,
+        installedSnap,
+        isWeb3MqConnected,
+      }
+    }
     try {
       installedSnap = await this.getSnap();
-    } catch (error) {}
+      this.installedSnap = installedSnap;
+    } catch (error) {
+      console.error(error)
+      return {
+        isFlaskDetected,
+        installedSnap,
+        isWeb3MqConnected,
+      }
+    }
 
-    this.isFlaskDetected = isFlaskDetected;
-    this.installedSnap = installedSnap;
+
+    if (isFlaskDetected && installedSnap) {
+      try {
+        isWeb3MqConnected = await this.detectIsWeb3MqConnected()
+        this.isWeb3MqConnected = isWeb3MqConnected
+      } catch (error) {
+        return {
+          isFlaskDetected,
+          installedSnap,
+          isWeb3MqConnected,
+        }
+      }
+    }
     return {
       isFlaskDetected,
       installedSnap,
+      isWeb3MqConnected,
     };
   }
+
+  // for override
+  detectIsWeb3MqConnected = async (): Promise<boolean> => false
 
   /**
    * Detect if the wallet injecting the ethereum object is Flask.
@@ -93,14 +126,20 @@ export class BaseSnapClient {
     });
   };
 
-  createSnapRpc<P>(method: string) {
-    return async (params: P) =>
-      window.ethereum.request({
-        method: "wallet_invokeSnap",
-        params: {
-          snapId: this.snapId,
-          request: { method, params },
-        },
-      });
+  createSnapRpc<P, R = any>(method: string) {
+    return async (params: P): Promise<R> => {
+      return new Promise<R>((resolve, reject) => {
+        setTimeout(() => {
+          reject('snap rpc timeout error')
+        }, 20000)
+        window.ethereum.request({
+          method: "wallet_invokeSnap",
+          params: {
+            snapId: this.snapId,
+            request: { method, params },
+          },
+        }).then(resolve)
+      })
+    }
   }
 }

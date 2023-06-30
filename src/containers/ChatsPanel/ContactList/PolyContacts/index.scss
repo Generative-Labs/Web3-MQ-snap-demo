@@ -1,0 +1,23 @@
+.mq-baseContacts {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+  padding-top: 12px;
+  .listContent {
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .contactsFooter {
+    height: 40px;
+    .bottomBtn {
+      height: 100%;
+      font-size: 16px;
+    }
+  }
+}
+
+.mq-contact-list {
+
+}

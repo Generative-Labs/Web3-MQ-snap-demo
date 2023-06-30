@@ -11,11 +11,10 @@ import {
 } from "../services/utils/utils";
 import { useStore } from "../services/mobx/service";
 import { observer } from "mobx-react";
-import MobileDemo from "../components/MobileDemo";
 import { useSnaps } from "../hooks/useSnaps";
-import Channels from "../components/Channels";
-import Contacts from "../components/Contacts";
-import { Header } from "../components/Header";
+import { Header } from "../containers/Header";
+import ChatsPanel from "../containers/ChatsPanel";
+import MobileDemo from "../containers/MobileDemo";
 
 import "./Home.scss";
 
@@ -32,20 +31,20 @@ const Home: React.FC = () => {
   const [present, dismiss] = useIonLoading();
   const { getChannelList } = useSnaps();
 
-  useEffect(() => {
-    const init = async () => {
-      if (getKeys()) {
-        await dismiss();
-        await present({
-          message: "Loading...",
-        });
-        setLoginUserId(getLoginUserId());
-        await getChannelList();
-        await dismiss();
-      }
-    };
-    init();
-  }, []);
+  // useEffect(() => {
+  //   const init = async () => {
+  //     if (getKeys()) {
+  //       await dismiss();
+  //       await present({
+  //         message: "Loading...",
+  //       });
+  //       setLoginUserId(getLoginUserId());
+  //       await getChannelList();
+  //       await dismiss();
+  //     }
+  //   };
+  //   init();
+  // }, [dismiss, getChannelList, present, setLoginUserId]);
 
 
 
@@ -54,8 +53,7 @@ const Home: React.FC = () => {
       <Header />
       <main className="mainContainer">
         <div className="content">
-          <Channels />
-          <Contacts />
+          <ChatsPanel />
           <MobileDemo />
         </div>
       </main>

@@ -10,14 +10,16 @@
   color: #fff;
   border-radius: 8px;
   font-family: 'Inter', sans-serif;
-  font-size: 22px;
-  font-weight: 400;
+  font-size: 16px;
+  // font-size: 22px;
+  font-weight: 500;
   cursor: pointer;
   svg {
       margin-right: 10px;
   }
   &.disable {
-      background: #F5F0FF;
-      color: #8F6BF4;
+    background: #F5F0FF;
+    color: #8F6BF4;
+    cursor: not-allowed;
   }
 }

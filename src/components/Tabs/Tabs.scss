@@ -1,0 +1,43 @@
+.mq-tabs {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  .tablist {
+    width: 100%;
+    height: 46px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    border-bottom: .5px solid #f2fafa;
+
+    .tabOuter {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tab {
+      padding: 13px 0;
+      font-family: 'Inter', sans-serif;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 20px;
+      color: #A1A1AA;
+      cursor: pointer;
+      box-sizing: border-box;
+
+
+      &.active {
+        color: #663CEE;
+        border-bottom: 3px solid #663CEE;
+      }
+    }
+  }
+  .tabscontent {
+    flex: 1;
+    overflow: hidden;
+  }
+}

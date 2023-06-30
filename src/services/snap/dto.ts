@@ -1,3 +1,10 @@
+// snap rpc response type
+export interface SnapRpcResponse<T = any> {
+  code: number;
+  msg: string;
+  data: T
+}
+
 export type SendNotifyMessageRpcDto = {
   message: string;
 };
@@ -50,8 +57,9 @@ export type GetKeysDto = {
 export type GetRegisterSignContentDto = {
   userid: string;
   mainPublicKey: string;
-  didType?: WalletType;
-  didValue: string;
+  walletType: WalletType;
+  walletAddress: string;
+  signContentURI?: string;
 };
 
 export type ConnectRpcDto = {
@@ -81,10 +89,13 @@ export type RegisterToWeb3MQDto = {
 export type WalletType = "eth" | "starknet" | "qrcode";
 
 export type FollowOperationDto = {
-  address: string;
-  targetUserid: string;
-  action: "follow" | "cancel";
-  didType: WalletType;
+  targetId: string;
+  action: 'follow' | 'cancel';
+  signature: string;
+  didPubKey?: string;
+  walletType?: WalletType;
+  signContent: string;
+  signTimestamp: number;
 };
 
 export type FollowStatusDto = "following" | "follower" | "follow_each";
@@ -101,3 +112,53 @@ export type ContactListItemType = {
   wallet_address: string;
   wallet_type: WalletType;
 };
+
+export type SearchContactListItemType = {
+  avatar_url: string;
+  // not exist
+  follow_status?: string;
+  nickname: string;
+  userid: string;
+  wallet_address: string;
+  wallet_type: WalletType;
+};
+
+export type ChannelItemType = {
+  avatar_base64: string;
+  avatar_url: string;
+  chat_name: string;
+  chat_type: string;
+  chatid: string;
+  topic: string;
+  topic_type: string;
+};
+
+export type GetFollowSignContentDto = {
+  walletAddress: string;
+  targetUserid: string;
+  action: 'follow' | 'cancel';
+  walletType: WalletType;
+};
+
+export type SignFollowContentRes = {
+  signContent: string
+  signTimestamp: number
+}
+
+export type FollowOperationRes = {
+  action: string
+  follow_status: string
+  target_userid: string
+  userid: string
+}
+
+export type Web3MQKeysRes = {
+  privateKey: string
+  publicKey: string
+  userid: string
+  walletAddress: string
+  mainPrivateKey: string
+  mainPublicKey: string
+  didKey: string
+  pubkeyExpiredTimestamp: string
+}
