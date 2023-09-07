@@ -138,7 +138,7 @@ export class BaseSnapClient {
             snapId: this.snapId,
             request: { method, params },
           },
-        }).then(resolve)
+        }).then(resolve, reject)
       })
     }
   }
