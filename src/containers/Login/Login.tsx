@@ -68,7 +68,6 @@ const Login: React.FC<IProps> = () => {
         password,
         address,
       })
-      console.log(res, 'onSignUpSubmit')
       store.setIsConnected(true);
       dispatch({
         type: MetamaskActions.SetConnected,
@@ -94,7 +93,6 @@ const Login: React.FC<IProps> = () => {
         password,
         address,
       })
-      console.log(res, 'onSignInSubmit')
       store.setIsConnected(true);
       dispatch({
         type: MetamaskActions.SetConnected,

@@ -54,7 +54,6 @@ const ChatList = () => {
       if (searchType !== STARCH_TYPE.WALLET) {
         address = await getAddressByDids(searchType, readySendMessage);
       }
-      console.log(address, "address");
       await getUserId(address);
       setShowSearchList(true)
     } finally {

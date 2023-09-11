@@ -47,7 +47,6 @@ const ContactItem = (props: IRenderContanctItem) => {
 
   const onSendMessage = useCallback(async () => {
     if (!user.follow_status) {
-      console.warn(`selected topic not exsit ${JSON.stringify(user)}`)
       return
     }
     const topic = user.userid;

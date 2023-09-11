@@ -42,11 +42,6 @@ export function useConnectMQ() {
       return null
     }
     const { userExist, userid } = await snapClient.checkUserExist({ address });
-    console.log({
-      address,
-      userid,
-      userExist,
-    })
     return {
       address,
       userid,
@@ -64,7 +59,6 @@ export function useConnectMQ() {
         mainPrivateKey: secretKey,
         userid,
       };
-      console.log(params, "params");
       return snapClient.connectToWeb3MQ(params);
     },
     [getNewMainKeys, snapClient]
@@ -80,7 +74,6 @@ export function useConnectMQ() {
         walletAddress: address,
         walletType: 'eth',
       });
-      console.log(signContentRes, "signContentRes");
       const { signContent, registerTime } = signContentRes;
       const { sign } = await signWithEth(signContent, address);
       const params: RegisterToWeb3MQDto = {

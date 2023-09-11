@@ -51,7 +51,6 @@ export const ContactOperateButton = observer(({ user, onSuccess }: IContactOpera
       onSuccess && onSuccess(res)
       // refresh contact list
       await getContactsAll()
-      console.log(res, 'followOperation')
     } finally {
       await dismiss();
     }

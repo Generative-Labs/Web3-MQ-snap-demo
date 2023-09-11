@@ -36,14 +36,12 @@ export default class AppStore {
   }
 
   setActiveChannelItem = (data: any) => {
-    console.log(data, "setActiveChannelItem");
     runInAction(() => {
       this.activeChannelItem = data;
       this.activeUser = null;
     });
   };
   setActiveUser = (data: any) => {
-    console.log(data, "setActiveUser");
     runInAction(() => {
       this.activeUser = data;
       this.activeChannelItem = null;
