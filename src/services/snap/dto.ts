@@ -83,6 +83,7 @@ export type RegisterToWeb3MQDto = {
   registerTime: number; // require by register
   nickname?: string;
   avatarUrl?: string;
+  isRetry?: boolean;
   userid: string;
 };
 

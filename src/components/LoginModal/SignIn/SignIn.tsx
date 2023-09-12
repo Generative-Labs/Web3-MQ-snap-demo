@@ -14,11 +14,12 @@ type IProps = {
   addressBox: React.ReactNode;
   styles?: Record<string, any> | null;
   submitLogin: (password: string) => Promise<void>
+  handleReset: () => void
   errorInfo: string
   showLoading: boolean
 };
 export const SignIn: React.FC<IProps> = (props) => {
-  const { addressBox, submitLogin, styles, errorInfo, showLoading } = props;
+  const { addressBox, submitLogin, styles, errorInfo, showLoading, handleReset } = props;
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
@@ -43,7 +44,10 @@ export const SignIn: React.FC<IProps> = (props) => {
       </div>
       <div className={ss.inputContainer}>
         <div className={ss.inputBox} style={styles?.inputBox}>
-          <div className={ss.title}>Password</div>
+          <div className={ss.title}>
+            <div>Password</div>
+            <div onClick={handleReset}>Reset password</div>
+          </div>
           <div className={ss.inputValue} style={styles?.inputValue}>
             <input
               style={styles?.inputBoxInput}

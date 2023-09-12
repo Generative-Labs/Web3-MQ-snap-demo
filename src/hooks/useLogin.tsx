@@ -12,6 +12,7 @@ export type ConnectMQParamType = {
   userid: string;
   address: string;
   password: string;
+  isRetry?: boolean;
 };
 
 export function useConnectMQ() {
@@ -65,33 +66,17 @@ export function useConnectMQ() {
         localPublicKey = publicKey;
         localPrivateKey = secretKey;
       }
-      let loginRes;
       try {
-        loginRes = await snapClient.connectToWeb3MQ({
+        await snapClient.connectToWeb3MQ({
           walletAddress: address,
           password,
           mainPublicKey: localPublicKey,
           mainPrivateKey: localPrivateKey,
           userid,
         });
+        return true
       } catch (e: any) {
-        //Error: Private key decode error, please retry
-        if (e.message === "Error: Private key decode error, please retry") {
-          const { publicKey, secretKey } = await getNewMainKeys(
-            address,
-            password,
-          );
-          loginRes = await snapClient.connectToWeb3MQ({
-            walletAddress: address,
-            password,
-            mainPublicKey: publicKey,
-            mainPrivateKey: secretKey,
-            userid,
-          });
-        }
-      }
-      if (loginRes) {
-        return loginRes;
+          throw e
       }
     },
     [getNewMainKeys, snapClient]
@@ -99,7 +84,12 @@ export function useConnectMQ() {
 
   
   const signUpAndConnect = useCallback(
-    async ({ userid, password, address }: ConnectMQParamType) => {
+    async ({
+      userid,
+      password,
+      address,
+      isRetry = false,
+    }: ConnectMQParamType) => {
       const { publicKey, secretKey } = await getNewMainKeys(address, password);
       const signContentRes = await snapClient.getRegisterSignContent({
         userid,
@@ -120,6 +110,7 @@ export function useConnectMQ() {
         registerSignContent: signContent,
         registerTime,
         userid,
+        isRetry,
       };
       return snapClient.registerToWeb3MQNetwork(params);
     },

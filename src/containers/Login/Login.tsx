@@ -12,7 +12,7 @@ import {
   useConnectSnap,
   useSnapClient,
 } from "../../hooks/useSnapClient";
-import { useIonLoading } from "@ionic/react";
+import {useIonLoading, useIonToast} from "@ionic/react";
 import { useStore } from "../../services/mobx/service";
 import { observer } from "mobx-react";
 import { Button } from "../../components/Button";
@@ -26,6 +26,7 @@ interface IProps {}
 const Login: React.FC<IProps> = () => {
   const [signInVisible, setSignInVisible] = useState<boolean>(false);
   const [signUpVisible, setSignUpVisible] = useState<boolean>(false);
+  const [resetPasswordVisible, setResetPasswordVisible] = useState(false);
   const [address, setAddress] = useState<string>("");
   const [userid, setUserid] = useState<string>("");
   const store = useStore();
@@ -34,6 +35,7 @@ const Login: React.FC<IProps> = () => {
   const { dispatch } = useSnapClient();
   const { detectUser, connect, signUpAndConnect } = useConnectMQ();
   const handleConnectClick = useConnectSnap();
+  const [ toast ] = useIonToast()
 
   const onConnectClick = async () => {
     await present({
@@ -59,7 +61,7 @@ const Login: React.FC<IProps> = () => {
     }
   };
 
-  const onSignUpSubmit = async (password: string) => {
+  const onSignUpSubmit = async (password: string, isRetry = false) => {
     if (!password) {
       return;
     }
@@ -72,6 +74,7 @@ const Login: React.FC<IProps> = () => {
         userid,
         password,
         address,
+        isRetry
       });
       console.log(res, "onSignUpSubmit");
       store.setIsConnected(true);
@@ -100,11 +103,17 @@ const Login: React.FC<IProps> = () => {
         address,
       });
       console.log(res, "onSignInSubmit");
-      store.setIsConnected(true);
-      dispatch({
-        type: MetamaskActions.SetConnected,
-        payload: true,
-      });
+      if (res) {
+        store.setIsConnected(true);
+        dispatch({
+          type: MetamaskActions.SetConnected,
+          payload: true,
+        });
+      }
+
+    } catch(e){
+      //@ts-ignore
+      toast(e.message, 1500)
     } finally {
       setSignInVisible(false);
       await dismiss();
@@ -143,6 +152,17 @@ const Login: React.FC<IProps> = () => {
           />
         </div>
       </Modal>
+      <Modal visible={resetPasswordVisible} closeModal={() => setResetPasswordVisible(false)}>
+        <div className="modalBody">
+          <SignUp
+            showLoading={false}
+            errorInfo={errorInfo}
+            submitSignUp={onSignUpSubmit}
+            addressBox={<RenderWalletAddressBox address={address} />}
+            isResetPassword={true}
+          />
+        </div>
+      </Modal>
       <Modal visible={signInVisible} closeModal={() => setSignInVisible(false)}>
         <div className="modalBody">
           <SignIn
@@ -150,6 +170,10 @@ const Login: React.FC<IProps> = () => {
             errorInfo={errorInfo}
             submitLogin={onSignInSubmit}
             addressBox={<RenderWalletAddressBox address={address} />}
+            handleReset={() => {
+              setSignInVisible(false)
+              setResetPasswordVisible(true)
+            }}
           />
         </div>
       </Modal>

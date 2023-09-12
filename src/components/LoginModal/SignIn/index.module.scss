@@ -42,6 +42,21 @@
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      div:nth-of-type(2) {
+        color: #663CEE;
+        font-family: 'Inter', sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        &:hover{
+          cursor: pointer;
+        }
+
+      }
+
     }
     .inputValue {
       margin-top: 8px;
