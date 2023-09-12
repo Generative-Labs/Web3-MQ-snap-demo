@@ -5,10 +5,6 @@ import {
   useIonLoading,
 } from "@ionic/react";
 
-import {
-  getKeys,
-  getLoginUserId,
-} from "../services/utils/utils";
 import { useStore } from "../services/mobx/service";
 import { observer } from "mobx-react";
 import { useSnaps } from "../hooks/useSnaps";

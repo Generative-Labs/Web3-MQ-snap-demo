@@ -17,7 +17,6 @@ import { setupIonicReact, useIonLoading } from "@ionic/react";
 import Home from "./Home";
 import { observer } from "mobx-react";
 import { SnapProvider, useSnapClient } from "./hooks/useSnapClient";
-import NotFlaskLogin from "./containers/Login/NotFlaskLogin";
 import NotSnapIntalledLogin from "./containers/Login/NotSnapIntalledLogin";
 import Login from "./containers/Login/Login";
 
@@ -38,8 +37,6 @@ const _App: React.FC = () => {
   }, [dismiss, present, state.loading])
   if (state.loading) {
     return <Home />
-  } else if (!state.isFlask) {
-    return <NotFlaskLogin />
   } else if (!state.installedSnap) {
     return <NotSnapIntalledLogin />
   } else if (!state.isWeb3MqConnected) {

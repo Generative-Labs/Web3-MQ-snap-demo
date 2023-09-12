@@ -12,7 +12,6 @@ import { useDebounceFn } from "ahooks";
 import { observer } from "mobx-react";
 import { useStore } from "../../services/mobx/service";
 import { useSnaps } from "../../hooks/useSnaps";
-import moment from "moment";
 import {
   getGroupName,
   getShortAddressByAddress,
@@ -61,7 +60,6 @@ const MobileDemo: React.FC = () => {
           alert("Please Choose Channel");
           return false;
         }
-        console.log(activeChannel, "activeChannel");
         await snapClient
           .sendMessage({
             msg: readySendMessage,

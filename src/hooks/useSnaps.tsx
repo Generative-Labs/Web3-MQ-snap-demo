@@ -66,7 +66,6 @@ export const useSnaps = () => {
 
   const getMessages = async (showRes: boolean = false, topic: string = "") => {
     let payload = topic ? topic : activeChannel;
-    console.log(payload, "payload - getmessages ");
     if (!payload) {
       alert("Please Choose Channel");
       return false;
@@ -84,14 +83,13 @@ export const useSnaps = () => {
       });
     res && setMessageList(res);
     showRes && setCurrentMessages(JSON.stringify(res, null, "\t"));
-    console.log(res, "get messages");
   };
 
   const getUserId = async (address: string) => {
     const users = await snapClient
       .getUserIdByAddress({ address })
       .catch((e) => {
-        console.log(e, "getUserIdByAddress - errir");
+        console.log(e, "getUserIdByAddress - error");
       });
     if (users && users.length > 0) {
       setSearchUsers(users);
@@ -111,7 +109,6 @@ export const useSnaps = () => {
     const response = await snapClient.getContactList(payload).catch((e) => {
       console.log(e, "getContactList - error");
     });
-    console.log(response, "getContactList - res");
     setContactsList(response.user_list);
     return response;
   };
@@ -119,7 +116,6 @@ export const useSnaps = () => {
     const response = await snapClient.getFollowerList(payload).catch((e) => {
       console.log(e, "getFollowerList - error");
     });
-    console.log(response, "getFollowerList - res");
     setFollowerList(response.user_list);
     return response;
   };
@@ -127,7 +123,6 @@ export const useSnaps = () => {
     const response = await snapClient.getFollowingList(payload).catch((e) => {
       console.log(e, "getFollowingList - error");
     });
-    console.log(response, "getFollowingList - res");
     setFollowingList(response.user_list);
     return response;
   };
@@ -137,7 +132,6 @@ export const useSnaps = () => {
       .catch((e) => {
         console.log(e, "getMyFriendRequestList - error");
       });
-    console.log(response, "getMyFriendRequestList - res");
     setFriendRequestList(response);
     return response;
   };
@@ -146,7 +140,6 @@ export const useSnaps = () => {
     const response = await snapClient.requestFollow(payload).catch((e) => {
       console.log(e, "requestFollow - error");
     });
-    console.log(response, "requestFollow - res");
     return response;
   };
   // follow opt in follower list
@@ -155,7 +148,6 @@ export const useSnaps = () => {
     const response = await snapClient.followOperation(payload).catch((e) => {
       console.log(e, "followOperation - error");
     });
-    console.log(response, "followOperation - res");
     return response;
   };
 

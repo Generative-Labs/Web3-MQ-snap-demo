@@ -32,20 +32,15 @@ export function useConnectMQ() {
         });
       return { publicKey, secretKey };
     },
-    [snapClient],
+    [snapClient]
   );
 
   const detectUser = useCallback(async () => {
     const { address } = await getEthAccount();
     if (!address) {
-      return null;
+      return null
     }
     const { userExist, userid } = await snapClient.checkUserExist({ address });
-    console.log({
-      address,
-      userid,
-      userExist,
-    });
     return {
       address,
       userid,
@@ -99,9 +94,10 @@ export function useConnectMQ() {
         return loginRes;
       }
     },
-    [getNewMainKeys, snapClient],
+    [getNewMainKeys, snapClient]
   );
 
+  
   const signUpAndConnect = useCallback(
     async ({ userid, password, address }: ConnectMQParamType) => {
       const { publicKey, secretKey } = await getNewMainKeys(address, password);
@@ -109,8 +105,9 @@ export function useConnectMQ() {
         userid,
         mainPublicKey: publicKey,
         walletAddress: address,
-        walletType: "eth",
+        walletType: 'eth',
       });
+      console.log(signContentRes, "signContentRes");
       const { signContent, registerTime } = signContentRes;
       const { sign } = await signWithEth(signContent, address);
       const params: RegisterToWeb3MQDto = {
@@ -126,11 +123,11 @@ export function useConnectMQ() {
       };
       return snapClient.registerToWeb3MQNetwork(params);
     },
-    [getNewMainKeys, snapClient],
+    [getNewMainKeys, snapClient]
   );
   return {
     detectUser,
     connect,
     signUpAndConnect,
-  };
+  }
 }
