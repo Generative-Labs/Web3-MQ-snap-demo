@@ -20,7 +20,6 @@ export const SearchContactListList = observer(({ readySendMessage = '' }: IProp)
     }
     const data = res.data
     updateTodoItem(data.target_userid, data.follow_status)
-    console.log(res, 'onSuccess')
   }, [searchUsers, updateTodoItem])
 
   if (!searchUsers?.length) {

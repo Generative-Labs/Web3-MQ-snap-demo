@@ -49,12 +49,12 @@ const ChatList = () => {
       return
     }
     let address = readySendMessage;
+    console.log(address, 'address')
     await present({ message: "Loading..." });
     try {
       if (searchType !== STARCH_TYPE.WALLET) {
         address = await getAddressByDids(searchType, readySendMessage);
       }
-      console.log(address, "address");
       await getUserId(address);
       setShowSearchList(true)
     } finally {

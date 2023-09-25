@@ -9,7 +9,7 @@ import cx from 'classnames';
 type IProps = {
   addressBox: React.ReactNode;
   styles?: Record<string, any> | null;
-  submitSignUp: (password: string) => Promise<void>
+  submitSignUp: (password: string, isReset?: boolean) => Promise<void>
   errorInfo: string
   showLoading: boolean
   isResetPassword?: boolean
@@ -30,7 +30,7 @@ export const SignUp: React.FC<IProps> = (props) => {
   }, [password, twoPassword, showLoading]);
 
   const handleSubmit = async () => {
-    await submitSignUp(password);
+    await submitSignUp(password, isResetPassword);
   };
 
   return (

@@ -8,11 +8,11 @@ import {
 import { useSnapClient } from "./useSnapClient";
 import { getEthAccount, signWithEth } from "../utils/metamask";
 
-
 export type ConnectMQParamType = {
   userid: string;
   address: string;
   password: string;
+  isRetry?: boolean;
 };
 
 export function useConnectMQ() {
@@ -42,11 +42,6 @@ export function useConnectMQ() {
       return null
     }
     const { userExist, userid } = await snapClient.checkUserExist({ address });
-    console.log({
-      address,
-      userid,
-      userExist,
-    })
     return {
       address,
       userid,
@@ -56,23 +51,45 @@ export function useConnectMQ() {
 
   const connect = useCallback(
     async ({ userid, password, address }: ConnectMQParamType) => {
-      const { publicKey, secretKey } = await getNewMainKeys(address, password);
-      const params: ConnectRpcDto = {
-        walletAddress: address,
-        password,
-        mainPublicKey: publicKey,
-        mainPrivateKey: secretKey,
-        userid,
-      };
-      console.log(params, "params");
-      return snapClient.connectToWeb3MQ(params);
+      let localPublicKey = "";
+      let localPrivateKey = "";
+      const { mainPublicKey, mainPrivateKey } =
+        await snapClient.exportWeb3MQKeys();
+      if (mainPublicKey && mainPrivateKey) {
+        localPublicKey = mainPublicKey;
+        localPrivateKey = mainPrivateKey;
+      } else {
+        const { publicKey, secretKey } = await getNewMainKeys(
+          address,
+          password,
+        );
+        localPublicKey = publicKey;
+        localPrivateKey = secretKey;
+      }
+      try {
+        await snapClient.connectToWeb3MQ({
+          walletAddress: address,
+          password,
+          mainPublicKey: localPublicKey,
+          mainPrivateKey: localPrivateKey,
+          userid,
+        });
+        return true
+      } catch (e: any) {
+          throw e
+      }
     },
     [getNewMainKeys, snapClient]
   );
 
   
   const signUpAndConnect = useCallback(
-    async ({ userid, password, address }: ConnectMQParamType) => {
+    async ({
+      userid,
+      password,
+      address,
+      isRetry = false,
+    }: ConnectMQParamType) => {
       const { publicKey, secretKey } = await getNewMainKeys(address, password);
       const signContentRes = await snapClient.getRegisterSignContent({
         userid,
@@ -93,6 +110,7 @@ export function useConnectMQ() {
         registerSignContent: signContent,
         registerTime,
         userid,
+        // isRetry,
       };
       return snapClient.registerToWeb3MQNetwork(params);
     },

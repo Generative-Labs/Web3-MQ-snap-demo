@@ -7,8 +7,12 @@ import {
 } from "../../icons";
 
 import "./index.scss";
-import { MetamaskActions, useSnapClient } from "../../hooks/useSnapClient";
-import { useIonLoading } from "@ionic/react";
+import {
+  MetamaskActions,
+  useConnectSnap,
+  useSnapClient,
+} from "../../hooks/useSnapClient";
+import {useIonLoading, useIonToast} from "@ionic/react";
 import { useStore } from "../../services/mobx/service";
 import { observer } from "mobx-react";
 import { Button } from "../../components/Button";
@@ -20,15 +24,18 @@ import { useConnectMQ } from "../../hooks/useLogin";
 interface IProps {}
 
 const Login: React.FC<IProps> = () => {
-  const [signInVisible, setSignInVisible] = useState<boolean>(false)
-  const [signUpVisible, setSignUpVisible] = useState<boolean>(false)
-  const [address, setAddress] = useState<string>('')
-  const [userid, setUserid] = useState<string>('')
+  const [signInVisible, setSignInVisible] = useState<boolean>(false);
+  const [signUpVisible, setSignUpVisible] = useState<boolean>(false);
+  const [resetPasswordVisible, setResetPasswordVisible] = useState(false);
+  const [address, setAddress] = useState<string>("");
+  const [userid, setUserid] = useState<string>("");
   const store = useStore();
   const [present, dismiss] = useIonLoading();
   const [errorInfo, setErrorInfo] = useState("");
-  const { dispatch } = useSnapClient()
-  const { detectUser, connect, signUpAndConnect} = useConnectMQ()
+  const { dispatch } = useSnapClient();
+  const { detectUser, connect, signUpAndConnect } = useConnectMQ();
+  const handleConnectClick = useConnectSnap();
+  const [ toast ] = useIonToast()
 
   const onConnectClick = async () => {
     await present({
@@ -36,27 +43,27 @@ const Login: React.FC<IProps> = () => {
       spinner: "circles",
     });
     try {
-      const res = await detectUser()
+      const res = await detectUser();
       if (!res) {
-        await dismiss()
-        return
+        await dismiss();
+        return;
       }
-      const { userExist, userid, address } = res
-      setAddress(address)
-      setUserid(userid)
+      const { userExist, userid, address } = res;
+      setAddress(address);
+      setUserid(userid);
       if (userExist) {
-        setSignInVisible(true)
-        return
+        setSignInVisible(true);
+        return;
       }
-      setSignUpVisible(true)
+      setSignUpVisible(true);
     } finally {
-      await dismiss()
+      await dismiss();
     }
-  }
+  };
 
-  const onSignUpSubmit = async (password: string) => {
+  const onSignUpSubmit = async (password: string, isRetry = false) => {
     if (!password) {
-      return
+      return;
     }
     await present({
       message: "Connecting...",
@@ -67,22 +74,23 @@ const Login: React.FC<IProps> = () => {
         userid,
         password,
         address,
-      })
-      console.log(res, 'onSignUpSubmit')
+        isRetry
+      });
+      console.log(res, "onSignUpSubmit");
       store.setIsConnected(true);
       dispatch({
         type: MetamaskActions.SetConnected,
         payload: true,
-      })
+      });
     } finally {
-      await dismiss()
-      setSignUpVisible(false)
+      await dismiss();
+      setSignUpVisible(false);
     }
-  }
+  };
 
   const onSignInSubmit = async (password: string) => {
     if (!password) {
-      return
+      return;
     }
     await present({
       message: "Connecting...",
@@ -93,19 +101,24 @@ const Login: React.FC<IProps> = () => {
         userid,
         password,
         address,
-      })
-      console.log(res, 'onSignInSubmit')
-      store.setIsConnected(true);
-      dispatch({
-        type: MetamaskActions.SetConnected,
-        payload: true,
-      })
-    } finally {
-      setSignInVisible(false)
-      await dismiss()
-    }
-  }
+      });
+      console.log(res, "onSignInSubmit");
+      if (res) {
+        store.setIsConnected(true);
+        dispatch({
+          type: MetamaskActions.SetConnected,
+          payload: true,
+        });
+      }
 
+    } catch(e){
+      //@ts-ignore
+      toast(e.message, 1500)
+    } finally {
+      setSignInVisible(false);
+      await dismiss();
+    }
+  };
 
   return (
     <div className="login_container">
@@ -125,6 +138,8 @@ const Login: React.FC<IProps> = () => {
             onClick={onConnectClick}
             title="Connect to Web3MQ"
           />
+
+          {/*<Button onClick={handleConnectClick} title="Install Snap" />*/}
         </div>
       </div>
       <Modal visible={signUpVisible} closeModal={() => setSignUpVisible(false)}>
@@ -137,6 +152,17 @@ const Login: React.FC<IProps> = () => {
           />
         </div>
       </Modal>
+      {/*<Modal visible={resetPasswordVisible} closeModal={() => setResetPasswordVisible(false)}>*/}
+      {/*  <div className="modalBody">*/}
+      {/*    <SignUp*/}
+      {/*      showLoading={false}*/}
+      {/*      errorInfo={errorInfo}*/}
+      {/*      submitSignUp={onSignUpSubmit}*/}
+      {/*      addressBox={<RenderWalletAddressBox address={address} />}*/}
+      {/*      isResetPassword={true}*/}
+      {/*    />*/}
+      {/*  </div>*/}
+      {/*</Modal>*/}
       <Modal visible={signInVisible} closeModal={() => setSignInVisible(false)}>
         <div className="modalBody">
           <SignIn
@@ -144,6 +170,10 @@ const Login: React.FC<IProps> = () => {
             errorInfo={errorInfo}
             submitLogin={onSignInSubmit}
             addressBox={<RenderWalletAddressBox address={address} />}
+            handleReset={() => {
+              setSignInVisible(false)
+              setResetPasswordVisible(true)
+            }}
           />
         </div>
       </Modal>
