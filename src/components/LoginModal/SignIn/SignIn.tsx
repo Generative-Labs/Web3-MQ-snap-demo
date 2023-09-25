@@ -46,7 +46,7 @@ export const SignIn: React.FC<IProps> = (props) => {
         <div className={ss.inputBox} style={styles?.inputBox}>
           <div className={ss.title}>
             <div>Password</div>
-            <div onClick={handleReset}>Reset password</div>
+            {/*<div onClick={handleReset}>Reset password</div>*/}
           </div>
           <div className={ss.inputValue} style={styles?.inputValue}>
             <input
