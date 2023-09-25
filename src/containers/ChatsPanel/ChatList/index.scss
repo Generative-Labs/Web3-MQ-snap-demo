@@ -43,7 +43,7 @@
         display: none;
         position: absolute;
         left: 0;
-        top: -93px;
+        bottom: -90px;
         z-index: 99;
   
         ul {
@@ -55,6 +55,7 @@
           text-align: center;
           width: 100px;
           height: 30px;
+          list-style: none;
           //background: #fff;
           background-color: rgb(236, 235, 235);
           font-size: 16px;
