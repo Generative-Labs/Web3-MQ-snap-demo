@@ -38,12 +38,12 @@ const _App: React.FC = () => {
   if (state.loading) {
     return <Home />
   } else if (!state.installedSnap) {
-    return <NotSnapIntalledLogin />
+    // return <NotSnapIntalledLogin />
   } else if (!state.isWeb3MqConnected) {
     return <Login />
   }
   return (
-      <Home />
+      <Login />
   )
 };
 

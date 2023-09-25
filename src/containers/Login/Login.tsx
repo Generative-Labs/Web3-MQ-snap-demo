@@ -139,7 +139,7 @@ const Login: React.FC<IProps> = () => {
             title="Connect to Web3MQ"
           />
 
-          <Button onClick={handleConnectClick} title="Install Snap" />
+          {/*<Button onClick={handleConnectClick} title="Install Snap" />*/}
         </div>
       </div>
       <Modal visible={signUpVisible} closeModal={() => setSignUpVisible(false)}>
@@ -152,17 +152,17 @@ const Login: React.FC<IProps> = () => {
           />
         </div>
       </Modal>
-      <Modal visible={resetPasswordVisible} closeModal={() => setResetPasswordVisible(false)}>
-        <div className="modalBody">
-          <SignUp
-            showLoading={false}
-            errorInfo={errorInfo}
-            submitSignUp={onSignUpSubmit}
-            addressBox={<RenderWalletAddressBox address={address} />}
-            isResetPassword={true}
-          />
-        </div>
-      </Modal>
+      {/*<Modal visible={resetPasswordVisible} closeModal={() => setResetPasswordVisible(false)}>*/}
+      {/*  <div className="modalBody">*/}
+      {/*    <SignUp*/}
+      {/*      showLoading={false}*/}
+      {/*      errorInfo={errorInfo}*/}
+      {/*      submitSignUp={onSignUpSubmit}*/}
+      {/*      addressBox={<RenderWalletAddressBox address={address} />}*/}
+      {/*      isResetPassword={true}*/}
+      {/*    />*/}
+      {/*  </div>*/}
+      {/*</Modal>*/}
       <Modal visible={signInVisible} closeModal={() => setSignInVisible(false)}>
         <div className="modalBody">
           <SignIn

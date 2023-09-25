@@ -110,7 +110,7 @@ export function useConnectMQ() {
         registerSignContent: signContent,
         registerTime,
         userid,
-        isRetry,
+        // isRetry,
       };
       return snapClient.registerToWeb3MQNetwork(params);
     },
